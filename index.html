@@ -11572,47 +11572,11 @@ function dgSetupSubscriptions(rmCode){
 }
 
 /* ================= HOST GAME ENGINE & STATE MACHINE ================= */
-function dgHostAddBot(){
-  if(!DG.host || !DG.S || DG.S.phase !== 'lobby') return;
-  const active = DG.S.players.filter(p => !p.gone);
-  if(active.length >= (DG.S.cfg.maxPlayers || 8)){
-    toast('وصلت الغرفة للحد الأقصى من اللاعبين', 'warn');
-    return;
-  }
-  const botIdx = DG.S.players.filter(p => p.isBot).length + 1;
-  const botNames = ['بيكاسو الآلي 🤖', 'دافنشي الذكي 🤖', 'فنان شارب 🤖', 'مخمّن محترف 🤖'];
-  const botCols = ['#38bdf8', '#a855f7', '#10b981', '#f59e0b'];
-  const botPid = 'bot_' + Math.random().toString(36).slice(2, 8);
-  DG.S.players.push({
-    pid: botPid,
-    uid: botPid,
-    name: botNames[(botIdx - 1) % botNames.length],
-    av: '🤖',
-    col: botCols[(botIdx - 1) % botCols.length],
-    score: 0,
-    isHost: false,
-    isBot: true,
-    gone: false,
-    lastSeen: Date.now()
-  });
-  dgBroadcastState();
-  dgRender();
-}
-window.dgHostAddBot = dgHostAddBot;
-
-function dgHostRemoveBot(botPid){
-  if(!DG.host || !DG.S || DG.S.phase !== 'lobby') return;
-  DG.S.players = DG.S.players.filter(p => p.pid !== botPid);
-  dgBroadcastState();
-  dgRender();
-}
-window.dgHostRemoveBot = dgHostRemoveBot;
-
 function dgHostStartMatch(){
   if(!DG.host || !DG.S) return;
   const active = DG.S.players.filter(p => !p.gone);
   if(active.length < 2){
-    toast('تحتاج إلى لاعبين اثنين على الأقل لبدء المباراة (أو أضف بوت ذكي للتجربة الفورية 🤖)', 'warn', 4000);
+    toast('تحتاج إلى لاعبين اثنين على الأقل لبدء المباراة', 'warn', 4000);
     return;
   }
   DG.H.usedWords.clear();
@@ -12132,17 +12096,27 @@ function dgBindCanvasEvents(){
   if(!canvas || canvas.dataset.bound === '1') return;
   canvas.dataset.bound = '1';
 
-  const startStroke = (clientX, clientY) => {
-    if(!dgCanIDrawNow()) return;
-    const pt = dgClientCoordsToCanvas(canvas, clientX, clientY);
+  // Pointer Events cover mouse, touch, and pen with one consistent path.
+  // Keep coordinates in the canvas's intrinsic 800x500 coordinate space.
+  canvas.style.touchAction = 'none';
+  canvas.style.userSelect = 'none';
+  canvas.style.webkitUserSelect = 'none';
+
+  const startStroke = (e) => {
+    if(!dgCanIDrawNow() || DG.isDrawing) return;
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    try { canvas.setPointerCapture(e.pointerId); } catch(err) {}
+    const pt = dgClientCoordsToCanvas(canvas, e.clientX, e.clientY);
     DG.isDrawing = true;
     DG.currentStroke = {
-      id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+      id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
       tool: DG.tool,
       color: DG.color,
       size: DG.size,
       pts: [pt]
     };
+    // Render a visible dot immediately, even for a tap/click with no movement.
     dgDrawSegmentOnCanvas(DG.currentStroke, true);
     arcPub('draw', DG.code, 'draw', {
       action: 'stroke_start',
@@ -12152,11 +12126,12 @@ function dgBindCanvasEvents(){
     });
   };
 
-  const moveStroke = (clientX, clientY) => {
+  const moveStroke = (e) => {
     if(!DG.isDrawing || !DG.currentStroke || !dgCanIDrawNow()) return;
-    const pt = dgClientCoordsToCanvas(canvas, clientX, clientY);
+    e.preventDefault();
+    const pt = dgClientCoordsToCanvas(canvas, e.clientX, e.clientY);
     const lastPt = DG.currentStroke.pts[DG.currentStroke.pts.length - 1];
-    if(lastPt && Math.hypot(pt[0] - lastPt[0], pt[1] - lastPt[1]) < 2) return;
+    if(lastPt && Math.hypot(pt[0] - lastPt[0], pt[1] - lastPt[1]) < 1) return;
     DG.currentStroke.pts.push(pt);
     dgDrawPointAppend(DG.currentStroke);
     arcPub('draw', DG.code, 'draw', {
@@ -12168,12 +12143,13 @@ function dgBindCanvasEvents(){
     });
   };
 
-  const endStroke = () => {
+  const endStroke = (e) => {
     if(!DG.isDrawing || !DG.currentStroke) return;
+    if(e && e.preventDefault) e.preventDefault();
     DG.isDrawing = false;
     const finished = DG.currentStroke;
     DG.currentStroke = null;
-    DG.strokes.push(finished);
+    if(!DG.strokes.some(st => st.id === finished.id)) DG.strokes.push(finished);
     if(dgCanIDrawNow()){
       arcPub('draw', DG.code, 'draw', {
         action: 'stroke_full',
@@ -12182,41 +12158,25 @@ function dgBindCanvasEvents(){
         stroke: finished
       });
     }
+    try {
+      if(e && e.pointerId !== undefined && canvas.hasPointerCapture(e.pointerId)) {
+        canvas.releasePointerCapture(e.pointerId);
+      }
+    } catch(err) {}
   };
 
-  // Mouse events
-  canvas.addEventListener('mousedown', e => {
-    if(e.button !== 0) return;
-    startStroke(e.clientX, e.clientY);
-  });
-  window.addEventListener('mousemove', e => {
-    if(DG.isDrawing) moveStroke(e.clientX, e.clientY);
-  });
-  window.addEventListener('mouseup', () => {
+  canvas.addEventListener('pointerdown', startStroke, { passive: false });
+  canvas.addEventListener('pointermove', moveStroke, { passive: false });
+  canvas.addEventListener('pointerup', endStroke, { passive: false });
+  canvas.addEventListener('pointercancel', endStroke, { passive: false });
+  canvas.addEventListener('lostpointercapture', () => {
     if(DG.isDrawing) endStroke();
   });
 
-  // Touch events (Mobile & Tablet)
-  canvas.addEventListener('touchstart', e => {
-    if(!dgCanIDrawNow()) return;
-    e.preventDefault();
-    const t = e.touches[0];
-    if(t) startStroke(t.clientX, t.clientY);
-  }, { passive: false });
-
-  canvas.addEventListener('touchmove', e => {
-    if(!DG.isDrawing || !dgCanIDrawNow()) return;
-    e.preventDefault();
-    const t = e.touches[0];
-    if(t) moveStroke(t.clientX, t.clientY);
-  }, { passive: false });
-
-  canvas.addEventListener('touchend', e => {
-    if(DG.isDrawing){
-      e.preventDefault();
-      endStroke();
-    }
-  }, { passive: false });
+  // Avoid a stuck stroke if the pointer is released outside the browser window.
+  window.addEventListener('blur', () => {
+    if(DG.isDrawing) endStroke();
+  });
 }
 
 function dgUndoStroke(){
@@ -12518,7 +12478,6 @@ function dgRender(){
                 <option value="en" ${S.cfg.lang==='en'?'selected':''}>English 🇬🇧</option>
                 <option value="mix" ${S.cfg.lang==='mix'?'selected':''}>مختلط 🌍</option>
               </select>
-              <button class="btn ghost sm" id="dgBtnAddBot">🤖 + إضافة بوت ذكي</button>
             </div>
             <button class="btn ok" id="dgBtnStartMatch" style="min-width:210px;margin-top:4px">🚀 ابدأ المباراة الآن (${activePlayers.length} لاعبين)</button>
           ` : `
@@ -12654,7 +12613,6 @@ function dgRender(){
                   </div>
                   <div class="dg-flex" style="gap:4px">
                     <span class="dg-rank-score">${p.score || 0}</span>
-                    ${DG.host && S.phase === 'lobby' && p.isBot ? `<button type="button" class="mini bad" data-rmbot="${esc(p.pid)}" title="حذف البوت">✕</button>` : ''}
                   </div>
                 </div>`;
             }).join('')}
@@ -12753,12 +12711,6 @@ function dgRender(){
   if(selTime) selTime.onchange = () => { S.cfg.drawTime = Number(selTime.value); dgBroadcastState(); };
   const selLang = document.getElementById('dgLobbyLang');
   if(selLang) selLang.onchange = () => { S.cfg.lang = selLang.value; dgBroadcastState(); };
-
-  const btnAddBot = document.getElementById('dgBtnAddBot');
-  if(btnAddBot) btnAddBot.onclick = () => dgHostAddBot();
-  root.querySelectorAll('[data-rmbot]').forEach(btn => {
-    btn.onclick = () => dgHostRemoveBot(btn.dataset.rmbot);
-  });
 
   const btnStart = document.getElementById('dgBtnStartMatch');
   if(btnStart) btnStart.onclick = () => dgHostStartMatch();
