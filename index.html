@@ -95,10 +95,14 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
+:root{--bad:var(--red,#ff453a);--bd2:rgba(255,255,255,.22)}
+:root[data-theme="light"],:root[data-sharb="light"]{--bd2:rgba(15,40,70,.16)}
+html,body{margin:0;min-height:100%;min-height:100dvh;overflow-x:hidden;max-width:100vw}
 body{
   font-family:'Cairo',system-ui,-apple-system,'Segoe UI',sans-serif;
-  color:var(--tx);min-height:100vh;
+  color:var(--tx);min-height:100vh;min-height:100dvh;
+  padding-left:env(safe-area-inset-left,0px);
+  padding-right:env(safe-area-inset-right,0px);
   background:
     var(--grad1),
     var(--grad2),
@@ -256,11 +260,22 @@ label.lbl{display:block;font-size:12.5px;color:var(--mut);margin:0 0 6px 2px;fon
 .netstatus.warn{color:#ffb0aa;border-color:rgba(255,69,58,.35);background:rgba(255,69,58,.1)}
 :root[data-theme="light"] .netstatus.warn{color:#b3261e}
 .plist{display:flex;flex-direction:column;gap:7px;margin:6px 0}
-.player,.friend{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--glass);border:1px solid transparent;border-radius:14px;padding:8px 10px}
-.player:hover,.friend:hover{border-color:var(--bd);background:var(--glass2)}
-.pc{display:flex;align-items:center;gap:9px;min-width:0;cursor:pointer}
-.pc b{display:block;font-size:13.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
-.pc small{display:block;font-size:10.5px;color:var(--mut);line-height:1.3}
+.player,.friend,.pitem{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:var(--glass);border:1px solid transparent;border-radius:14px;padding:8px 10px;min-width:0}
+.player:hover,.friend:hover,.pitem:hover{border-color:var(--bd);background:var(--glass2)}
+.pc{display:flex;align-items:center;gap:9px;min-width:0;flex:1 1 135px;cursor:pointer;overflow:hidden}
+.pc>span:last-child{min-width:0;flex:1;overflow:hidden;display:flex;flex-direction:column;gap:2px}
+.pc b{display:block;font-size:13.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pc small{display:block;font-size:11px;color:var(--mut);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+.btn.ghost{background:var(--glass);border:1px solid var(--bd);color:var(--tx);box-shadow:none}
+.btn.ghost:hover{background:var(--glass2)}
+.btn.bad,.btn.danger{background:linear-gradient(180deg,#ff7066,#d92d20);color:#fff;box-shadow:0 8px 20px rgba(255,69,58,.25)}
+.btn.sm{padding:7px 12px;font-size:12.5px;border-radius:11px;min-height:36px}
+.mini.bad{background:rgba(255,69,58,.16);border-color:rgba(255,69,58,.35);color:#ff8b84}
+.bk-chip.bad{background:rgba(255,69,58,.16);border-color:rgba(255,69,58,.45);color:var(--red)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:rgba(10,132,255,.18);border:1px solid rgba(10,132,255,.4);color:var(--ac2);border-radius:99px;padding:4px 11px;font-weight:800;max-width:100%;white-space:normal}
+:root[data-theme="light"] .badge{color:#0284c7;background:rgba(2,132,199,.12)}
 .tag{font-size:10px;border-radius:99px;padding:2px 8px;font-weight:800;white-space:nowrap}
 .tag.host{background:rgba(255,214,10,.18);color:var(--gold);border:1px solid rgba(255,214,10,.35)}
 .tag.me{background:rgba(10,132,255,.18);color:var(--ac2);border:1px solid rgba(10,132,255,.35)}
@@ -497,7 +512,74 @@ label.lbl{display:block;font-size:12.5px;color:var(--mut);margin:0 0 6px 2px;fon
 }
 
 #bakasa .hero{margin-bottom:16px}
-.bk-wrap{display:flex;flex-direction:column;gap:14px;animation:bkFade .24s cubic-bezier(.2,.9,.3,1)}
+.bk-wrap{display:flex;flex-direction:column;gap:14px}
+/* Bakasa 8-Word Choice Grid */
+.bk-guess-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:14px 0;
+  width:100%;
+}
+@media(max-width:767px){
+  .bk-guess-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+}
+.bk-word-choice{
+  min-height:60px;
+  padding:12px 10px;
+  border-radius:15px;
+  border:2px solid var(--bd);
+  background:linear-gradient(160deg,var(--glass2),var(--glass));
+  color:var(--tx);
+  font-family:inherit;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.45;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+  white-space:normal;
+  overflow-wrap:break-word;
+  word-break:break-word;
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+  user-select:none;
+}
+.bk-word-choice:hover:not(:disabled){
+  transform:translateY(-2px);
+  border-color:var(--ac);
+  background:linear-gradient(160deg,rgba(10,132,255,.22),rgba(10,132,255,.08));
+  box-shadow:0 10px 24px rgba(10,132,255,.26);
+}
+.bk-word-choice:active:not(:disabled){
+  transform:scale(.98);
+}
+.bk-word-choice:disabled{
+  cursor:default;
+  opacity:.82;
+}
+.bk-word-choice.sel-choice{
+  border-color:var(--gold)!important;
+  background:rgba(255,214,10,.18)!important;
+  box-shadow:0 0 0 2px var(--gold) inset,0 8px 22px rgba(255,214,10,.25)!important;
+}
+.bk-word-choice.is-correct{
+  border-color:var(--gr)!important;
+  background:linear-gradient(145deg,rgba(48,209,88,.26),rgba(16,185,129,.12))!important;
+  color:var(--tx)!important;
+  box-shadow:0 0 0 2px var(--gr) inset,0 8px 22px rgba(48,209,88,.28)!important;
+}
+.bk-word-choice.is-wrong{
+  border-color:var(--red)!important;
+  background:linear-gradient(145deg,rgba(255,69,58,.26),rgba(220,38,38,.12))!important;
+  color:var(--tx)!important;
+  box-shadow:0 0 0 2px var(--red) inset!important;
+}
 @keyframes bkFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .bk-status-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;border-radius:18px;background:var(--glass);border:1px solid var(--bd);box-shadow:var(--sh)}
 .bk-status-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -913,8 +995,36 @@ body[data-theme="light"] .dg-secret-pill{color:#15803d;background:rgba(34,197,94
 
 .dg-main-grid{
   display:grid;
-  grid-template-columns:240px minmax(340px,1fr) 300px;
+  grid-template-columns:265px minmax(340px,1fr) 295px;
   gap:12px;align-items:stretch;
+}
+.dg-RankCol .friend,
+.dg-RankCol .inv-item{
+  flex-direction:column;
+  align-items:stretch;
+  gap:7px;
+  padding:9px 10px;
+}
+.dg-RankCol .friend .pc,
+.dg-RankCol .inv-item .pc{
+  flex:1 1 auto;
+  width:100%;
+}
+.dg-RankCol .friend .fr-card-actions,
+.dg-RankCol .inv-item .fr-card-actions{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+}
+.dg-RankCol .friend .fr-card-actions .mini.ok,
+.dg-RankCol .inv-item .fr-card-actions .mini.ok{
+  flex:1;
+  text-align:center;
+  justify-content:center;
+  padding:6px 8px;
+  min-height:34px;
 }
 @media(max-width:1100px){
   .dg-main-grid{grid-template-columns:1fr 290px}
@@ -1969,6 +2079,64 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
   overflow-y: auto;
   word-break: break-word;
 }
+
+/* ================= MULTI-VIEWPORT RESPONSIVE & TOUCH ERGONOMICS (320px — 1920px+) ================= */
+@media(min-width:1600px){
+  .wrap{max-width:1340px}
+  #chess,#draw,#ttt,#c4{max-width:1320px}
+}
+@media(max-width:768px){
+  .btn{min-height:42px;display:inline-flex;align-items:center;justify-content:center}
+  .mini{min-height:34px;padding:6px 11px;display:inline-flex;align-items:center;justify-content:center}
+  .quick-g-pills{grid-template-columns:repeat(auto-fit,minmax(125px,1fr))}
+  .inv-item{flex-wrap:wrap}
+  .inv-item .pc{flex:1 1 160px}
+  .code{font-size:clamp(22px,6.5vw,32px);letter-spacing:clamp(4px,1.6vw,8px)}
+  .dg-swatch{width:26px;height:26px}
+  .dg-size-btn{width:34px;height:34px}
+}
+@media(max-width:480px){
+  .wrap{padding:10px 10px 28px}
+  .topbar{gap:8px;margin-bottom:12px}
+  .brand{gap:8px;flex:1 1 auto}
+  #brandTitle{font-size:17px}
+  #brandSub{font-size:10px}
+  .bar-actions{gap:5px;flex-wrap:wrap}
+  .profile{max-width:138px;padding:4px 8px}
+  .hero{padding:14px 12px!important}
+  .hero h2{font-size:19px!important}
+  .hero-brand-logo{width:48px!important;height:48px!important}
+  .hero-tagline-en{font-size:11px;padding:2px 8px}
+  .panel{padding:13px 11px}
+  .ch-ModeTabs{width:100%}
+  .ch-tab{flex:1 1 130px;justify-content:center;padding:9px 10px;font-size:12px}
+  .ch-board-frame{padding:6px;border-radius:14px}
+  .ttt-frame{padding:10px;border-radius:18px;max-width:100%}
+  .c4-frame{padding:7px;border-radius:16px;max-width:100%}
+  .c4-grid{gap:4px;padding:6px}
+  .c4-DropRow{gap:4px;margin-bottom:6px}
+  .c4-col-btn{height:34px;font-size:11px;padding:0 2px}
+  .c4-col-btn .c4-preview-dot{width:13px;height:13px}
+  .dg-top-bar{padding:8px 10px;gap:8px}
+  .dg-panel{padding:10px}
+  .dg-word-choice-btn{min-width:92px;max-width:100%;flex:1 1 95px}
+  .bk-status-bar{padding:10px 12px}
+  .bk-stage{padding:14px 11px}
+  .bk-stage h2{font-size:18px}
+  .bkw{font-size:21px;padding:15px 10px;overflow-wrap:break-word}
+  .bk-word-choice{font-size:13.5px;min-height:54px;padding:10px 8px}
+}
+@media(max-width:359px){
+  .wrap{padding:8px 7px 24px}
+  .bar-actions .iconbtn span{display:none}
+  .bar-actions .iconbtn{padding:0 7px;min-width:34px;height:34px}
+  .profile{max-width:115px}
+  .profile b{max-width:56px;font-size:11.5px}
+  .quick-g-pills{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .quick-g-pill{font-size:11.5px;padding:8px 5px}
+  .bk-stepper{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stt{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
@@ -2549,6 +2717,7 @@ function beep(f=240,d=.09,type='triangle',vol=.1){
     o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);
   }catch(e){}
 }
+window.confettiBurst=confetti;
 function confetti(n=34){
   const chars=['🎉','✨','🁫','🏆','🎊'];
   for(let i=0;i<n;i++){
@@ -2717,13 +2886,19 @@ $('#pb').onclick=()=>openProfile(me0(),true);
 /* ================= theme / sound ================= */
 const sharbSaved=store.get('sharb',null);
 const themeSaved=store.get('theme',null);
-if(sharbSaved) document.documentElement.setAttribute('data-sharb',sharbSaved);
-else document.documentElement.setAttribute('data-sharb','blue');
-if(themeSaved) document.documentElement.dataset.theme=themeSaved;
-else {
-  const s = document.documentElement.getAttribute('data-sharb')||'blue';
-  if(s==='light') document.documentElement.dataset.theme='light';
-  else document.documentElement.dataset.theme='dark';
+function syncThemeAttrs(sharbVal, themeVal){
+  const r = document.documentElement;
+  r.setAttribute('data-sharb', sharbVal);
+  r.dataset.theme = themeVal;
+  if(document.body){
+    document.body.setAttribute('data-sharb', sharbVal);
+    document.body.dataset.theme = themeVal;
+  }
+}
+{
+  const initSharb = sharbSaved || 'blue';
+  const initTheme = themeSaved || (initSharb === 'light' ? 'light' : 'dark');
+  syncThemeAttrs(initSharb, initTheme);
 }
 function renderSound(){ $('#snd').textContent=soundOn?'🔊':'🔇'; }
 $('#snd').onclick=()=>{soundOn=!soundOn;store.set('snd',soundOn);renderSound();if(soundOn)beep(520,.08,'sine',.08)};
@@ -2756,10 +2931,9 @@ function openThemes(){
   document.querySelectorAll('[data-stheme]').forEach(el=>{
     el.onclick=()=>{
       const v = el.getAttribute('data-stheme') || 'blue';
-      const r = document.documentElement;
-      r.setAttribute('data-sharb', v);
-      if(v === 'light'){ r.dataset.theme = 'light'; store.set('theme','light'); }
-      else { r.dataset.theme = 'dark'; store.set('theme','dark'); }
+      const th = (v === 'light') ? 'light' : 'dark';
+      syncThemeAttrs(v, th);
+      store.set('theme', th);
       store.set('sharb', v);
       closeOverlay();
       toast('تم تطبيق الثيم','ok');
@@ -2853,7 +3027,6 @@ try{
     const me=myUid();
     if(ev.key==='fr_'+me||ev.key==='fr_out_'+me||ev.key==='fr_in_'+me){
       renderFriends();
-      if(window.BK&&!$('#bakasa').classList.contains('hide'))bkRender();
       return;
     }
     if(ev.key==='fr_inv_'+me){renderHomeInvites();return}
@@ -2870,7 +3043,7 @@ try{
 }catch(e){}
 
 function pubPresenceMsg(topic,obj,opt){
-  pub(topic,obj,opt);
+  pub(topic,obj,Object.assign({},opt||{},{_skipLocalBus:true}));
   try{
     if(opt&&opt.retain)localStorage.setItem('fr2_ret_'+topic,JSON.stringify({ts:Date.now(),payload:obj}));
     if(frBC)frBC.postMessage({topic,payload:obj,ts:Date.now()});
@@ -3158,6 +3331,8 @@ function renderFriends(){
   const onlineCount=list.filter(f=>isOnline(f.uid)).length;
   if($('#fl'))$('#fl').innerHTML=buildFriendsPanelListHTML('');
   if($('#homeFl'))$('#homeFl').innerHTML=buildFriendsPanelListHTML('h');
+  if($('#bkFriendsList'))$('#bkFriendsList').innerHTML=buildFriendsPanelListHTML('bk');
+  if($('#dgFriendsList'))$('#dgFriendsList').innerHTML=buildFriendsPanelListHTML('dg');
   if($('#homeMyCode'))$('#homeMyCode').textContent=PF.uid;
   if($('#homeHeroUid'))$('#homeHeroUid').textContent=PF.uid;
   if($('#myCode'))$('#myCode').textContent=PF.uid;
@@ -3365,15 +3540,19 @@ function unsub(topic){
 }
 function pub(topic,obj,opt){
   try{
-    if(opt&&opt.retain){
-      localStorage.setItem('bk_ret_'+topic,JSON.stringify({ts:Date.now(),payload:obj}));
+    if(!opt||!opt._skipLocalBus){
+      if(opt&&opt.retain){
+        localStorage.setItem('bk_ret_'+topic,JSON.stringify({ts:Date.now(),payload:obj}));
+      }
+      if(typeof bkBC!=='undefined'&&bkBC)bkBC.postMessage({topic,payload:obj,ts:Date.now()});
+      localStorage.setItem('bk_bus_msg_'+topic,JSON.stringify({topic,payload:obj,ts:Date.now(),r:Math.random()}));
     }
-    if(typeof bkBC!=='undefined'&&bkBC)bkBC.postMessage({topic,payload:obj,ts:Date.now()});
-    localStorage.setItem('bk_bus_msg_'+topic,JSON.stringify({topic,payload:obj,ts:Date.now(),r:Math.random()}));
   }catch(e){}
   if(!NET.client)return true;
   try{
-    NET.client.publish(topic,JSON.stringify(obj),Object.assign({qos:0,retain:false},opt||{}));
+    const mqttOpt=Object.assign({qos:0,retain:false},opt||{});
+    delete mqttOpt._skipLocalBus;
+    NET.client.publish(topic,JSON.stringify(obj),mqttOpt);
     return true;
   }catch(e){return true}
 }
@@ -3701,7 +3880,6 @@ function onPresencePacket(d){
   }
   if(isOnline(fuid)!==was||changed){
     renderFriends();
-    if(window.BK&&!$('#bakasa').classList.contains('hide'))bkRender();
   }
 }
 
@@ -5405,6 +5583,7 @@ $('#copyCode').onclick=()=>copyText(code);
 $('#shareCode').onclick=()=>shareInvite(null);
 function leaveRoom(){
   if(host&&G&&G.phase==='play'&&!confirm('لو خرجت اللعبة هتقف على الباقيين. تخرج؟'))return;
+  clearTimeout(botTimer);botTimer=null;
   teardownNet(true);
   G=null;host=false;code='';lobbyPl=[];
   pending=-1;hintIdx=-1;resultKey='';unoPendingColor=false;unoPendingWild=null;
@@ -5416,6 +5595,7 @@ function leaveRoom(){
 }
 function leaveGame(){
   if(!confirm('تخرج من اللعبة؟'))return;
+  clearTimeout(botTimer);botTimer=null;
   teardownNet(true);
   G=null;host=false;code='';lobbyPl=[];
   pending=-1;hintIdx=-1;resultKey='';unoPendingColor=false;unoPendingWild=null;
@@ -5465,20 +5645,26 @@ function init(){
     rsz=setTimeout(()=>{if(G && !$('#game').classList.contains('hide'))renderBoard()},140);
   });
 }
-/* ================= BAKASA بكاسة ================= */
+/* ================= BAKASA بكاسة (940+ Unique Egyptian/Arabic Words & 8-Choice Engine) ================= */
 const BX='البكس';
-const BKW={'أكلات':'كشري|ملوخية;محشي|ورق عنب;فول|طعمية;فتة|رقاق;فطير|بيتزا;كبدة|سجق;مكرونة بشاميل|مسقعة;رز بلبن|أم علي;كنافة|بسبوسة;حواوشي|شاورما',
-'أماكن':'بورسعيد|دمياط;القاهرة|الجيزة;الإسكندرية|مطروح;أسوان|الأقصر;المنصورة|طنطا;شرم الشيخ|الغردقة;خان الخليلي|الحسين;الأهرامات|أبو الهول;الكورنيش|الممشى;محطة مصر|محطة رمسيس',
-'أفلام ومسلسلات':'اللمبي|عبده موتة;الكيف|السجينتين;الممر|الاختيار;رأفت الهجان|دموع في عيون وقحة;صعيدي في الجامعة الأمريكية|همام في أمستردام;الكبير أوي|العمدة;ولاد رزق|هروب اضطراري;ليالي الحلمية|الراية البيضا',
-'كورة':'الأهلي|الزمالك;محمد صلاح|محمد النني;ركلة جزاء|ضربة حرة;تسلل|ضربة ركنية;حارس مرمى|مدافع;الدوري|الكأس;ستاد القاهرة|ستاد برج العرب;أبو تريكة|ميدو;المدرب|الكابتن;ماتش ديربي|ماتش نهائي',
-'أمثال':'اللي اتلسع من الشوربة ينفخ في الزبادي|المية تكدب الغطاس;على قد لحافك مد رجليك|القرش الأبيض ينفع في اليوم الأسود;ابن الوز عوام|اللي خلف ما ماتش;العين ما تعلاش على الحاجب|اللي ملوش كبير يشتري له كبير;الصبر مفتاح الفرج|الجمل ما يشوفش عوجة رقبته;زي الأطرش في الزفة|زي الأعمى في الظلمة',
-'مواقف يومية':'المدرسة|الجامعة;المواصلات|الميكروباص;المصيف|المعمورة;الفرح|الخطوبة;السوق|السوبر ماركت;القهوة|الكافيه;الطابور|الزحمة;الشغل|الامتحان;المستشفى|الصيدلية;العزومة|الغدا العائلي'};
-const BKL=Object.fromEntries(Object.entries(BKW).map(([k,v])=>[k,v.split(';').map(x=>x.split('|'))]));
-const BKRULES=`٣ لاعبين أو أكتر • ${BX} واحد (أو أكتر) بينكم: يا مش بيعرف الكلمة، يا معاه كلمة مختلفة • لا تبدأ الأسئلة إلا بعد تأكيد جميع اللاعبين مشاهدة كلماتهم • كل لاعب يسأل مرة ويتلقى سؤالًا مرة في الجولة الأساسية • تليها مرحلة الشك ثم أسئلة حسم الشك عند تعدد المشتبه بهم • التصويت سري ومقفول بعد التأكيد • عند التعادل تُعقد جولة أسئلة حسم للمتعادلين فقط (بحد أقصى ٣ جولات حسم) • لو اتكشف ${BX} بيخمّن الكلمة • النقاط: اللاعبين +٢ لو كسبوا، ${BX} +٣ لو ما اتكشفش (+٢ لو اتكشف وخمّن صح).`;
+const BK_WORD_DB = [{"w": "كشري", "alt": "ملوخية", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "ملوخية", "alt": "كشري", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "محشي", "alt": "فتة", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "فتة", "alt": "محشي", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "كوارع", "alt": "طعمية", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "طعمية", "alt": "كوارع", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "فول", "alt": "مسقعة", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "مسقعة", "alt": "فول", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "حواوشي", "alt": "ممبار", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "ممبار", "alt": "حواوشي", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "فطير", "alt": "بامية", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "بامية", "alt": "فطير", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "رقاق", "alt": "حمام محشي", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "حمام محشي", "alt": "رقاق", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "أرز معمر", "alt": "محشي ورق عنب", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "محشي ورق عنب", "alt": "أرز معمر", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "محشي كرنب", "alt": "محشي باذنجان", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "محشي باذنجان", "alt": "محشي كرنب", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "فطير مشلتت", "alt": "مكرونة بشاميل", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "مكرونة بشاميل", "alt": "فطير مشلتت", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "كبدة إسكندراني", "alt": "سجق شرقي", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "سجق شرقي", "alt": "كبدة إسكندراني", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "شكشوكة", "alt": "بصارة", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "بصارة", "alt": "شكشوكة", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "عدس أصفر", "alt": "قلقاس بالسلق", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "قلقاس بالسلق", "alt": "عدس أصفر", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "سبانخ باللحمة", "alt": "صينية بطاطس", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "صينية بطاطس", "alt": "سبانخ باللحمة", "cat": "أكلات مصرية", "diff": "easy"}, {"w": "طاجن عكاوي", "alt": "طاجن بامية", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "طاجن بامية", "alt": "طاجن عكاوي", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "فريك باللحمة", "alt": "أرز صيادية", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "أرز صيادية", "alt": "فريك باللحمة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "سمك سنجاري", "alt": "سمك مشوي", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "سمك مشوي", "alt": "سمك سنجاري", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "جمبري مقلي", "alt": "طاجن سي فود", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "طاجن سي فود", "alt": "جمبري مقلي", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "فسيخ ورنجة", "alt": "سردين مملح", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "سردين مملح", "alt": "فسيخ ورنجة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "كشك ألمظ", "alt": "مفتقة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "مفتقة", "alt": "كشك ألمظ", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "عسل أسود بالطحينة", "alt": "جبنة قديمة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "جبنة قديمة", "alt": "عسل أسود بالطحينة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "جبنة قريش", "alt": "بيض بالبسطرمة", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "بيض بالبسطرمة", "alt": "جبنة قريش", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "فول بالسجق", "alt": "فول بالزيت الحار", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "فول بالزيت الحار", "alt": "فول بالسجق", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "طعمية محشية", "alt": "كفتة الحاتي", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "كفتة الحاتي", "alt": "طعمية محشية", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "طرب مشوي", "alt": "ريش ضاني", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "ريش ضاني", "alt": "طرب مشوي", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "لحمة راس", "alt": "فشة وطحال", "cat": "أكلات مصرية", "diff": "medium"}, {"w": "فشة وطحال", "alt": "لحمة راس", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "كلاوي محمرة", "alt": "مخ بانيه", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "مخ بانيه", "alt": "كلاوي محمرة", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "شركسية", "alt": "ويكا صعيدي", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "ويكا صعيدي", "alt": "شركسية", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "كبيبة شامي", "alt": "سمبوسك بالجبنة", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "سمبوسك بالجبنة", "alt": "كبيبة شامي", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "جلاش باللحمة", "alt": "بط بالبرتقال", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "بط بالبرتقال", "alt": "جلاش باللحمة", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "وز محمر", "alt": "أرانب بالملوخية", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "أرانب بالملوخية", "alt": "وز محمر", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "سندوتش كبدة", "alt": "فتة شاورما", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "فتة شاورما", "alt": "سندوتش كبدة", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "كبدة بالردة", "alt": "فتة شاورما", "cat": "أكلات مصرية", "diff": "hard"}, {"w": "بيتزا", "alt": "برجر", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "برجر", "alt": "بيتزا", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "شاورما", "alt": "مكرونة", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "مكرونة", "alt": "شاورما", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "لازانيا", "alt": "سوشي", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "سوشي", "alt": "لازانيا", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "تاكو", "alt": "كبسة", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "كبسة", "alt": "تاكو", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "منسف", "alt": "مندي", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "مندي", "alt": "منسف", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "فلافل", "alt": "بيتزا مارجريتا", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "بيتزا مارجريتا", "alt": "فلافل", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "بيتزا بيبروني", "alt": "تشيز برجر", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "تشيز برجر", "alt": "بيتزا بيبروني", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "شاورما فراخ", "alt": "شاورما لحمة", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "شاورما لحمة", "alt": "شاورما فراخ", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "بوريتو مكسيكي", "alt": "مقلوبة فلسطيني", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "مقلوبة فلسطيني", "alt": "بوريتو مكسيكي", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "مسخن دجاج", "alt": "تبولة", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "تبولة", "alt": "مسخن دجاج", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "فتوش", "alt": "حمص بالطحينة", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "حمص بالطحينة", "alt": "فتوش", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "متبل باذنجان", "alt": "ورق عنب بالزيت", "cat": "أكلات عربية وعالمية", "diff": "easy"}, {"w": "ورق عنب بالزيت", "alt": "متبل باذنجان", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "شيش طاووق", "alt": "فهيتا دجاج", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "فهيتا دجاج", "alt": "شيش طاووق", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "ستيك مشوي", "alt": "فراخ كرسبي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "فراخ كرسبي", "alt": "ستيك مشوي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "فراخ بروستد", "alt": "ناجتس دجاج", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "ناجتس دجاج", "alt": "فراخ بروستد", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "هوت دوج", "alt": "سندوتش زنجر", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "سندوتش زنجر", "alt": "هوت دوج", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "مكرونة ألفريدو", "alt": "مكرونة بولونيز", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "مكرونة بولونيز", "alt": "مكرونة ألفريدو", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "مكرونة نجرسكو", "alt": "رافيولي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "رافيولي", "alt": "مكرونة نجرسكو", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "نودلز صيني", "alt": "رامين كوري", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "رامين كوري", "alt": "نودلز صيني", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "كاري هندي", "alt": "برياني دجاج", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "برياني دجاج", "alt": "كاري هندي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "تندوري هندي", "alt": "كباب تركي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "كباب تركي", "alt": "تندوري هندي", "cat": "أكلات عربية وعالمية", "diff": "medium"}, {"w": "إسكندر كباب", "alt": "كفتة داوود باشا", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "كفتة داوود باشا", "alt": "إسكندر كباب", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "سمك فيليه", "alt": "كاليماري مقلي", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "كاليماري مقلي", "alt": "سمك فيليه", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "شوربة كريمة", "alt": "شوربة طماطم", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "شوربة طماطم", "alt": "شوربة كريمة", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "شوربة بصل", "alt": "سلطة سيزر", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "سلطة سيزر", "alt": "شوربة بصل", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "سلطة يونانية", "alt": "بطاطس مقلية", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "بطاطس مقلية", "alt": "سلطة يونانية", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "حلقات بصل", "alt": "بطاطس مقلية", "cat": "أكلات عربية وعالمية", "diff": "hard"}, {"w": "كنافة", "alt": "بسبوسة", "cat": "حلويات", "diff": "easy"}, {"w": "بسبوسة", "alt": "كنافة", "cat": "حلويات", "diff": "easy"}, {"w": "قطايف", "alt": "أم علي", "cat": "حلويات", "diff": "easy"}, {"w": "أم علي", "alt": "قطايف", "cat": "حلويات", "diff": "easy"}, {"w": "رز بلبن", "alt": "دونات", "cat": "حلويات", "diff": "easy"}, {"w": "دونات", "alt": "رز بلبن", "cat": "حلويات", "diff": "easy"}, {"w": "وافل", "alt": "آيس كريم", "cat": "حلويات", "diff": "easy"}, {"w": "آيس كريم", "alt": "وافل", "cat": "حلويات", "diff": "easy"}, {"w": "تشيز كيك", "alt": "بقلاوة", "cat": "حلويات", "diff": "easy"}, {"w": "بقلاوة", "alt": "تشيز كيك", "cat": "حلويات", "diff": "easy"}, {"w": "كنافة بالمانجو", "alt": "كنافة بالقشطة", "cat": "حلويات", "diff": "easy"}, {"w": "كنافة بالقشطة", "alt": "كنافة بالمانجو", "cat": "حلويات", "diff": "easy"}, {"w": "كنافة نابلسية", "alt": "بسبوسة بالمكسرات", "cat": "حلويات", "diff": "easy"}, {"w": "بسبوسة بالمكسرات", "alt": "كنافة نابلسية", "cat": "حلويات", "diff": "easy"}, {"w": "قطايف بالقشطة", "alt": "بان كيك", "cat": "حلويات", "diff": "easy"}, {"w": "بان كيك", "alt": "قطايف بالقشطة", "cat": "حلويات", "diff": "easy"}, {"w": "كريب نوتيلا", "alt": "آيس كريم فانيليا", "cat": "حلويات", "diff": "easy"}, {"w": "آيس كريم فانيليا", "alt": "كريب نوتيلا", "cat": "حلويات", "diff": "easy"}, {"w": "آيس كريم شوكولاتة", "alt": "بلح الشام", "cat": "حلويات", "diff": "easy"}, {"w": "بلح الشام", "alt": "آيس كريم شوكولاتة", "cat": "حلويات", "diff": "easy"}, {"w": "زلابية", "alt": "لقمة القاضي", "cat": "حلويات", "diff": "medium"}, {"w": "لقمة القاضي", "alt": "زلابية", "cat": "حلويات", "diff": "medium"}, {"w": "صوابع زينب", "alt": "رموش الست", "cat": "حلويات", "diff": "medium"}, {"w": "رموش الست", "alt": "صوابع زينب", "cat": "حلويات", "diff": "medium"}, {"w": "هريسة إسكندراني", "alt": "مشبك دمياطي", "cat": "حلويات", "diff": "medium"}, {"w": "مشبك دمياطي", "alt": "هريسة إسكندراني", "cat": "حلويات", "diff": "medium"}, {"w": "حلاوة المولد", "alt": "حلاوة الجبن", "cat": "حلويات", "diff": "medium"}, {"w": "حلاوة الجبن", "alt": "حلاوة المولد", "cat": "حلويات", "diff": "medium"}, {"w": "مهلبية", "alt": "جيلي بالفواكه", "cat": "حلويات", "diff": "medium"}, {"w": "جيلي بالفواكه", "alt": "مهلبية", "cat": "حلويات", "diff": "medium"}, {"w": "كريم كراميل", "alt": "تورتة شوكولاتة", "cat": "حلويات", "diff": "medium"}, {"w": "تورتة شوكولاتة", "alt": "كريم كراميل", "cat": "حلويات", "diff": "medium"}, {"w": "جاتوه", "alt": "براونيز", "cat": "حلويات", "diff": "medium"}, {"w": "براونيز", "alt": "جاتوه", "cat": "حلويات", "diff": "medium"}, {"w": "مولتن كيك", "alt": "سينابون", "cat": "حلويات", "diff": "medium"}, {"w": "سينابون", "alt": "مولتن كيك", "cat": "حلويات", "diff": "medium"}, {"w": "إكلير", "alt": "ماكرون فرنسي", "cat": "حلويات", "diff": "hard"}, {"w": "ماكرون فرنسي", "alt": "إكلير", "cat": "حلويات", "diff": "hard"}, {"w": "تراميسو", "alt": "مهلبية قمر الدين", "cat": "حلويات", "diff": "hard"}, {"w": "مهلبية قمر الدين", "alt": "تراميسو", "cat": "حلويات", "diff": "hard"}, {"w": "عاشورة", "alt": "قرع عسلي", "cat": "حلويات", "diff": "hard"}, {"w": "قرع عسلي", "alt": "عاشورة", "cat": "حلويات", "diff": "hard"}, {"w": "بطاطا بالفرن", "alt": "غزل البنات", "cat": "حلويات", "diff": "hard"}, {"w": "غزل البنات", "alt": "بطاطا بالفرن", "cat": "حلويات", "diff": "hard"}, {"w": "فشار بالكراميل", "alt": "سد الحنك", "cat": "حلويات", "diff": "hard"}, {"w": "سد الحنك", "alt": "فشار بالكراميل", "cat": "حلويات", "diff": "hard"}, {"w": "شاي", "alt": "قهوة", "cat": "مشروبات", "diff": "easy"}, {"w": "قهوة", "alt": "شاي", "cat": "مشروبات", "diff": "easy"}, {"w": "سحلب", "alt": "كركديه", "cat": "مشروبات", "diff": "easy"}, {"w": "كركديه", "alt": "سحلب", "cat": "مشروبات", "diff": "easy"}, {"w": "تمر هندي", "alt": "عصير مانجو", "cat": "مشروبات", "diff": "easy"}, {"w": "عصير مانجو", "alt": "تمر هندي", "cat": "مشروبات", "diff": "easy"}, {"w": "ليمون بالنعناع", "alt": "هوت شوكليت", "cat": "مشروبات", "diff": "easy"}, {"w": "هوت شوكليت", "alt": "ليمون بالنعناع", "cat": "مشروبات", "diff": "easy"}, {"w": "شاي بالنعناع", "alt": "شاي بلبن", "cat": "مشروبات", "diff": "easy"}, {"w": "شاي بلبن", "alt": "شاي بالنعناع", "cat": "مشروبات", "diff": "easy"}, {"w": "قهوة تركي", "alt": "قهوة فرنساوي", "cat": "مشروبات", "diff": "easy"}, {"w": "قهوة فرنساوي", "alt": "قهوة تركي", "cat": "مشروبات", "diff": "easy"}, {"w": "قهوة بالبندق", "alt": "إسبريسو", "cat": "مشروبات", "diff": "easy"}, {"w": "إسبريسو", "alt": "قهوة بالبندق", "cat": "مشروبات", "diff": "easy"}, {"w": "كابتشينو", "alt": "لاتيه مثلج", "cat": "مشروبات", "diff": "easy"}, {"w": "لاتيه مثلج", "alt": "كابتشينو", "cat": "مشروبات", "diff": "easy"}, {"w": "موكا", "alt": "خروب", "cat": "مشروبات", "diff": "easy"}, {"w": "خروب", "alt": "موكا", "cat": "مشروبات", "diff": "easy"}, {"w": "سوبيا", "alt": "دوم", "cat": "مشروبات", "diff": "easy"}, {"w": "دوم", "alt": "سوبيا", "cat": "مشروبات", "diff": "medium"}, {"w": "عرقسوس", "alt": "قمر الدين", "cat": "مشروبات", "diff": "medium"}, {"w": "قمر الدين", "alt": "عرقسوس", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير قصب", "alt": "عصير فراولة", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير فراولة", "alt": "عصير قصب", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير جوافة", "alt": "عصير برتقال", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير برتقال", "alt": "عصير جوافة", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير رمان", "alt": "عصير بطيخ", "cat": "مشروبات", "diff": "medium"}, {"w": "عصير بطيخ", "alt": "عصير رمان", "cat": "مشروبات", "diff": "medium"}, {"w": "سموزي توت", "alt": "ميلك شيك أوريو", "cat": "مشروبات", "diff": "medium"}, {"w": "ميلك شيك أوريو", "alt": "سموزي توت", "cat": "مشروبات", "diff": "medium"}, {"w": "ميلك شيك فانيليا", "alt": "حلبة حصى", "cat": "مشروبات", "diff": "medium"}, {"w": "حلبة حصى", "alt": "ميلك شيك فانيليا", "cat": "مشروبات", "diff": "medium"}, {"w": "حلبة باللبن", "alt": "ينسون", "cat": "مشروبات", "diff": "medium"}, {"w": "ينسون", "alt": "حلبة باللبن", "cat": "مشروبات", "diff": "medium"}, {"w": "قرفة بالجنزبيل", "alt": "ليمون بالعسل", "cat": "مشروبات", "diff": "hard"}, {"w": "ليمون بالعسل", "alt": "قرفة بالجنزبيل", "cat": "مشروبات", "diff": "hard"}, {"w": "مياه غازية", "alt": "مشروب طاقة", "cat": "مشروبات", "diff": "hard"}, {"w": "مشروب طاقة", "alt": "مياه غازية", "cat": "مشروبات", "diff": "hard"}, {"w": "شاي أخضر", "alt": "ماتشا", "cat": "مشروبات", "diff": "hard"}, {"w": "ماتشا", "alt": "شاي أخضر", "cat": "مشروبات", "diff": "hard"}, {"w": "آيس كوفي", "alt": "عناب", "cat": "مشروبات", "diff": "hard"}, {"w": "عناب", "alt": "آيس كوفي", "cat": "مشروبات", "diff": "hard"}, {"w": "موهيتو", "alt": "عناب", "cat": "مشروبات", "diff": "hard"}, {"w": "موز", "alt": "مانجو", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "مانجو", "alt": "موز", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "بطيخ", "alt": "جوافة", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "جوافة", "alt": "بطيخ", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "رمان", "alt": "فراولة", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "فراولة", "alt": "رمان", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "بطاطس", "alt": "كوسة", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "كوسة", "alt": "بطاطس", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "باذنجان", "alt": "خرشوف", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "خرشوف", "alt": "باذنجان", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "شمام", "alt": "كانتلوب", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "كانتلوب", "alt": "شمام", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "تفاح أحمر", "alt": "تفاح أخضر", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "تفاح أخضر", "alt": "تفاح أحمر", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "برتقال", "alt": "يوسفي", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "يوسفي", "alt": "برتقال", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "عنب", "alt": "تين برشومي", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "تين برشومي", "alt": "عنب", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "تين شوكي", "alt": "بلح زغلول", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "بلح زغلول", "alt": "تين شوكي", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "بلح رطب", "alt": "خوخ", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "خوخ", "alt": "بلح رطب", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "مشمش", "alt": "برقوق", "cat": "فواكه وخضراوات", "diff": "easy"}, {"w": "برقوق", "alt": "مشمش", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "كمثرى", "alt": "أناناس", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "أناناس", "alt": "كمثرى", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "كيوي", "alt": "أفوكادو", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "أفوكادو", "alt": "كيوي", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "جوز هند", "alt": "توت بري", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "توت بري", "alt": "جوز هند", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "كرز", "alt": "طماطم", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "طماطم", "alt": "كرز", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "خيار", "alt": "فلفل رومي", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "فلفل رومي", "alt": "خيار", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "فلفل حار", "alt": "بسلة", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "بسلة", "alt": "فلفل حار", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "فاصوليا خضراء", "alt": "قرنبيط", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "قرنبيط", "alt": "فاصوليا خضراء", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "بروكلي", "alt": "كرنب", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "كرنب", "alt": "بروكلي", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "خس", "alt": "جرجير", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "جرجير", "alt": "خس", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "بقدونس", "alt": "كسبرة", "cat": "فواكه وخضراوات", "diff": "medium"}, {"w": "كسبرة", "alt": "بقدونس", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "شبت", "alt": "بصل", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "بصل", "alt": "شبت", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "ثوم", "alt": "ليمون", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "ليمون", "alt": "ثوم", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "جزر", "alt": "بنجر", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "بنجر", "alt": "جزر", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "بطاطا حلوة", "alt": "قلقاس", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "قلقاس", "alt": "بطاطا حلوة", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "ملوخية خضراء", "alt": "سبانخ", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "سبانخ", "alt": "ملوخية خضراء", "cat": "فواكه وخضراوات", "diff": "hard"}, {"w": "أسد", "alt": "نمر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "نمر", "alt": "أسد", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "زرافة", "alt": "فيل", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "فيل", "alt": "زرافة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "باندا", "alt": "تمساح", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "تمساح", "alt": "باندا", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "أخطبوط", "alt": "دولفين", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "دولفين", "alt": "أخطبوط", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "سلحفاة", "alt": "بطريق", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "بطريق", "alt": "سلحفاة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "فهد", "alt": "دب قطبي", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "دب قطبي", "alt": "فهد", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "دب بني", "alt": "ذئب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "ذئب", "alt": "دب بني", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "ثعلب", "alt": "غزالة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "غزالة", "alt": "ثعلب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "كنغر", "alt": "كوالا", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "كوالا", "alt": "كنغر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "قرد", "alt": "غوريلا", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "غوريلا", "alt": "قرد", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "حصان", "alt": "حمار وحشي", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "حمار وحشي", "alt": "حصان", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "جمل", "alt": "خروف", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "خروف", "alt": "جمل", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "ماعز", "alt": "بقرة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "بقرة", "alt": "ماعز", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "جاموسة", "alt": "أرنب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "easy"}, {"w": "أرنب", "alt": "جاموسة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "سنجاب", "alt": "قنفذ", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "قنفذ", "alt": "سنجاب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "ثعبان", "alt": "حرباء", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "حرباء", "alt": "ثعبان", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "ضفدع", "alt": "حوت أزرق", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "حوت أزرق", "alt": "ضفدع", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "سمكة قرش", "alt": "سمكة مهرج", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "سمكة مهرج", "alt": "سمكة قرش", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "قنديل البحر", "alt": "نجم البحر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "نجم البحر", "alt": "قنديل البحر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "فرس البحر", "alt": "كابوريا", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "كابوريا", "alt": "فرس البحر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "استاكوزا", "alt": "نسر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "نسر", "alt": "استاكوزا", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "صقر", "alt": "بومة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "بومة", "alt": "صقر", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "ببغاء", "alt": "طاووس", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "طاووس", "alt": "ببغاء", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "نعامة", "alt": "فلامنجو", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "فلامنجو", "alt": "نعامة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "بجعة", "alt": "هدهد", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "medium"}, {"w": "هدهد", "alt": "بجعة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "حمامة", "alt": "يمامة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "يمامة", "alt": "حمامة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "عصفور كناري", "alt": "غراب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "غراب", "alt": "عصفور كناري", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "بطة", "alt": "ديك رومي", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "ديك رومي", "alt": "بطة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "نحلة", "alt": "فراشة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "فراشة", "alt": "نحلة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "نملة", "alt": "عنكبوت", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "عنكبوت", "alt": "نملة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "قطة", "alt": "كلب", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "كلب", "alt": "قطة", "cat": "حيوانات وطيور وكائنات بحرية", "diff": "hard"}, {"w": "ثلاجة", "alt": "غسالة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "غسالة", "alt": "ثلاجة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "مكنسة", "alt": "كنبة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "كنبة", "alt": "مكنسة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "مخدة", "alt": "سجادة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "سجادة", "alt": "مخدة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "ستارة", "alt": "مروحة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "مروحة", "alt": "ستارة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "ميكروويف", "alt": "مصباح", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "مصباح", "alt": "ميكروويف", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "بوتاجاز", "alt": "فرن كهربائي", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "فرن كهربائي", "alt": "بوتاجاز", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "خلاط", "alt": "غلاية مياه", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "غلاية مياه", "alt": "خلاط", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "مكواة", "alt": "تكييف", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "تكييف", "alt": "مكواة", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "سخان مياه", "alt": "فلتر مياه", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "فلتر مياه", "alt": "سخان مياه", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "تلفزيون", "alt": "كرسي هزاز", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "كرسي هزاز", "alt": "تلفزيون", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "ترابيزة سفرة", "alt": "بطانية", "cat": "أشياء منزلية", "diff": "easy"}, {"w": "بطانية", "alt": "ترابيزة سفرة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "لحاف", "alt": "مرتبة سرير", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "مرتبة سرير", "alt": "لحاف", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "نجفة", "alt": "مرآة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "مرآة", "alt": "نجفة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "ساعة حائط", "alt": "فازة ورد", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "فازة ورد", "alt": "ساعة حائط", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "دولاب ملابس", "alt": "كومودينو", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "كومودينو", "alt": "دولاب ملابس", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "جزامة", "alt": "مفرش سفرة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "مفرش سفرة", "alt": "جزامة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "طبق صيني", "alt": "كوباية شاي", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "كوباية شاي", "alt": "طبق صيني", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "مج قهوة", "alt": "شوكة وسكينة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "شوكة وسكينة", "alt": "مج قهوة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "مغرفة", "alt": "طاسة تيفال", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "طاسة تيفال", "alt": "مغرفة", "cat": "أشياء منزلية", "diff": "medium"}, {"w": "حلة طبخ", "alt": "صينية فرن", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "صينية فرن", "alt": "حلة طبخ", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "مصفاة", "alt": "مبشرة", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "مبشرة", "alt": "مصفاة", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "لوح تقطيع", "alt": "سلة مهملات", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "سلة مهملات", "alt": "لوح تقطيع", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "مقشة", "alt": "طفاية", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "طفاية", "alt": "مقشة", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "مرتبة", "alt": "ملاية سرير", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "ملاية سرير", "alt": "مرتبة", "cat": "أشياء منزلية", "diff": "hard"}, {"w": "مطرقة", "alt": "مفك", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "مفك", "alt": "مطرقة", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "مقص", "alt": "فرشاة أسنان", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "فرشاة أسنان", "alt": "مقص", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "كاميرا", "alt": "سماعة", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "سماعة", "alt": "كاميرا", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "ميكروفون", "alt": "شاحن", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "شاحن", "alt": "ميكروفون", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "لوحة مفاتيح", "alt": "فأرة كمبيوتر", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "فأرة كمبيوتر", "alt": "لوحة مفاتيح", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "زرادية", "alt": "مفتاح إنجليزي", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "مفتاح إنجليزي", "alt": "زرادية", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "منشار", "alt": "شنيور", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "شنيور", "alt": "منشار", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "متر قياس", "alt": "ميزان مياه", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "ميزان مياه", "alt": "متر قياس", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "قطر", "alt": "كشاف طوارئ", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "كشاف طوارئ", "alt": "قطر", "cat": "أدوات وأجهزة", "diff": "easy"}, {"w": "معجون أسنان", "alt": "ماكينة حلاقة", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "ماكينة حلاقة", "alt": "معجون أسنان", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "مجفف شعر", "alt": "مكواة شعر", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "مكواة شعر", "alt": "مجفف شعر", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "ترمومتر", "alt": "سماعة طبيب", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "سماعة طبيب", "alt": "ترمومتر", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "جهاز ضغط", "alt": "سماعة بلوتوث", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "سماعة بلوتوث", "alt": "جهاز ضغط", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "باور بانك", "alt": "كابل شحن", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "كابل شحن", "alt": "باور بانك", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "فلاشة ميموري", "alt": "راوتر إنترنت", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "راوتر إنترنت", "alt": "فلاشة ميموري", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "ريسيفر", "alt": "ريموت كنترول", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "ريموت كنترول", "alt": "ريسيفر", "cat": "أدوات وأجهزة", "diff": "medium"}, {"w": "ماكينة خياطة", "alt": "قفل ومفتاح", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "قفل ومفتاح", "alt": "ماكينة خياطة", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "شريط لحام", "alt": "مسدس شمع", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "مسدس شمع", "alt": "شريط لحام", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "عدسة مكبرة", "alt": "منظار", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "منظار", "alt": "عدسة مكبرة", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "بوصلة", "alt": "مغناطيس", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "مغناطيس", "alt": "بوصلة", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "تلسكوب", "alt": "مغناطيس", "cat": "أدوات وأجهزة", "diff": "hard"}, {"w": "جاكيت", "alt": "حذاء", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "حذاء", "alt": "جاكيت", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "قبعة", "alt": "نظارة شمس", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "نظارة شمس", "alt": "قبعة", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "ساعة يد", "alt": "حقيبة ظهر", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "حقيبة ظهر", "alt": "ساعة يد", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "وشاح", "alt": "بالطو شتوي", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "بالطو شتوي", "alt": "وشاح", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "بلوفر صوف", "alt": "هودي", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "هودي", "alt": "بلوفر صوف", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "قميص", "alt": "تيشيرت", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "تيشيرت", "alt": "قميص", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "بنطلون جينز", "alt": "بدلة رسمية", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "بدلة رسمية", "alt": "بنطلون جينز", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "جلباب", "alt": "عباية", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "عباية", "alt": "جلباب", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "فستان سهرة", "alt": "جيبة", "cat": "ملابس وإكسسوارات", "diff": "easy"}, {"w": "جيبة", "alt": "فستان سهرة", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "كوتشي رياضي", "alt": "صندل", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "صندل", "alt": "كوتشي رياضي", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "بوت شتوي", "alt": "شراب", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "شراب", "alt": "بوت شتوي", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "كاب", "alt": "آيس كاب", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "آيس كاب", "alt": "كاب", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "كوفية", "alt": "إيشارب", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "إيشارب", "alt": "كوفية", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "طرحة", "alt": "حزام جلد", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "حزام جلد", "alt": "طرحة", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "كرافتة", "alt": "بابيون", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "بابيون", "alt": "كرافتة", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "نظارة طبية", "alt": "شنطة سفر", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "شنطة سفر", "alt": "نظارة طبية", "cat": "ملابس وإكسسوارات", "diff": "medium"}, {"w": "محفظة جلد", "alt": "خاتم فضة", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "خاتم فضة", "alt": "محفظة جلد", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "دبلة ذهب", "alt": "سلسلة ذهب", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "سلسلة ذهب", "alt": "دبلة ذهب", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "أسورة", "alt": "حلق أذن", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "حلق أذن", "alt": "أسورة", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "قفازات", "alt": "بيجامة", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "بيجامة", "alt": "قفازات", "cat": "ملابس وإكسسوارات", "diff": "hard"}, {"w": "مدرسة", "alt": "مستشفى", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "مستشفى", "alt": "مدرسة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "مطار", "alt": "محطة قطار", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "محطة قطار", "alt": "مطار", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "قلعة", "alt": "متحف", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "متحف", "alt": "قلعة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "مكتبة", "alt": "ملعب", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "ملعب", "alt": "مكتبة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "مطعم", "alt": "جزيرة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "جزيرة", "alt": "مطعم", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "جامعة", "alt": "عيادة أسنان", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "عيادة أسنان", "alt": "جامعة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "صيدلية", "alt": "محطة مترو", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "محطة مترو", "alt": "صيدلية", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "ميناء بحري", "alt": "برج القاهرة", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "برج القاهرة", "alt": "ميناء بحري", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "المتحف المصري", "alt": "مكتبة الإسكندرية", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "مكتبة الإسكندرية", "alt": "المتحف المصري", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "دار الأوبرا", "alt": "سينما", "cat": "أماكن ومبانٍ", "diff": "easy"}, {"w": "سينما", "alt": "دار الأوبرا", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "مسرح", "alt": "نادي رياضي", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "نادي رياضي", "alt": "مسرح", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "صالة جيم", "alt": "حمام سباحة", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "حمام سباحة", "alt": "صالة جيم", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "كافيه", "alt": "مخبز بلدي", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "مخبز بلدي", "alt": "كافيه", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "سوبر ماركت", "alt": "مول تجاري", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "مول تجاري", "alt": "سوبر ماركت", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "سوق الخضار", "alt": "محل حلاقة", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "محل حلاقة", "alt": "سوق الخضار", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "مغسلة سيارات", "alt": "بنزينة", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "بنزينة", "alt": "مغسلة سيارات", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "قسم شرطة", "alt": "محكمة", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "محكمة", "alt": "قسم شرطة", "cat": "أماكن ومبانٍ", "diff": "medium"}, {"w": "مكتب بريد", "alt": "بنك", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "بنك", "alt": "مكتب بريد", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "فندق", "alt": "منتجع سياحي", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "منتجع سياحي", "alt": "فندق", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "حديقة حيوان", "alt": "ملاهي", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "ملاهي", "alt": "حديقة حيوان", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "منارة", "alt": "كوبري", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "كوبري", "alt": "منارة", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "نفق", "alt": "كوبري", "cat": "أماكن ومبانٍ", "diff": "hard"}, {"w": "سيارة", "alt": "أتوبيس", "cat": "مواصلات", "diff": "easy"}, {"w": "أتوبيس", "alt": "سيارة", "cat": "مواصلات", "diff": "easy"}, {"w": "قطار", "alt": "مترو", "cat": "مواصلات", "diff": "easy"}, {"w": "مترو", "alt": "قطار", "cat": "مواصلات", "diff": "easy"}, {"w": "طائرة", "alt": "سفينة", "cat": "مواصلات", "diff": "easy"}, {"w": "سفينة", "alt": "طائرة", "cat": "مواصلات", "diff": "easy"}, {"w": "دراجة", "alt": "توك توك", "cat": "مواصلات", "diff": "easy"}, {"w": "توك توك", "alt": "دراجة", "cat": "مواصلات", "diff": "easy"}, {"w": "جرار", "alt": "منطاد", "cat": "مواصلات", "diff": "easy"}, {"w": "منطاد", "alt": "جرار", "cat": "مواصلات", "diff": "easy"}, {"w": "تاكسي", "alt": "ميني باص", "cat": "مواصلات", "diff": "easy"}, {"w": "ميني باص", "alt": "تاكسي", "cat": "مواصلات", "diff": "easy"}, {"w": "قطار النوم", "alt": "ترام", "cat": "مواصلات", "diff": "easy"}, {"w": "ترام", "alt": "قطار النوم", "cat": "مواصلات", "diff": "easy"}, {"w": "مونوريل", "alt": "هليكوبتر", "cat": "مواصلات", "diff": "medium"}, {"w": "هليكوبتر", "alt": "مونوريل", "cat": "مواصلات", "diff": "medium"}, {"w": "يخت سياحي", "alt": "مركب شراعي", "cat": "مواصلات", "diff": "medium"}, {"w": "مركب شراعي", "alt": "يخت سياحي", "cat": "مواصلات", "diff": "medium"}, {"w": "فلوكة", "alt": "معدية", "cat": "مواصلات", "diff": "medium"}, {"w": "معدية", "alt": "فلوكة", "cat": "مواصلات", "diff": "medium"}, {"w": "غواصة", "alt": "موتوسيكل", "cat": "مواصلات", "diff": "medium"}, {"w": "موتوسيكل", "alt": "غواصة", "cat": "مواصلات", "diff": "medium"}, {"w": "فيسبا", "alt": "اسكوتر كهربائي", "cat": "مواصلات", "diff": "medium"}, {"w": "اسكوتر كهربائي", "alt": "فيسبا", "cat": "مواصلات", "diff": "medium"}, {"w": "تروسيكل", "alt": "سيارة إسعاف", "cat": "مواصلات", "diff": "medium"}, {"w": "سيارة إسعاف", "alt": "تروسيكل", "cat": "مواصلات", "diff": "medium"}, {"w": "سيارة مطافئ", "alt": "ونش إنقاذ", "cat": "مواصلات", "diff": "hard"}, {"w": "ونش إنقاذ", "alt": "سيارة مطافئ", "cat": "مواصلات", "diff": "hard"}, {"w": "شاحنة نقل", "alt": "بلدوزر", "cat": "مواصلات", "diff": "hard"}, {"w": "بلدوزر", "alt": "شاحنة نقل", "cat": "مواصلات", "diff": "hard"}, {"w": "حنطور", "alt": "تلفريك", "cat": "مواصلات", "diff": "hard"}, {"w": "تلفريك", "alt": "حنطور", "cat": "مواصلات", "diff": "hard"}, {"w": "صاروخ فضاء", "alt": "تلفريك", "cat": "مواصلات", "diff": "hard"}, {"w": "طبيب", "alt": "مهندس", "cat": "مهن", "diff": "easy"}, {"w": "مهندس", "alt": "طبيب", "cat": "مهن", "diff": "easy"}, {"w": "مدرس", "alt": "طباخ", "cat": "مهن", "diff": "easy"}, {"w": "طباخ", "alt": "مدرس", "cat": "مهن", "diff": "easy"}, {"w": "نجار", "alt": "مزارع", "cat": "مهن", "diff": "easy"}, {"w": "مزارع", "alt": "نجار", "cat": "مهن", "diff": "easy"}, {"w": "مصور", "alt": "مبرمج", "cat": "مهن", "diff": "easy"}, {"w": "مبرمج", "alt": "مصور", "cat": "مهن", "diff": "easy"}, {"w": "إطفائي", "alt": "طيار", "cat": "مهن", "diff": "easy"}, {"w": "طيار", "alt": "إطفائي", "cat": "مهن", "diff": "easy"}, {"w": "طبيب أسنان", "alt": "طبيب بيطري", "cat": "مهن", "diff": "easy"}, {"w": "طبيب بيطري", "alt": "طبيب أسنان", "cat": "مهن", "diff": "easy"}, {"w": "صيدلي", "alt": "ممرض", "cat": "مهن", "diff": "easy"}, {"w": "ممرض", "alt": "صيدلي", "cat": "مهن", "diff": "easy"}, {"w": "مهندس معماري", "alt": "مصمم جرافيك", "cat": "مهن", "diff": "easy"}, {"w": "مصمم جرافيك", "alt": "مهندس معماري", "cat": "مهن", "diff": "easy"}, {"w": "أستاذ جامعي", "alt": "محامي", "cat": "مهن", "diff": "easy"}, {"w": "محامي", "alt": "أستاذ جامعي", "cat": "مهن", "diff": "easy"}, {"w": "قاضي", "alt": "محاسب", "cat": "مهن", "diff": "medium"}, {"w": "محاسب", "alt": "قاضي", "cat": "مهن", "diff": "medium"}, {"w": "صحفي", "alt": "مذيع", "cat": "مهن", "diff": "medium"}, {"w": "مذيع", "alt": "صحفي", "cat": "مهن", "diff": "medium"}, {"w": "مخرج سينمائي", "alt": "ممثل", "cat": "مهن", "diff": "medium"}, {"w": "ممثل", "alt": "مخرج سينمائي", "cat": "مهن", "diff": "medium"}, {"w": "رسام", "alt": "عازف موسيقي", "cat": "مهن", "diff": "medium"}, {"w": "عازف موسيقي", "alt": "رسام", "cat": "مهن", "diff": "medium"}, {"w": "حلواني", "alt": "خباز", "cat": "مهن", "diff": "medium"}, {"w": "خباز", "alt": "حلواني", "cat": "مهن", "diff": "medium"}, {"w": "جزار", "alt": "حداد", "cat": "مهن", "diff": "medium"}, {"w": "حداد", "alt": "جزار", "cat": "مهن", "diff": "medium"}, {"w": "سباك", "alt": "كهربائي", "cat": "مهن", "diff": "medium"}, {"w": "كهربائي", "alt": "سباك", "cat": "مهن", "diff": "medium"}, {"w": "نقاش", "alt": "ميكانيكي", "cat": "مهن", "diff": "medium"}, {"w": "ميكانيكي", "alt": "نقاش", "cat": "مهن", "diff": "hard"}, {"w": "سائق قطار", "alt": "قبطان سفينة", "cat": "مهن", "diff": "hard"}, {"w": "قبطان سفينة", "alt": "سائق قطار", "cat": "مهن", "diff": "hard"}, {"w": "ضابط شرطة", "alt": "غواص", "cat": "مهن", "diff": "hard"}, {"w": "غواص", "alt": "ضابط شرطة", "cat": "مهن", "diff": "hard"}, {"w": "رائد فضاء", "alt": "حلاق", "cat": "مهن", "diff": "hard"}, {"w": "حلاق", "alt": "رائد فضاء", "cat": "مهن", "diff": "hard"}, {"w": "ترزي", "alt": "مرشد سياحي", "cat": "مهن", "diff": "hard"}, {"w": "مرشد سياحي", "alt": "ترزي", "cat": "مهن", "diff": "hard"}, {"w": "كرة قدم", "alt": "كرة سلة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "كرة سلة", "alt": "كرة قدم", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "تنس", "alt": "سباحة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "سباحة", "alt": "تنس", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "شطرنج", "alt": "دومينو", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "دومينو", "alt": "شطرنج", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "مضرب", "alt": "صافرة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "صافرة", "alt": "مضرب", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "كأس بطولة", "alt": "كرة طائرة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "كرة طائرة", "alt": "كأس بطولة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "كرة يد", "alt": "بينج بونج", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "بينج بونج", "alt": "كرة يد", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "اسكواش", "alt": "ريشة طائرة", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "ريشة طائرة", "alt": "اسكواش", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "غطس", "alt": "ركوب الأمواج", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "ركوب الأمواج", "alt": "غطس", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "تجديف", "alt": "ألعاب قوى", "cat": "رياضة وألعاب", "diff": "easy"}, {"w": "ألعاب قوى", "alt": "تجديف", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "سباق جري", "alt": "قفز بالزانة", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "قفز بالزانة", "alt": "سباق جري", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "رمي الرمح", "alt": "رفع أثقال", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "رفع أثقال", "alt": "رمي الرمح", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "ملاكمة", "alt": "كاراتيه", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "كاراتيه", "alt": "ملاكمة", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "تايكوندو", "alt": "جودو", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "جودو", "alt": "تايكوندو", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "مصارعة", "alt": "مبارزة بالسيف", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "مبارزة بالسيف", "alt": "مصارعة", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "جمباز", "alt": "سباق دراجات", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "سباق دراجات", "alt": "جمباز", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "فورمولا وان", "alt": "فروسية", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "فروسية", "alt": "فورمولا وان", "cat": "رياضة وألعاب", "diff": "medium"}, {"w": "رماية بالقوس", "alt": "بولينج", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "بولينج", "alt": "رماية بالقوس", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "بلياردو", "alt": "طاولة زهر", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "طاولة زهر", "alt": "بلياردو", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "كوتشينة", "alt": "قفاز حارس", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "قفاز حارس", "alt": "كوتشينة", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "بطاقة حمراء", "alt": "ميدالية ذهبية", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "ميدالية ذهبية", "alt": "بطاقة حمراء", "cat": "رياضة وألعاب", "diff": "hard"}, {"w": "شلال", "alt": "بركان", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "بركان", "alt": "شلال", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "جبل", "alt": "صحراء", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "صحراء", "alt": "جبل", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "إعصار", "alt": "قوس قزح", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "قوس قزح", "alt": "إعصار", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "سحابة", "alt": "برق", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "برق", "alt": "سحابة", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "كهف", "alt": "شاطئ", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "شاطئ", "alt": "كهف", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "جبل جليدي", "alt": "واحة خضراء", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "واحة خضراء", "alt": "جبل جليدي", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "كثبان رملية", "alt": "غابة", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "غابة", "alt": "كثبان رملية", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "نهر النيل", "alt": "بحيرة", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "بحيرة", "alt": "نهر النيل", "cat": "طبيعة وطقس", "diff": "easy"}, {"w": "محيط", "alt": "شعاب مرجانية", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "شعاب مرجانية", "alt": "محيط", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "وادي", "alt": "ينبوع ماء", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "ينبوع ماء", "alt": "وادي", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "موجة بحر", "alt": "شروق الشمس", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "شروق الشمس", "alt": "موجة بحر", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "غروب الشمس", "alt": "قمر بدر", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "قمر بدر", "alt": "غروب الشمس", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "خسوف القمر", "alt": "كسوف الشمس", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "كسوف الشمس", "alt": "خسوف القمر", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "نجوم", "alt": "مجرة", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "مجرة", "alt": "نجوم", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "شهاب", "alt": "مطر غزير", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "مطر غزير", "alt": "شهاب", "cat": "طبيعة وطقس", "diff": "medium"}, {"w": "ثلج", "alt": "رعد", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "رعد", "alt": "ثلج", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "عاصفة رملية", "alt": "ضباب", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "ضباب", "alt": "عاصفة رملية", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "ندى الصباح", "alt": "نسيم البحر", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "نسيم البحر", "alt": "ندى الصباح", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "شجرة نخيل", "alt": "وردة بلدي", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "وردة بلدي", "alt": "شجرة نخيل", "cat": "طبيعة وطقس", "diff": "hard"}, {"w": "كتاب", "alt": "كراسة", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "كراسة", "alt": "كتاب", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "سبورة", "alt": "مسطرة", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "مسطرة", "alt": "سبورة", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "قلم رصاص", "alt": "آلة حاسبة", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "آلة حاسبة", "alt": "قلم رصاص", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "حقيبة مدرسة", "alt": "مجهر", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "مجهر", "alt": "حقيبة مدرسة", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "كشكول سلك", "alt": "سبورة ذكية", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "سبورة ذكية", "alt": "كشكول سلك", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "طباشير", "alt": "قلم جاف", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "قلم جاف", "alt": "طباشير", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "قلم فلوماستر", "alt": "قلم فسفوري", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "قلم فسفوري", "alt": "قلم فلوماستر", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "أستيكة", "alt": "براية", "cat": "مدرسة ودراسة", "diff": "easy"}, {"w": "براية", "alt": "أستيكة", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "مثلث هندسي", "alt": "منقلة", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "منقلة", "alt": "مثلث هندسي", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "برجل", "alt": "مقلمة", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "مقلمة", "alt": "برجل", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "زمزمية مياه", "alt": "لانش بوكس", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "لانش بوكس", "alt": "زمزمية مياه", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "أطلس خرائط", "alt": "كرة أرضية", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "كرة أرضية", "alt": "أطلس خرائط", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "قاموس", "alt": "جدول الحصص", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "جدول الحصص", "alt": "قاموس", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "شهادة تقدير", "alt": "جرس الفسحة", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "جرس الفسحة", "alt": "شهادة تقدير", "cat": "مدرسة ودراسة", "diff": "medium"}, {"w": "طابور الصباح", "alt": "إذاعة مدرسية", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "إذاعة مدرسية", "alt": "طابور الصباح", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "امتحان", "alt": "مكتبة المدرسة", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "مكتبة المدرسة", "alt": "امتحان", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "معمل العلوم", "alt": "حصة الألعاب", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "حصة الألعاب", "alt": "معمل العلوم", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "زي مدرسي", "alt": "حصة الألعاب", "cat": "مدرسة ودراسة", "diff": "hard"}, {"w": "كمبيوتر", "alt": "شاشة", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "شاشة", "alt": "كمبيوتر", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "ذراع تحكم", "alt": "سيرفر", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "سيرفر", "alt": "ذراع تحكم", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "روبوت", "alt": "طابعة", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "طابعة", "alt": "روبوت", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "طائرة درون", "alt": "لابتوب", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "لابتوب", "alt": "طائرة درون", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "بلايستيشن", "alt": "إكس بوكس", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "إكس بوكس", "alt": "بلايستيشن", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "نينتندو سويتش", "alt": "نظارة واقع افتراضي", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "نظارة واقع افتراضي", "alt": "نينتندو سويتش", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "ذكاء اصطناعي", "alt": "طابعة ثلاثية الأبعاد", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "طابعة ثلاثية الأبعاد", "alt": "ذكاء اصطناعي", "cat": "تقنية وألعاب فيديو", "diff": "easy"}, {"w": "لوحة أم", "alt": "كارت شاشة", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "كارت شاشة", "alt": "لوحة أم", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "معالج بروسيسور", "alt": "هارد ديسك", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "هارد ديسك", "alt": "معالج بروسيسور", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "ذاكرة رام", "alt": "كاميرا ويب", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "كاميرا ويب", "alt": "ذاكرة رام", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "ماوس جيمنج", "alt": "كيبورد ميكانيكي", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "كيبورد ميكانيكي", "alt": "ماوس جيمنج", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "كرسي جيمنج", "alt": "بث مباشر", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "بث مباشر", "alt": "كرسي جيمنج", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "تطبيق موبايل", "alt": "شبكة واي فاي", "cat": "تقنية وألعاب فيديو", "diff": "medium"}, {"w": "شبكة واي فاي", "alt": "تطبيق موبايل", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "بلوتوث", "alt": "قمر صناعي", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "قمر صناعي", "alt": "بلوتوث", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "كود برمجي", "alt": "أمن سيبراني", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "أمن سيبراني", "alt": "كود برمجي", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "كلمة مرور", "alt": "بصمة الوجه", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "بصمة الوجه", "alt": "كلمة مرور", "cat": "تقنية وألعاب فيديو", "diff": "hard"}, {"w": "عود", "alt": "جيتار", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "جيتار", "alt": "عود", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "طبلة", "alt": "بيانو", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "بيانو", "alt": "طبلة", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "فرشاة رسم", "alt": "لوحة فنية", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "لوحة فنية", "alt": "فرشاة رسم", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "كاميرا تصوير", "alt": "جيتار كهربائي", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "جيتار كهربائي", "alt": "كاميرا تصوير", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "أورج", "alt": "كمانجة", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "كمانجة", "alt": "أورج", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "تشيللو", "alt": "قانون موسيقي", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "قانون موسيقي", "alt": "تشيللو", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "ناي", "alt": "فلوت", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "فلوت", "alt": "ناي", "cat": "أدوات موسيقية وفنون", "diff": "easy"}, {"w": "ساكسفون", "alt": "ترومبيت", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "ترومبيت", "alt": "ساكسفون", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "أكورديون", "alt": "دف", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "دف", "alt": "أكورديون", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "درامز", "alt": "إكسليفون", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "إكسليفون", "alt": "درامز", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "هارب", "alt": "لوحة كانفاس", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "لوحة كانفاس", "alt": "هارب", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "ألوان زيتية", "alt": "ألوان مائية", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "ألوان مائية", "alt": "ألوان زيتية", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "ألوان خشب", "alt": "حامل لوحة", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "حامل لوحة", "alt": "ألوان خشب", "cat": "أدوات موسيقية وفنون", "diff": "medium"}, {"w": "نحت تمثال", "alt": "صلصال", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "صلصال", "alt": "نحت تمثال", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "خط عربي", "alt": "فن الكاريكاتير", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "فن الكاريكاتير", "alt": "خط عربي", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "كلاكيت سينما", "alt": "مسرح عرائس", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "مسرح عرائس", "alt": "كلاكيت سينما", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "أوركسترا", "alt": "مسرح عرائس", "cat": "أدوات موسيقية وفنون", "diff": "hard"}, {"w": "ميكروباص", "alt": "عربية فول", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "عربية فول", "alt": "ميكروباص", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "بائع متجول", "alt": "سوق", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "سوق", "alt": "بائع متجول", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "قهوة بلدي", "alt": "فانوس رمضان", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "فانوس رمضان", "alt": "قهوة بلدي", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "مركب صيد", "alt": "فرن العيش البلدي", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "فرن العيش البلدي", "alt": "مركب صيد", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "طابور العيش", "alt": "دومينو على القهوة", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "دومينو على القهوة", "alt": "طابور العيش", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "شاي في الخمسينة", "alt": "مدفع الإفطار", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "مدفع الإفطار", "alt": "شاي في الخمسينة", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "مسحراتي", "alt": "مائدة رحمن", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "مائدة رحمن", "alt": "مسحراتي", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "زينة رمضان", "alt": "كحك العيد", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "كحك العيد", "alt": "زينة رمضان", "cat": "أشياء مصرية ومواقف يومية", "diff": "easy"}, {"w": "عدية العيد", "alt": "شم النسيم", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "شم النسيم", "alt": "عدية العيد", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "فسحة القناطر", "alt": "مركب في النيل", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "مركب في النيل", "alt": "فسحة القناطر", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "حنطور الكورنيش", "alt": "فريسكا على البحر", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "فريسكا على البحر", "alt": "حنطور الكورنيش", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "شمسية البحر", "alt": "ترمس وحمص الشام", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "ترمس وحمص الشام", "alt": "شمسية البحر", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "بطاطا سخنة", "alt": "ذرة مشوي", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "ذرة مشوي", "alt": "بطاطا سخنة", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "بائع عرقسوس", "alt": "سوق الجمعة", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "سوق الجمعة", "alt": "بائع عرقسوس", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "خان الخليلي", "alt": "شارع المعز", "cat": "أشياء مصرية ومواقف يومية", "diff": "medium"}, {"w": "شارع المعز", "alt": "خان الخليلي", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "الأهرامات وأبو الهول", "alt": "قلعة قايتباي", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "قلعة قايتباي", "alt": "الأهرامات وأبو الهول", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "الفرح الشعبي", "alt": "زفة العروسة", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "زفة العروسة", "alt": "الفرح الشعبي", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "السبوع المصري", "alt": "لمّة العيلة", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "لمّة العيلة", "alt": "السبوع المصري", "cat": "أشياء مصرية ومواقف يومية", "diff": "hard"}, {"w": "شبشب", "alt": "شماعة", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "شماعة", "alt": "شبشب", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "منشر غسيل", "alt": "ريموت تلفزيون", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "ريموت تلفزيون", "alt": "منشر غسيل", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "كيس شيبسي", "alt": "برطمان مخلل", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "برطمان مخلل", "alt": "كيس شيبسي", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "حلة ضغط", "alt": "مشبك غسيل", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "مشبك غسيل", "alt": "حلة ضغط", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "ريموت متلصق بسلوتيب", "alt": "علبة كحك فيها خيط وإبر", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "علبة كحك فيها خيط وإبر", "alt": "ريموت متلصق بسلوتيب", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "كيس بلاستيك جوه كيس", "alt": "مفتاح الأنبوبة", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "مفتاح الأنبوبة", "alt": "كيس بلاستيك جوه كيس", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "خرطوم البلكونة", "alt": "جردل المسح", "cat": "أدوات ومواقف مضحكة", "diff": "easy"}, {"w": "جردل المسح", "alt": "خرطوم البلكونة", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "مساحة بلاط", "alt": "سبت الغسيل", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "سبت الغسيل", "alt": "مساحة بلاط", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "غطاء الحلة الضائع", "alt": "فردة الشراب الضائعة", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "فردة الشراب الضائعة", "alt": "غطاء الحلة الضائع", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "قلم جاف مبيكتبش", "alt": "تكييف على أربعة وعشرين", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "تكييف على أربعة وعشرين", "alt": "قلم جاف مبيكتبش", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "مروحة بتزيق", "alt": "شاحن بيفصل لوحده", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "شاحن بيفصل لوحده", "alt": "مروحة بتزيق", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "سلك شاحن مقطوع", "alt": "منبه الفجر", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "منبه الفجر", "alt": "سلك شاحن مقطوع", "cat": "أدوات ومواقف مضحكة", "diff": "medium"}, {"w": "نومة القيلولة", "alt": "عزومة مراكبية", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "عزومة مراكبية", "alt": "نومة القيلولة", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "طبق الجيران", "alt": "الجمعية الشهرية", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "الجمعية الشهرية", "alt": "طبق الجيران", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "فاتورة الكهرباء", "alt": "الأسانسير عطلان", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "الأسانسير عطلان", "alt": "فاتورة الكهرباء", "cat": "أدوات ومواقف مضحكة", "diff": "hard"}, {"w": "اللمبي", "alt": "عبده موتة", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "عبده موتة", "alt": "اللمبي", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الكيف", "alt": "الممر", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الممر", "alt": "الكيف", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الاختيار", "alt": "رأفت الهجان", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "رأفت الهجان", "alt": "الاختيار", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "دموع في عيون وقحة", "alt": "صعيدي في الجامعة الأمريكية", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "صعيدي في الجامعة الأمريكية", "alt": "دموع في عيون وقحة", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "همام في أمستردام", "alt": "الكبير أوي", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الكبير أوي", "alt": "همام في أمستردام", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "ولاد رزق", "alt": "هروب اضطراري", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "هروب اضطراري", "alt": "ولاد رزق", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "ليالي الحلمية", "alt": "الراية البيضا", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الراية البيضا", "alt": "ليالي الحلمية", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "لن أعيش في جلباب أبي", "alt": "المال والبنون", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "المال والبنون", "alt": "لن أعيش في جلباب أبي", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "ذئاب الجبل", "alt": "حديث الصباح والمساء", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "حديث الصباح والمساء", "alt": "ذئاب الجبل", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "عسل أسود", "alt": "إكس لارج", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "إكس لارج", "alt": "عسل أسود", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "تيتو", "alt": "الجزيرة", "cat": "أفلام ومسلسلات", "diff": "easy"}, {"w": "الجزيرة", "alt": "تيتو", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "الفيل الأزرق", "alt": "كيرة والجن", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "كيرة والجن", "alt": "الفيل الأزرق", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "مافيا", "alt": "حرب أطاليا", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "حرب أطاليا", "alt": "مافيا", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "أفريكانو", "alt": "بوحة", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "بوحة", "alt": "أفريكانو", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "الناظر", "alt": "فول الصين العظيم", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "فول الصين العظيم", "alt": "الناظر", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "يا أنا يا خالتي", "alt": "مرجان أحمد مرجان", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "مرجان أحمد مرجان", "alt": "يا أنا يا خالتي", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "زكي شان", "alt": "جعلتني مجرماً", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "جعلتني مجرماً", "alt": "زكي شان", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "آسف على الإزعاج", "alt": "طير إنت", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "طير إنت", "alt": "آسف على الإزعاج", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "لا تراجع ولا استسلام", "alt": "سمير وشهير وبهير", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "سمير وشهير وبهير", "alt": "لا تراجع ولا استسلام", "cat": "أفلام ومسلسلات", "diff": "medium"}, {"w": "الحرب العالمية الثالثة", "alt": "بنك الحظ", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "بنك الحظ", "alt": "الحرب العالمية الثالثة", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "وقفة رجالة", "alt": "بيت الروبي", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "بيت الروبي", "alt": "وقفة رجالة", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "إشاعة حب", "alt": "الأيدي الناعمة", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "الأيدي الناعمة", "alt": "إشاعة حب", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "الكيت كات", "alt": "الإرهاب والكباب", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "الإرهاب والكباب", "alt": "الكيت كات", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "طيور الظلام", "alt": "عمارة يعقوبيان", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "عمارة يعقوبيان", "alt": "طيور الظلام", "cat": "أفلام ومسلسلات", "diff": "hard"}, {"w": "الأهلي", "alt": "الزمالك", "cat": "كورة", "diff": "easy"}, {"w": "الزمالك", "alt": "الأهلي", "cat": "كورة", "diff": "easy"}, {"w": "الإسماعيلي", "alt": "المصري البورسعيدي", "cat": "كورة", "diff": "easy"}, {"w": "المصري البورسعيدي", "alt": "الإسماعيلي", "cat": "كورة", "diff": "easy"}, {"w": "الاتحاد السكندري", "alt": "بيراميدز", "cat": "كورة", "diff": "easy"}, {"w": "بيراميدز", "alt": "الاتحاد السكندري", "cat": "كورة", "diff": "easy"}, {"w": "محمد صلاح", "alt": "محمد النني", "cat": "كورة", "diff": "easy"}, {"w": "محمد النني", "alt": "محمد صلاح", "cat": "كورة", "diff": "easy"}, {"w": "عمر مرموش", "alt": "محمود تريزيجيه", "cat": "كورة", "diff": "easy"}, {"w": "محمود تريزيجيه", "alt": "عمر مرموش", "cat": "كورة", "diff": "easy"}, {"w": "أبو تريكة", "alt": "حسن شحاتة", "cat": "كورة", "diff": "easy"}, {"w": "حسن شحاتة", "alt": "أبو تريكة", "cat": "كورة", "diff": "easy"}, {"w": "محمود الخطيب", "alt": "حسام حسن", "cat": "كورة", "diff": "easy"}, {"w": "حسام حسن", "alt": "محمود الخطيب", "cat": "كورة", "diff": "easy"}, {"w": "عصام الحضري", "alt": "أحمد شوبير", "cat": "كورة", "diff": "easy"}, {"w": "أحمد شوبير", "alt": "عصام الحضري", "cat": "كورة", "diff": "easy"}, {"w": "وائل جمعة", "alt": "أحمد حسن", "cat": "كورة", "diff": "easy"}, {"w": "أحمد حسن", "alt": "وائل جمعة", "cat": "كورة", "diff": "easy"}, {"w": "عمرو زكي", "alt": "ميدو", "cat": "كورة", "diff": "easy"}, {"w": "ميدو", "alt": "عمرو زكي", "cat": "كورة", "diff": "easy"}, {"w": "ركلة جزاء", "alt": "ضربة حرة مباشرة", "cat": "كورة", "diff": "easy"}, {"w": "ضربة حرة مباشرة", "alt": "ركلة جزاء", "cat": "كورة", "diff": "medium"}, {"w": "تسلل أوفسايد", "alt": "ضربة ركنية", "cat": "كورة", "diff": "medium"}, {"w": "ضربة ركنية", "alt": "تسلل أوفسايد", "cat": "كورة", "diff": "medium"}, {"w": "رمية تماس", "alt": "ضربة مرمى", "cat": "كورة", "diff": "medium"}, {"w": "ضربة مرمى", "alt": "رمية تماس", "cat": "كورة", "diff": "medium"}, {"w": "حارس مرمى", "alt": "قلب دفاع", "cat": "كورة", "diff": "medium"}, {"w": "قلب دفاع", "alt": "حارس مرمى", "cat": "كورة", "diff": "medium"}, {"w": "ظهير أيمن", "alt": "خط وسط", "cat": "كورة", "diff": "medium"}, {"w": "خط وسط", "alt": "ظهير أيمن", "cat": "كورة", "diff": "medium"}, {"w": "صانع ألعاب", "alt": "رأس حربة", "cat": "كورة", "diff": "medium"}, {"w": "رأس حربة", "alt": "صانع ألعاب", "cat": "كورة", "diff": "medium"}, {"w": "هاتريك", "alt": "الوقت بدل الضائع", "cat": "كورة", "diff": "medium"}, {"w": "الوقت بدل الضائع", "alt": "هاتريك", "cat": "كورة", "diff": "medium"}, {"w": "الأشواط الإضافية", "alt": "ركلات الترجيح", "cat": "كورة", "diff": "medium"}, {"w": "ركلات الترجيح", "alt": "الأشواط الإضافية", "cat": "كورة", "diff": "medium"}, {"w": "تقنية الفار", "alt": "حكم الساحة", "cat": "كورة", "diff": "medium"}, {"w": "حكم الساحة", "alt": "تقنية الفار", "cat": "كورة", "diff": "medium"}, {"w": "حامل الراية", "alt": "الدوري المصري", "cat": "كورة", "diff": "hard"}, {"w": "الدوري المصري", "alt": "حامل الراية", "cat": "كورة", "diff": "hard"}, {"w": "كأس مصر", "alt": "دوري أبطال أفريقيا", "cat": "كورة", "diff": "hard"}, {"w": "دوري أبطال أفريقيا", "alt": "كأس مصر", "cat": "كورة", "diff": "hard"}, {"w": "كأس العالم", "alt": "دوري أبطال أوروبا", "cat": "كورة", "diff": "hard"}, {"w": "دوري أبطال أوروبا", "alt": "كأس العالم", "cat": "كورة", "diff": "hard"}, {"w": "ستاد القاهرة", "alt": "ستاد برج العرب", "cat": "كورة", "diff": "hard"}, {"w": "ستاد برج العرب", "alt": "ستاد القاهرة", "cat": "كورة", "diff": "hard"}, {"w": "ماتش القمة", "alt": "سوق الانتقالات", "cat": "كورة", "diff": "hard"}, {"w": "سوق الانتقالات", "alt": "ماتش القمة", "cat": "كورة", "diff": "hard"}, {"w": "اللي اتلسع من الشوربة ينفخ في الزبادي", "alt": "المية تكدب الغطاس", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "المية تكدب الغطاس", "alt": "اللي اتلسع من الشوربة ينفخ في الزبادي", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "على قد لحافك مد رجليك", "alt": "القرش الأبيض ينفع في اليوم الأسود", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "القرش الأبيض ينفع في اليوم الأسود", "alt": "على قد لحافك مد رجليك", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "ابن الوز عوام", "alt": "اللي خلف ما ماتش", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "اللي خلف ما ماتش", "alt": "ابن الوز عوام", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "العين ما تعلاش على الحاجب", "alt": "اللي ملوش كبير يشتري له كبير", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "اللي ملوش كبير يشتري له كبير", "alt": "العين ما تعلاش على الحاجب", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "الصبر مفتاح الفرج", "alt": "الجمل ما يشوفش عوجة رقبته", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "الجمل ما يشوفش عوجة رقبته", "alt": "الصبر مفتاح الفرج", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "زي الأطرش في الزفة", "alt": "عصفور في اليد ولا عشرة على الشجرة", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "عصفور في اليد ولا عشرة على الشجرة", "alt": "زي الأطرش في الزفة", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "القرد في عين أمه غزال", "alt": "اللي بيته من إزاز ما يحدفش الناس بالطوب", "cat": "أمثال شعبية", "diff": "easy"}, {"w": "اللي بيته من إزاز ما يحدفش الناس بالطوب", "alt": "القرد في عين أمه غزال", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "امشي عدل يحتار عدوك فيك", "alt": "اتقي شر الحليم إذا غضب", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "اتقي شر الحليم إذا غضب", "alt": "امشي عدل يحتار عدوك فيك", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "اللي اختشوا ماتوا", "alt": "باب النجار مخلع", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "باب النجار مخلع", "alt": "اللي اختشوا ماتوا", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "جيه يكحلها عماها", "alt": "حاميها حراميها", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "حاميها حراميها", "alt": "جيه يكحلها عماها", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "خالف تعرف", "alt": "داري على شمعتك تقيد", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "داري على شمعتك تقيد", "alt": "خالف تعرف", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "رب ضارة نافعة", "alt": "ساعة لقلبك وساعة لربك", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "ساعة لقلبك وساعة لربك", "alt": "رب ضارة نافعة", "cat": "أمثال شعبية", "diff": "medium"}, {"w": "شيل ده من ده يرتاح ده عن ده", "alt": "صاحب بالين كداب", "cat": "أمثال شعبية", "diff": "hard"}, {"w": "صاحب بالين كداب", "alt": "شيل ده من ده يرتاح ده عن ده", "cat": "أمثال شعبية", "diff": "hard"}, {"w": "ضربني وبكى وسبقني واشتكى", "alt": "طول البال يبلغ الأمل", "cat": "أمثال شعبية", "diff": "hard"}, {"w": "طول البال يبلغ الأمل", "alt": "ضربني وبكى وسبقني واشتكى", "cat": "أمثال شعبية", "diff": "hard"}, {"w": "لاقيني ولا تغديني", "alt": "يا خبر بفلوس بكرة يبقى ببلاش", "cat": "أمثال شعبية", "diff": "hard"}, {"w": "يا خبر بفلوس بكرة يبقى ببلاش", "alt": "لاقيني ولا تغديني", "cat": "أمثال شعبية", "diff": "hard"}];
+window.BK_WORD_DB = BK_WORD_DB;
 
-let bkDraftCfg={max:8,nb:1,mode:'blind',cat:'عشوائي',time:3,autoTalk:true};
+const BKL = (function buildBKL(){
+  const map = {};
+  for(const item of BK_WORD_DB){
+    if(!map[item.cat]) map[item.cat] = [];
+    map[item.cat].push([item.w, item.alt, item.diff || 'easy']);
+  }
+  return map;
+})();
+const BKW = Object.fromEntries(Object.keys(BKL).map(k => [k, BKL[k].map(p => p[0]+'|'+p[1]).join(';')]));
+const BKRULES=`٣ لاعبين أو أكتر • ${BX} واحد (أو أكتر) بينكم: يا مش بيعرف الكلمة، يا معاه كلمة مختلفة • لا تبدأ الأسئلة إلا بعد تأكيد جميع اللاعبين مشاهدة كلماتهم • كل لاعب يسأل مرة ويتلقى سؤالًا مرة في الجولة الأساسية • تليها مرحلة الشك ثم أسئلة حسم الشك عند تعدد المشتبه بهم • التصويت سري ومقفول بعد التأكيد • في مرحلة تخمين الكلمة يختار ${BX} الكلمة الصحيحة من بين ٨ اختيارات متوازنة بضغطة واحدة • النقاط: اللاعبين +٢ لو كسبوا، ${BX} +٣ لو ما اتكشفش (+٢ لو اتكشف وخمّن صح).`;
+
+let bkDraftCfg={max:8,nb:1,mode:'blind',cat:'عشوائي',diff:'الكل',time:3,autoTalk:true};
 var BK=window.BK={code:'',host:false,S:null,my:null,rev:false,ack:false,kp:null,key:null,H:null,
-  selDoubtMode:'',selDoubtTarget:'',selVote:'',showAll:false,lastPhaseId:'',leaveConfirm:false,autoTalkTimer:null};
+  selDoubtMode:'',selDoubtTarget:'',selVote:'',showAll:false,lastPhaseId:'',leaveConfirm:false,
+  autoTalkTimer:null,guessTimer:null,guessLocked:'',pickedGuessWord:'',recentWords:[]};
 const bkT=k=>'bakasa/v1/'+BK.code+'/'+k;
 const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const ECP={name:'ECDH',namedCurve:'P-256'};
@@ -5523,7 +5709,7 @@ function bkUnsub(topic){
   unsub(topic);
 }
 function bkPubMsg(topic,obj,opt){
-  pub(topic,obj,opt);
+  pub(topic,obj,Object.assign({},opt||{},{_skipLocalBus:true}));
   try{
     if(opt&&opt.retain){
       localStorage.setItem('bk_ret_'+topic,JSON.stringify({ts:Date.now(),payload:obj}));
@@ -5567,6 +5753,64 @@ function bkShuffle(arr){
   }
   return a;
 }
+
+function bkWordsTooSimilar(w1,w2){
+  const n1=bkNorm(w1), n2=bkNorm(w2);
+  if(!n1||!n2)return true;
+  if(n1===n2)return true;
+  if(n1.includes(n2)||n2.includes(n1)){
+    if(Math.min(n1.length,n2.length)>=4)return true;
+  }
+  const f1=n1.split(' ')[0], f2=n2.split(' ')[0];
+  if(f1&&f2&&f1===f2&&f1.length>=3)return true;
+  return false;
+}
+
+function bkBuild8WordChoices(secretWord,altWord,cat,diff){
+  const chosen=[secretWord];
+  const canAdd=cand=>{
+    if(!cand)return false;
+    if(altWord&&bkNorm(cand)===bkNorm(altWord))return false;
+    for(const ex of chosen){
+      if(bkWordsTooSimilar(cand,ex))return false;
+    }
+    return true;
+  };
+  // Tier 1: Same category & same difficulty
+  const tier1=bkShuffle(BK_WORD_DB.filter(x=>x.cat===cat&&( !diff||diff==='الكل'||x.diff===diff )).map(x=>x.w));
+  for(const w of tier1){
+    if(chosen.length>=8)break;
+    if(canAdd(w))chosen.push(w);
+  }
+  // Tier 2: Same category, any difficulty
+  if(chosen.length<8){
+    const tier2=bkShuffle(BK_WORD_DB.filter(x=>x.cat===cat).map(x=>x.w));
+    for(const w of tier2){
+      if(chosen.length>=8)break;
+      if(canAdd(w))chosen.push(w);
+    }
+  }
+  // Tier 3: Same category relaxed similarity (still strictly unique normalized)
+  if(chosen.length<8){
+    const tier2b=bkShuffle(BK_WORD_DB.filter(x=>x.cat===cat).map(x=>x.w));
+    for(const w of tier2b){
+      if(chosen.length>=8)break;
+      const nw=bkNorm(w);
+      if(nw&&(!altWord||nw!==bkNorm(altWord))&&!chosen.some(c=>bkNorm(c)===nw))chosen.push(w);
+    }
+  }
+  // Tier 4: Global pool fallback if a custom category has < 8 words
+  if(chosen.length<8){
+    const tier3=bkShuffle(BK_WORD_DB.map(x=>x.w));
+    for(const w of tier3){
+      if(chosen.length>=8)break;
+      const nw=bkNorm(w);
+      if(nw&&(!altWord||nw!==bkNorm(altWord))&&!chosen.some(c=>bkNorm(c)===nw))chosen.push(w);
+    }
+  }
+  return bkShuffle(chosen.slice(0,8));
+}
+window.bkBuild8WordChoices=bkBuild8WordChoices;
 
 function bkSaveSession(){
   try{
@@ -5667,7 +5911,7 @@ function bkFriendsPanelHTML(){
       <button class="btn g" data-k="addFriendInput">إضافة</button>
     </div>
     <div class="mut tiny" style="margin-bottom:6px">ضيف اللي بيلعبوا معاك من الغرفة بزرار «＋ صديق»، أو الصق كود الصداقة من بروفايله.</div>
-    <div class="plist">${buildFriendsPanelListHTML('bk')}</div>
+    <div class="plist" id="bkFriendsList">${buildFriendsPanelListHTML('bk')}</div>
   </section>`;
 }
 
@@ -5764,8 +6008,13 @@ function bkPubState(){
     tieRound:H.tieRound||0,
     maxTieRounds:H.maxTieRounds||3,
     acc:(H.ph==='guess'||H.ph==='result')?H.acc:null,
+    guesser:(H.ph==='guess'||H.ph==='result')?(H.guesser||H.acc):null,
+    caught:(H.ph==='guess'||H.ph==='result')?!!H.caught:false,
     accVotes:(H.ph==='guess'||H.ph==='result')?(H.accVotes||0):0,
     bixShown:(H.ph==='guess'||H.ph==='result')?H.bix:null,
+    guessOpts:(H.ph==='guess'||H.ph==='result')?(H.guessOpts||[]):null,
+    catName:H.catName||'',
+    wordDiff:H.wordDiff||'easy',
     nb:H.bix?H.bix.length:1,
     bannerMsg:H.bannerMsg||'',
     res:H.ph==='result'?H.res:null
@@ -5793,7 +6042,7 @@ function bkTick(){
   });
   bkPubMsg(bkT('beat'),{h:ME,pk:BK.kp.pub,ts:now,closed:false},{retain:true});
   if(ch&&H.ph!=='lobby'&&H.ph!=='result')bkAfterGone();
-  bkPub();
+  if(ch||!BK.S)bkPub();
 }
 
 function bkAfterGone(){
@@ -5816,8 +6065,7 @@ function bkAfterGone(){
     H.cand=H.cand.filter(id=>H.pl[id]&&!H.pl[id].gone);
     if(H.cand.length===1){
       H.acc=H.cand[0];H.accVotes=Object.values(H.votes).filter(v=>v===H.acc).length;
-      if(H.bix.includes(H.acc)){H.ph='guess';H.phaseId='guess_r'+H.round;}
-      else bkEnd(true,false,'miss');
+      bkEnterGuessPhase(H.acc,H.accVotes);
     }else{
       bkCheckVotes();
     }
@@ -5848,31 +6096,39 @@ async function bkOnJoin(d){
   const H=BK.H;if(!H||!d||!d.pid||!d.pk||d.pid===ME||!d.pk.x||!d.pk.y)return;
   const err=m=>bkPubMsg(bkT('err'),{pid:d.pid,msg:m});
   let p=H.pl[d.pid];
+  let changed=false;
   try{
     if(p){
       if(!p.pk||p.pk.x!==d.pk.x||p.pk.y!==d.pk.y){
-        p.pk=d.pk;p.key=await bkDerive(BK.kp.priv,d.pk);
+        p.pk=d.pk;p.key=await bkDerive(BK.kp.priv,d.pk);changed=true;
       }else if(!p.key){
-        p.key=await bkDerive(BK.kp.priv,p.pk);
+        p.key=await bkDerive(BK.kp.priv,p.pk);changed=true;
       }
-      p.last=Date.now();p.gone=false;
+      if(p.gone){p.gone=false;changed=true;}
+      p.last=Date.now();
     }else{
       if(H.ph!=='lobby')return err('الجولة بدأت بالفعل — انتظر حتى تنتهي الجولة الحالية');
       if(H.ord.length>=H.cfg.max)return err('الغرفة ممتلئة ('+H.cfg.max+' لاعبين)');
       p={pid:d.pid,last:Date.now(),pk:d.pk,key:await bkDerive(BK.kp.priv,d.pk),ready:true,gone:false};
       H.pl[d.pid]=p;H.ord.push(d.pid);H.sc[d.pid]=H.sc[d.pid]||0;
+      changed=true;
       toast((d.name||'لاعب')+' دخل الغرفة 🎉','ok');
       beep(520,.08,'sine',.08);
     }
-    p.uid=String(d.uid||String(d.pid).split('.')[0]).slice(0,12);
-    p.name=String(d.name||'لاعب').slice(0,14);
-    p.av=String(d.av||'🙂').slice(0,4);
-    p.col=String(d.col||'#0a84ff').slice(0,9);
+    const nextUid=String(d.uid||String(d.pid).split('.')[0]).slice(0,12);
+    const nextName=String(d.name||'لاعب').slice(0,14);
+    const nextAv=String(d.av||'🙂').slice(0,4);
+    const nextCol=String(d.col||'#0a84ff').slice(0,9);
+    if(p.uid!==nextUid||p.name!==nextName||p.av!==nextAv||p.col!==nextCol){
+      p.uid=nextUid;p.name=nextName;p.av=nextAv;p.col=nextCol;
+      changed=true;
+    }
     if(d.st)p.st=d.st;
     if(H.ph!=='lobby'&&(H.participants||[]).includes(d.pid)&&(d.need||p.sent!==H.round)){
       await bkPriv(d.pid);
+      changed=true;
     }
-    bkPub();
+    if(changed)bkPub();
   }catch(e){}
 }
 
@@ -5966,9 +6222,16 @@ function bkAct(pid,a){
   }
 
   if(a.a==='guess'){
-    if(H.ph!=='guess'||pid!==H.acc)return;
+    const allowedGuesser=H.guesser||H.acc;
+    if(H.ph!=='guess'||pid!==allowedGuesser||H.guessSubmitted)return;
+    H.guessSubmitted=true;
+    clearTimeout(BK.guessTimer);
     const g=bkNorm(a.w),ok=!!g&&g===bkNorm(H.w);
-    bkEnd(ok,ok,ok?'guess':'wrong',a.w);
+    if(H.caught){
+      bkEnd(ok,ok,ok?'guess':'wrong',a.w);
+    }else{
+      bkEnd(true,ok,ok?'miss_and_guess':'miss',a.w);
+    }
     bkPub();
     return;
   }
@@ -6118,13 +6381,7 @@ function bkCheckVotes(){
     H.accVotes=mx;
     H.tie=null;
     H.tieRand=false;
-    if(H.bix.includes(H.acc)){
-      H.ph='guess';
-      H.phaseId=`guess_r${H.round}`;
-      H.bannerMsg=`تم كشف ${BX} (${H.pl[H.acc].name}) بعدد ${mx} أصوات! الآن فرصته لتخمين الكلمة الأصلية`;
-    }else{
-      bkEnd(true,false,'miss');
-    }
+    bkEnterGuessPhase(H.acc,mx);
     return;
   }
 
@@ -6148,10 +6405,41 @@ function bkCheckVotes(){
   }
 }
 
+function bkEnterGuessPhase(accPid,accVotes){
+  const H=BK.H;if(!H)return;
+  clearTimeout(BK.tt);clearTimeout(BK.guessTimer);
+  H.acc=accPid;
+  H.accVotes=accVotes||1;
+  H.caught=H.bix.includes(accPid);
+  H.guesser=H.caught?accPid:(H.bix[0]||accPid);
+  H.guessSubmitted=false;
+  if(!Array.isArray(H.guessOpts)||H.guessOpts.length!==8){
+    H.guessOpts=bkBuild8WordChoices(H.w,H.a,H.catName||'أكلات مصرية',H.wordDiff||'easy');
+  }
+  H.ph='guess';
+  H.phaseId=`guess_r${H.round}`;
+  H.ends=Date.now()+45000;
+  const gName=(H.pl[H.guesser]&&H.pl[H.guesser].name)||BX;
+  if(H.caught){
+    H.bannerMsg=`🎯 تم كشف ${BX} (${gName}) بعدد ${H.accVotes} أصوات! أمامه الآن ٨ كلمات لاختيار الكلمة السرية الصحيحة`;
+  }else{
+    const aName=(H.pl[accPid]&&H.pl[accPid].name)||'لاعب';
+    H.bannerMsg=`🕵️ صوّت اللاعبون على «${aName}» ونجا ${BX} (${gName})! الآن يختار ${BX} الكلمة السرية من الـ ٨ اختيارات`;
+  }
+  BK.guessTimer=setTimeout(()=>{
+    if(BK.host&&BK.H&&BK.H.ph==='guess'&&!BK.H.guessSubmitted){
+      BK.H.guessSubmitted=true;
+      if(BK.H.caught)bkEnd(false,false,'timeout','');
+      else bkEnd(true,false,'miss','');
+      bkPub();
+    }
+  },45000);
+}
+
 function bkEnd(bw,gOk,why,g,isDraw){
   const H=BK.H;if(!H||H.scored)return;
   H.scored=true;
-  clearTimeout(BK.tt);clearTimeout(BK.autoTalkTimer);
+  clearTimeout(BK.tt);clearTimeout(BK.autoTalkTimer);clearTimeout(BK.guessTimer);
   H.ends=0;
   const pts={};
   const part=(H.participants&&H.participants.length)?H.participants:H.spk;
@@ -6159,8 +6447,14 @@ function bkEnd(bw,gOk,why,g,isDraw){
     const b=H.bix.includes(p);
     let d=0;
     if(!isDraw){
-      if(bw){if(b)d=gOk?2:3;}
-      else if(!b)d=2;
+      if(bw){
+        if(b){
+          if(H.caught)d=gOk?2:0;
+          else d=gOk?4:3;
+        }
+      }else if(!b){
+        d=2;
+      }
     }
     pts[p]=d;
     H.sc[p]=(H.sc[p]||0)+d;
@@ -6173,6 +6467,10 @@ function bkEnd(bw,gOk,why,g,isDraw){
     w:H.w,
     a:H.a,
     bix:H.bix,
+    guesser:H.guesser||H.acc,
+    caught:!!H.caught,
+    guessOpts:H.guessOpts||[],
+    catName:H.catName||'',
     mode:H.mode,
     tally:H.tally||{},
     doubtSummary:H.doubtSummary||null,
@@ -6207,10 +6505,30 @@ async function bkPriv(pid){
   }catch(e){}
 }
 
+function bkPickWordEntry(catPref,diffPref){
+  let pool=BK_WORD_DB.filter(x=>{
+    const catOk=(!catPref||catPref==='عشوائي'||x.cat===catPref);
+    const diffOk=(!diffPref||diffPref==='الكل'||x.diff===diffPref);
+    return catOk&&diffOk;
+  });
+  if(!pool.length)pool=BK_WORD_DB.slice();
+  const recentSet=new Set(BK.recentWords||[]);
+  let fresh=pool.filter(x=>!recentSet.has(bkNorm(x.w)));
+  if(fresh.length<8){
+    BK.recentWords=[];
+    fresh=pool.slice();
+  }
+  const chosen=fresh[rnd(fresh.length)];
+  if(!Array.isArray(BK.recentWords))BK.recentWords=[];
+  BK.recentWords.push(bkNorm(chosen.w));
+  if(BK.recentWords.length>120)BK.recentWords.shift();
+  return chosen;
+}
+
 function bkStart(){
   const H=BK.H;
   if(!H||(H.ph!=='lobby'&&H.ph!=='result'))return false;
-  clearTimeout(BK.tt);clearTimeout(BK.autoTalkTimer);
+  clearTimeout(BK.tt);clearTimeout(BK.autoTalkTimer);clearTimeout(BK.guessTimer);
   H.ord=H.ord.filter(id=>{if(H.pl[id].gone&&id!==ME){delete H.pl[id];return false}return true});
   const act=H.ord.filter(id=>!H.pl[id].gone);
   if(act.length<3){toast('محتاجين ٣ لاعبين على الأقل لبدء الجولة','warn');return false}
@@ -6222,17 +6540,21 @@ function bkStart(){
   const nb=Math.max(1,Math.min(H.cfg.nb,Math.floor((act.length-1)/2)));
   H.bix=bkShuffle([...act]).sort((a,b)=>(H.bc[a]||0)-(H.bc[b]||0)).slice(0,nb);
   H.bix.forEach(b=>H.bc[b]=(H.bc[b]||0)+1);
-  const pool=H.cfg.cat==='عشوائي'?Object.values(BKL).flat():BKL[H.cfg.cat];
-  const pr=pool[rnd(pool.length)].slice();
-  if(Math.random()<.5)pr.reverse();
-  H.w=pr[0];H.a=pr[1];H.mode=H.cfg.mode;
+  const entry=bkPickWordEntry(H.cfg.cat,H.cfg.diff);
+  H.w=entry.w;
+  H.a=entry.alt;
+  H.catName=entry.cat;
+  H.wordDiff=entry.diff||'easy';
+  H.guessOpts=bkBuild8WordChoices(H.w,H.a,H.catName,H.wordDiff);
+  H.mode=H.cfg.mode;
   H.round++;
   H.participants=act.slice();
   H.acks={};
   H.doubts={};H.doubtSummary=null;H.noDoubtCount=0;
   H.suspects=[];H.singleSuspect=null;H.doubtTalkSeq=0;
   H.votes={};H.voteSeq=0;H.rv=0;H.tie=null;H.tieRound=0;
-  H.acc=null;H.accVotes=0;H.tally=null;H.tieRand=false;H.isDraw=false;
+  H.acc=null;H.guesser=null;H.caught=false;H.guessSubmitted=false;
+  H.accVotes=0;H.tally=null;H.tieRand=false;H.isDraw=false;
   H.scored=false;H.res=null;H.ends=0;H.cand=[];
   H.spk=bkShuffle(act.slice());
   H.baseQPairs=H.spk.map((id,k)=>({idx:k,from:id,to:H.spk[(k+1)%H.spk.length],done:false}));
@@ -6240,8 +6562,9 @@ function bkStart(){
   H.qi=0;
   H.ph='role';
   H.phaseId=`role_r${H.round}`;
-  H.bannerMsg='في انتظار تأكيد مشاهدة الكلمات من جميع اللاعبين';
+  H.bannerMsg=`بدأت الجولة ${H.round} (الفئة: ${H.catName}) — افتح كلمتك السرية وأكّد مشاهدتها`;
   BK.rev=false;BK.ack=false;BK.selDoubtMode='';BK.selDoubtTarget='';BK.selVote='';
+  BK.guessLocked='';BK.pickedGuessWord='';
   H.participants.forEach(p=>bkPriv(p));
   bkPub();
   return true;
@@ -6390,16 +6713,21 @@ function bkLeave(render){
     else bkPubMsg(bkT('bye'),{pid:ME});
     ['j','up','bye','beat','st','err','to/'+ME].forEach(k=>bkUnsub(bkT(k)));
   }
-  clearInterval(BK.iv);clearTimeout(BK.tt);clearTimeout(BK.nf);clearTimeout(BK.autoTalkTimer);
+  clearInterval(BK.iv);clearTimeout(BK.tt);clearTimeout(BK.nf);clearTimeout(BK.autoTalkTimer);clearTimeout(BK.guessTimer);
   BK=window.BK={code:'',host:false,S:null,my:null,rev:false,ack:false,kp:BK.kp,key:null,H:null,
-    selDoubtMode:'',selDoubtTarget:'',selVote:'',showAll:false,lastPhaseId:'',leaveConfirm:false,autoTalkTimer:null};
+    selDoubtMode:'',selDoubtTarget:'',selVote:'',showAll:false,lastPhaseId:'',leaveConfirm:false,
+    autoTalkTimer:null,guessTimer:null,guessLocked:'',pickedGuessWord:'',recentWords:BK.recentWords||[]};
   bkSaveSession();
   if(render)bkRender();
 }
 
 /* ---------- UI Helpers ---------- */
 const BK_OPT_ICONS={
-  'عشوائي':'🎲','أكلات':'🍲','أماكن':'🗺️','أفلام ومسلسلات':'🎬','كورة':'⚽','أمثال':'📜','مواقف يومية':'☕',
+  'عشوائي':'🎲','أكلات مصرية':'🍲','أكلات عربية وعالمية':'🍕','حلويات':'🍩','مشروبات':'☕',
+  'فواكه وخضراوات':'🍉','حيوانات وطيور وكائنات بحرية':'🦁','أشياء منزلية':'🛋️','أدوات وأجهزة':'🛠️',
+  'ملابس وإكسسوارات':'🧥','أماكن ومبانٍ':'🏛️','مواصلات':'🚆','مهن':'👨‍⚕️','رياضة وألعاب':'⚽',
+  'طبيعة وطقس':'🌋','مدرسة ودراسة':'📚','تقنية وألعاب فيديو':'🎮','أدوات موسيقية وفنون':'🎸',
+  'أشياء مصرية ومواقف يومية':'🏮','أدوات ومواقف مضحكة':'😂','أفلام ومسلسلات':'🎬','كورة':'🏆','أمثال شعبية':'📜',
   'blind':'🕵️','alt':'🎭'
 };
 function bkFmtOpt(c,val,lbl){
@@ -6616,6 +6944,7 @@ function bkNotifyPhaseChange(S){
   const prev=BK.lastPhaseId;
   BK.lastPhaseId=S.phaseId;
   BK.selDoubtMode='';BK.selDoubtTarget='';BK.selVote='';
+  if(S.ph!=='guess'){BK.guessLocked='';BK.pickedGuessWord='';}
   if(!prev)return;
   const msgs={
     role:`🔒 بدأت الجولة ${S.round} — افتح كلمتك السرية وأكّد مشاهدتها`,
@@ -6764,8 +7093,21 @@ function bkVLobbyScreen(S){
   </div>`;
 }
 
+function bkFormatTimerText(){
+  if(!BK.ends)return '--:--';
+  const s=Math.max(0,Math.round((BK.ends-Date.now())/1000));
+  return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+
 function bkRender(){
   const el=$('#bk');if(!el)return;
+  const activeEl=document.activeElement;
+  const activeId=(activeEl&&el.contains(activeEl)&&activeEl.id)?activeEl.id:'';
+  const selStart=(activeId&&typeof activeEl.selectionStart==='number')?activeEl.selectionStart:null;
+  const selEnd=(activeId&&typeof activeEl.selectionEnd==='number')?activeEl.selectionEnd:null;
+  const openCselEl=el.querySelector('.csel-wrap.open');
+  const openCselKey=openCselEl?openCselEl.getAttribute('data-csel'):'';
+
   const g0=$('#bkg'),gv=g0?g0.value:'';
   const c0=$('#bkc'),cv=c0?c0.value:'';
   const f0=$('#bkfn'),fv=f0?f0.value:'';
@@ -6790,10 +7132,32 @@ function bkRender(){
       ${viewFn(S)}
     </div>`;
   }
+  const sig=o.replace(/<div class="bkt" id="bkT">[^<]*<\/div>/g,'<div class="bkt" id="bkT"></div>');
+  if(el.innerHTML&&BK._lastRenderSig===sig){
+    const tEl=$('#bkT');
+    if(tEl&&BK.ends)tEl.textContent=bkFormatTimerText();
+    return;
+  }
+  BK._lastRenderSig=sig;
   el.innerHTML=o;
-  const g=$('#bkg');if(g&&gv){g.value=gv;g.focus()}
+  const g=$('#bkg');if(g&&gv){g.value=gv}
   const c=$('#bkc');if(c&&cv){c.value=cv}
   const fn=$('#bkfn');if(fn&&fv){fn.value=fv}
+  if(openCselKey){
+    const w=el.querySelector(`.csel-wrap[data-csel="${openCselKey}"]`);
+    if(w)w.classList.add('open');
+  }
+  if(activeId){
+    const nf=document.getElementById(activeId);
+    if(nf){
+      try{
+        nf.focus({preventScroll:true});
+        if(selStart!==null&&selEnd!==null&&typeof nf.setSelectionRange==='function'){
+          nf.setSelectionRange(selStart,selEnd);
+        }
+      }catch(e){}
+    }
+  }
 }
 
 function bkUnackedText(cnt){
@@ -6899,7 +7263,7 @@ function bkQuestionStageHTML(S,title,subText){
       ${nextPair?`التالي: <b>${bkName(S,nextPair.from)}</b> يسأل <b>${bkName(S,nextPair.to)}</b>`:(S.ph==='talk'?'بعد هذا السؤال: الانتقال إلى 🔎 مرحلة الشك':'بعد هذا السؤال: الانتقال إلى 🗳 التصويت الحاسم')}
     </div>
 
-    ${BK.ends?'<div class="bkt" id="bkT">--:--</div>':''}
+    ${BK.ends?`<div class="bkt" id="bkT">${bkFormatTimerText()}</div>`:''}
 
     <div class="bk-actions-row">
       ${canDone
@@ -7097,25 +7461,49 @@ function bkVVote(S){
 }
 
 function bkVGuess(S){
-  const mine=S.acc===ME;
+  const guesserPid=S.guesser||S.acc;
+  const mine=guesserPid===ME;
+  const guesserObj=bkPlayerObj(S,guesserPid);
   const accObj=bkPlayerObj(S,S.acc);
+  const opts=Array.isArray(S.guessOpts)&&S.guessOpts.length?S.guessOpts:[];
+  const isLocked=BK.guessLocked===S.phaseId;
+
+  const topBanner=S.caught
+    ? `<div class="bk-banner warn" style="margin-bottom:14px">
+         تم التصويت على <b>${esc(accObj.name)}</b> بعدد <b>${S.accVotes||1}</b> أصوات، وتبيّن أنه فعلًا <b>${BX}</b>!
+       </div>`
+    : `<div class="bk-banner" style="margin-bottom:14px">
+         صوّت اللاعبون على <b>${esc(accObj.name)}</b> (${S.accVotes||1} أصوات) ونجا <b>${esc(guesserObj.name)} (${BX})</b>! الآن يختار ${BX} الكلمة السرية من الـ ٨ اختيارات.
+       </div>`;
+
+  const choicesGridHTML=opts.length
+    ? `<div class="bk-guess-grid" id="bkGuessChoicesGrid">
+         ${opts.map((w,idx)=>{
+           const isPicked=isLocked&&BK.pickedGuessWord===w;
+           return `<button type="button" class="bk-word-choice ${isPicked?'sel-choice':''}" data-k="pickGuessWord" data-v="${esc(w)}" data-idx="${idx}" ${(mine&&!isLocked)?'':'disabled'}>
+             <span>${esc(w)}</span>
+           </button>`;
+         }).join('')}
+       </div>`
+    : `<div class="empty">⏳ جاري تحميل الـ ٨ اختيارات…</div>`;
+
   return `<section class="bk-stage">
-    <h2>🎯 تم كشف ${BX}!</h2>
-    <div class="bk-banner warn" style="margin-bottom:14px">
-      تم التصويت على <b>${esc(accObj.name)}</b> بعدد <b>${S.accVotes||1}</b> أصوات، وتبيّن أنه فعلًا <b>${BX}</b>!
+    <h2>🎯 مرحلة تخمين الكلمة السرية (٨ اختيارات)</h2>
+    ${topBanner}
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin:10px 0">
+      <span class="av lg" style="--c:${esc(guesserObj.col)}">${esc(guesserObj.av)}</span>
+      <b style="font-size:18px">${esc(guesserObj.name)} (${BX})</b>
+      ${S.catName?`<span class="bk-chip ac">📂 الفئة: <b>${esc(S.catName)}</b></span>`:''}
     </div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:14px 0">
-      <span class="av lg" style="--c:${esc(accObj.col)}">${esc(accObj.av)}</span>
-      <b style="font-size:18px">${esc(accObj.name)} (${BX})</b>
-    </div>
+    ${BK.ends?`<div class="bkt" id="bkT">${bkFormatTimerText()}</div>`:''}
     ${mine
-      ? `<p class="sub">أنت ${BX}! أمامك الآن فرصة أخيرة لتخمين الكلمة الأصلية السرية لتحسم الجولة لصالحك:</p>
-         <input id="bkg" placeholder="اكتب الكلمة الأصلية هنا…" maxlength="40" style="text-align:center;font-weight:800;font-size:16px">
-         <div class="bk-actions-row" style="margin-top:12px">
-           <button class="btn ok big" data-k="guess">🎯 تأكيد تخمين الكلمة</button>
-           <button class="btn g" data-k="skip">تخطي التخمين</button>
-         </div>`
-      : `<div class="empty">يقوم <b>${esc(accObj.name)}</b> (${BX}) بمحاولة تخمين الكلمة الأصلية الآن… 🤞</div>`}
+      ? `<p class="sub">${isLocked?'⏳ تم تسجيل اختيارك! جاري إعلان النتيجة…':'اختر الكلمة الأصلية السرية من بين الـ ٨ كلمات التالية بضغطة واحدة (توجد إجابة صحيحة واحدة فقط):'}</p>
+         ${choicesGridHTML}
+         ${!isLocked?`<div class="bk-actions-row" style="margin-top:10px">
+           <button class="btn g" data-k="skip">⏭️ تخطي التخمين</button>
+         </div>`:''}`
+      : `<p class="sub">يقوم <b>${esc(guesserObj.name)}</b> (${BX}) الآن باختيار الكلمة السرية من بين هذه الـ ٨ اختيارات:</p>
+         ${choicesGridHTML}`}
     ${bkBtns()}
   </section>`;
 }
@@ -7124,9 +7512,11 @@ function bkVRes(S){
   const r=S.res||{};
   const tl=Object.entries(r.tally||{}).map(([k,v])=>`<span class="bk-chip">${bkName(S,k)}: <b>${v} صوت</b></span>`).join(' ');
   const whyMap={
-    miss:`صوّت اللاعبون على لاعب بريء (${bkName(S,r.acc)}) ولم ينكشف ${BX}!`,
-    guess:`تم كشف ${BX} لكنه نجح في تخمين الكلمة الأصلية بشكل صحيح!`,
-    wrong:`تم كشف ${BX} وأخطأ في تخمين الكلمة الأصلية!`,
+    miss:`صوّت اللاعبون على لاعب بريء (${bkName(S,r.acc)}) ونجا ${BX} (وأخطأ في تخمين الكلمة الإضافية)!`,
+    miss_and_guess:`صوّت اللاعبون على لاعب بريء (${bkName(S,r.acc)}) ونجا ${BX}، وكمان خمّن الكلمة السرية صح من الـ ٨ اختيارات! 🔥`,
+    guess:`تم كشف ${BX} لكنه نجح في اختيار الكلمة الأصلية الصحيحة من بين الـ ٨ اختيارات! 🎯`,
+    wrong:`تم كشف ${BX} واختار كلمة خاطئة من بين الـ ٨ اختيارات!`,
+    timeout:`انتهى الوقت المحدد لاختيار الكلمة السرية! ⏰`,
     gone:`خرج ${BX} من الجولة قبل اكتمالها`,
     tie_limit:`انتهت الجولة بالتعادل بعد استنفاد الحد الأقصى لجولات الحسم المتتالية (${S.maxTieRounds||3} جولات)`
   };
@@ -7134,8 +7524,26 @@ function bkVRes(S){
   const mine=r.pts&&r.pts[ME];
   const bixNames=(r.bix||[]).map(i=>bkName(S,i)).join('، ');
   const accName=r.acc?bkName(S,r.acc):'لا أحد (تعادل)';
+  const opts=Array.isArray(r.guessOpts)&&r.guessOpts.length?r.guessOpts:(Array.isArray(S.guessOpts)?S.guessOpts:[]);
 
   let headerTitle=r.isDraw?'⚖️ انتهت الجولة بالتعادل!':(r.bw?`🕵️ فاز ${BX}!`:'🎉 فاز اللاعبون!');
+
+  const reviewGridHTML=opts.length
+    ? `<div class="bk-host-box" style="margin:12px 0">
+         <h3>🎯 مراجعة الـ ٨ اختيارات في الجولة</h3>
+         <div class="bk-guess-grid" style="margin-top:8px">
+           ${opts.map(w=>{
+             const isRight=bkNorm(w)===bkNorm(r.w);
+             const isPicked=r.guess&&bkNorm(w)===bkNorm(r.guess);
+             const cls=isRight?'is-correct':(isPicked?'is-wrong':'');
+             const badge=isRight?' ✅':(isPicked?' ❌':'');
+             return `<button type="button" class="bk-word-choice ${cls}" disabled>
+               <span>${esc(w)}${badge}</span>
+             </button>`;
+           }).join('')}
+         </div>
+       </div>`
+    : '';
 
   return `<section class="bk-stage">
     <h2>${headerTitle}</h2>
@@ -7149,7 +7557,8 @@ function bkVRes(S){
     </div>
 
     <div class="bkw">${esc(r.w)}</div>
-    ${r.guess?`<p class="sub">تخمين ${BX} للكلمة: <b>«${esc(r.guess)}»</b> (${r.gOk?'✅ تخمين صحيح':'❌ تخمين خاطئ'})</p>`:''}
+    ${r.guess?`<p class="sub">اختيار ${BX} من الـ ٨ كلمات: <b>«${esc(r.guess)}»</b> (${r.gOk?'✅ إجابة صحيحة':'❌ إجابة خاطئة'})</p>`:''}
+    ${reviewGridHTML}
 
     ${tl?`<div class="bk-host-box"><h3>🗳 تفاصيل الأصوات المسجلة</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">${tl}</div></div>`:''}
 
@@ -7263,12 +7672,41 @@ function bkClick(k,v,el){
     if(!v||v===ME)return;
     return bkSend({a:'vote',to:v});
   }
-  if(k==='guess'){
-    const w=($('#bkg')?$('#bkg').value:'').trim();
-    if(w)bkSend({a:'guess',w});
+  if(k==='pickGuessWord'){
+    const S=BK.S;
+    if(!S||S.ph!=='guess')return;
+    const guesserPid=S.guesser||S.acc;
+    if(guesserPid!==ME)return;
+    if(BK.guessLocked===S.phaseId)return;
+    const chosen=String(v||'').trim();
+    if(!chosen)return;
+    BK.guessLocked=S.phaseId;
+    BK.pickedGuessWord=chosen;
+    beep(540,.08,'sine',.09);
+    bkRender();
+    bkSend({a:'guess',w:chosen});
     return;
   }
-  if(k==='skip')return bkSend({a:'guess',w:''});
+  if(k==='guess'){
+    const S=BK.S;
+    if(!S||S.ph!=='guess'||BK.guessLocked===S.phaseId)return;
+    const w=($('#bkg')?$('#bkg').value:'').trim();
+    if(w){
+      BK.guessLocked=S.phaseId;
+      BK.pickedGuessWord=w;
+      bkRender();
+      bkSend({a:'guess',w});
+    }
+    return;
+  }
+  if(k==='skip'){
+    const S=BK.S;
+    if(!S||S.ph!=='guess'||BK.guessLocked===S.phaseId)return;
+    BK.guessLocked=S.phaseId;
+    BK.pickedGuessWord='';
+    bkRender();
+    return bkSend({a:'guess',w:''});
+  }
 }
 
 $('#bk').addEventListener('click',e=>{
@@ -8536,6 +8974,7 @@ async function chJoinOnlineRoom(rawCode){
 }
 
 function chLeaveRoom(rerender=true){
+  if(CH.aiTimer){clearTimeout(CH.aiTimer);CH.aiTimer=null;}
   chClearSubs();
   CH.code = '';
   CH.host = false;
@@ -9556,20 +9995,36 @@ const C4 = {
 };
 window.C4 = C4;
 
-/* ---------- Shared Real-Time Bus for TTT & C4 ---------- */
+/* ---------- Shared Real-Time Bus for TTT, C4 & Draw & Guess (Deduplicated + Multi-Channel) ---------- */
 let arcBC = null;
+let arcPktSeq = 0;
+const arcSeenPkts = new Set();
+
+function arcMarkSeenPkt(pktId){
+  if(!pktId) return false;
+  if(arcSeenPkts.has(pktId)) return true;
+  arcSeenPkts.add(pktId);
+  if(arcSeenPkts.size > 3000){
+    const first = arcSeenPkts.values().next().value;
+    if(first) arcSeenPkts.delete(first);
+  }
+  return false;
+}
+
 try {
   if(typeof BroadcastChannel !== 'undefined'){
     arcBC = new BroadcastChannel('sharb_arcade_net_v1');
     arcBC.onmessage = e => {
-      if(e && e.data && e.data.topic) arcDispatchMsg(e.data.topic, e.data.payload);
+      if(e && e.data && e.data.topic){
+        arcDispatchMsg(e.data.topic, e.data.payload, e.data.pktId);
+      }
     };
   }
   window.addEventListener('storage', e => {
-    if(e.key === 'sharb_arcade_pkt' && e.newValue){
+    if(e.key && e.key.startsWith('sharb_arcade_pkt') && e.newValue){
       try {
         const d = JSON.parse(e.newValue);
-        if(d && d.topic) arcDispatchMsg(d.topic, d.payload);
+        if(d && d.topic) arcDispatchMsg(d.topic, d.payload, d.pktId);
       } catch(err){}
     }
   });
@@ -9581,23 +10036,39 @@ function arcTopic(gameKey, code, sub){
 
 function arcPub(gameKey, code, sub, payload, retain=false){
   const topic = arcTopic(gameKey, code, sub);
+  const pktId = TAB + '_' + (++arcPktSeq) + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+  let clonedPayload = payload;
+  try {
+    clonedPayload = JSON.parse(JSON.stringify(payload || {}));
+    if(clonedPayload && typeof clonedPayload === 'object'){
+      clonedPayload._pktId = pktId;
+      clonedPayload._fromTab = TAB;
+    }
+  } catch(e){}
+
   if(NET.client && NET.ready){
-    try{ NET.client.publish(topic, JSON.stringify(payload), {qos:0, retain:!!retain}); }catch(e){}
+    try{ NET.client.publish(topic, JSON.stringify(clonedPayload), {qos:0, retain:!!retain}); }catch(e){}
   }
   if(arcBC){
-    try{ arcBC.postMessage({topic, payload}); }catch(e){}
+    try{ arcBC.postMessage({topic, payload: clonedPayload, pktId}); }catch(e){}
   }
   try{
-    if(retain) localStorage.setItem('arc_ret_' + topic, JSON.stringify({ts:Date.now(), payload}));
-    localStorage.setItem('sharb_arcade_pkt', JSON.stringify({topic, payload, _r:Math.random()}));
+    if(retain) localStorage.setItem('arc_ret_' + topic, JSON.stringify({ts:Date.now(), payload: clonedPayload, pktId}));
+    const slotKey = 'sharb_arcade_pkt_' + sub + '_' + (arcPktSeq % 8);
+    localStorage.setItem(slotKey, JSON.stringify({topic, payload: clonedPayload, pktId, _r:Math.random()}));
   }catch(e){}
-  setTimeout(()=>arcDispatchMsg(topic, payload), 5);
+  setTimeout(()=>arcDispatchMsg(topic, clonedPayload, pktId), 0);
 }
 
 function arcSub(ctrl, gameKey, code, sub, fn){
   const topic = arcTopic(gameKey, code, sub);
-  ctrl.subs.push({topic, fn});
-  NET.topics.set(topic, fn);
+  const wrappedFn = (d) => {
+    const id = d && d._pktId;
+    if(id && arcMarkSeenPkt(id)) return;
+    try{ fn(d); }catch(e){}
+  };
+  ctrl.subs.push({topic, fn, wrappedFn});
+  NET.topics.set(topic, wrappedFn);
   if(NET.client && NET.ready){
     try{ NET.client.subscribe(topic, {qos:0}); }catch(e){}
   }
@@ -9606,7 +10077,7 @@ function arcSub(ctrl, gameKey, code, sub, fn){
     if(ret){
       const parsed = JSON.parse(ret);
       if(parsed && parsed.payload && Date.now() - (parsed.ts||0) < 3600000){
-        setTimeout(()=>{ try{ fn(parsed.payload); }catch(e){} }, 15);
+        setTimeout(()=>{ try{ fn(parsed.payload); }catch(e){} }, 10);
       }
     }
   }catch(e){}
@@ -9623,7 +10094,9 @@ function arcClearSubs(ctrl){
   ctrl.subs = [];
 }
 
-function arcDispatchMsg(topic, payload){
+function arcDispatchMsg(topic, payload, pktId){
+  const id = pktId || (payload && payload._pktId);
+  if(id && arcMarkSeenPkt(id)) return;
   for(const ctrl of [TTT, C4, window.DG].filter(Boolean)){
     for(const s of (ctrl.subs || [])){
       if(s.topic === topic){
@@ -9958,7 +10431,9 @@ async function tttJoinOnlineRoom(rawCode){
 }
 
 function tttLeaveRoom(rerender=true){
+  if(TTT.aiTimer){ clearTimeout(TTT.aiTimer); TTT.aiTimer = null; }
   if(TTT.hbTimer){ clearInterval(TTT.hbTimer); TTT.hbTimer = null; }
+  TTT.moveLock = false;
   if(TTT.code){
     if(TTT.host){
       arcPub('ttt', TTT.code, 'state', {code: TTT.code, closed: true, ts: Date.now()}, true);
@@ -10565,6 +11040,8 @@ async function c4JoinOnlineRoom(rawCode){
 }
 
 function c4LeaveRoom(rerender=true){
+  if(C4.aiTimer){ clearTimeout(C4.aiTimer); C4.aiTimer = null; }
+  C4.moveLock = false;
   if(C4.code){
     if(C4.host){
       arcPub('c4', C4.code, 'state', {code: C4.code, closed: true, ts: Date.now()}, true);
@@ -11137,6 +11614,7 @@ const DG = {
   subs: [],
   hbTimer: null,
   tickTimer: null,
+  moveFlushTimer: null,
   // Public state synced across all players in the room
   S: null,
   // Host-only private state (never broadcast directly)
@@ -11149,6 +11627,7 @@ const DG = {
   },
   // Local player's private knowledge (only populated if ME === drawerPid)
   myWordChoices: null,
+  myWordChoicesTurnSeq: -1,
   mySecretWord: null,
   // Drawing state & history for the current turn
   tool: 'pen', // 'pen' | 'eraser'
@@ -11173,11 +11652,23 @@ window.DG = DG;
 
 function dgGetActiveDrawerSecret(){
   if(!DG.S || DG.S.drawerPid !== ME) return null;
-  if(DG.mySecretWord && DG.mySecretWord.word) return DG.mySecretWord;
+  if(DG.mySecretWord && DG.mySecretWord.word && (!DG.mySecretWord.turnSeq || DG.mySecretWord.turnSeq === DG.S.turnSeq)){
+    return DG.mySecretWord;
+  }
   if(DG.host && DG.H && DG.H.secretWordObj && DG.H.secretWordObj.word){
     return { word: DG.H.secretWordObj.word, cat: DG.H.secretWordObj.cat };
   }
   return null;
+}
+
+function dgRebindMQTTSubs(){
+  if(!DG.subs || !DG.subs.length) return;
+  for(const s of DG.subs){
+    NET.topics.set(s.topic, s.wrappedFn || s.fn);
+    if(NET.client && NET.ready){
+      try{ NET.client.subscribe(s.topic, {qos:0}); }catch(e){}
+    }
+  }
 }
 
 function dgOpen(){
@@ -11199,17 +11690,26 @@ function dgLeaveRoom(rerender=true){
   arcClearSubs(DG);
   if(DG.hbTimer){ clearInterval(DG.hbTimer); DG.hbTimer = null; }
   if(DG.tickTimer){ clearInterval(DG.tickTimer); DG.tickTimer = null; }
+  if(DG.moveFlushTimer){ clearTimeout(DG.moveFlushTimer); DG.moveFlushTimer = null; }
   if(DG.H && DG.H.botTimer){ clearTimeout(DG.H.botTimer); DG.H.botTimer = null; }
   DG.code = '';
   DG.host = false;
   DG.S = null;
   DG.myWordChoices = null;
+  DG.myWordChoicesTurnSeq = -1;
   DG.mySecretWord = null;
   DG.strokes = [];
   DG.currentStroke = null;
   DG.isDrawing = false;
   DG.feed = [];
   DG.seenFeedIds.clear();
+  const root = document.getElementById('dgRoot');
+  if(root){
+    delete root.dataset.dgPhase;
+    delete root.dataset.dgTurnSeq;
+    delete root.dataset.dgIsDrawer;
+    delete root.dataset.dgCode;
+  }
   if(rerender) dgRender();
 }
 window.dgLeaveRoom = dgLeaveRoom;
@@ -11232,11 +11732,10 @@ function dgBroadcastState(){
 
 function dgSendPrivateToDrawer(pkt){
   if(!DG.code) return;
-  arcPub('draw', DG.code, 'priv', pkt, false);
+  arcPub('draw', DG.code, 'priv', pkt, true);
 }
 
 async function dgCreateRoom(){
-  ensureMQTT().catch(()=>{});
   dgLeaveRoom(false);
   const rmCode = genCode();
   DG.code = rmCode;
@@ -11285,6 +11784,12 @@ async function dgCreateRoom(){
   };
   dgSetupSubscriptions(rmCode);
   dgBroadcastState();
+  ensureMQTT().then(ok => {
+    if(ok && DG.code === rmCode && DG.host){
+      dgRebindMQTTSubs();
+      dgBroadcastState();
+    }
+  }).catch(()=>{});
   dgAddFeedItem({
     id: 'sys_create_' + Date.now(),
     type: 'sys',
@@ -11301,23 +11806,69 @@ async function dgJoinRoom(rawCode){
     toast('اكتب كود غرفة صحيح (٤-٦ أحرف أو أرقام)', 'warn');
     return;
   }
-  ensureMQTT().catch(()=>{});
   dgLeaveRoom(false);
   DG.code = c;
   DG.host = false;
   DG.S = null;
   dgSetupSubscriptions(c);
-  const me = me0();
-  arcPub('draw', c, 'join', { player: me, ts: Date.now() });
+  arcPub('draw', c, 'join', { player: me0(), ts: Date.now() });
   setTimeout(()=>{
     if(DG.code === c && !DG.host){
       arcPub('draw', c, 'join', { player: me0(), ts: Date.now() });
     }
-  }, 600);
+  }, 450);
+  ensureMQTT().then(ok => {
+    if(ok && DG.code === c && !DG.host){
+      dgRebindMQTTSubs();
+      arcPub('draw', c, 'join', { player: me0(), ts: Date.now() });
+    }
+  }).catch(()=>{});
   toast('جاري الاتصال بغرفة ارسم وخمّن ' + c + '...', 'ok', 2200);
   dgRender();
 }
 window.dgJoinRoom = dgJoinRoom;
+
+function dgHostUpsertGuestPlayer(rmCode, p){
+  if(!DG.host || !DG.S || !p || !p.pid) return false;
+  const existing = DG.S.players.find(x => x.pid === p.pid || (x.uid && p.uid && x.uid === p.uid));
+  let isNewOrRestored = false;
+  if(existing){
+    const wasGone = !!existing.gone;
+    const pidChanged = existing.pid !== p.pid;
+    existing.pid = p.pid;
+    existing.name = p.name || existing.name;
+    existing.av = p.av || existing.av;
+    existing.col = p.col || existing.col;
+    existing.gone = false;
+    existing.lastSeen = Date.now();
+    if(wasGone || pidChanged) isNewOrRestored = true;
+  } else {
+    const activeCount = DG.S.players.filter(x => !x.gone).length;
+    if(activeCount >= (DG.S.cfg.maxPlayers || 8)){
+      arcPub('draw', rmCode, 'priv', { toPid: p.pid, type: 'room_full' });
+      return false;
+    }
+    DG.S.players.push({
+      pid: p.pid,
+      uid: p.uid,
+      name: p.name,
+      av: p.av,
+      col: p.col,
+      score: 0,
+      isHost: false,
+      isBot: false,
+      gone: false,
+      lastSeen: Date.now()
+    });
+    arcPub('draw', rmCode, 'feed', {
+      id: 'join_' + p.pid + '_' + Date.now(),
+      type: 'sys',
+      text: `👋 انضم ${p.name} إلى الغرفة!`
+    });
+    isNewOrRestored = true;
+  }
+  return isNewOrRestored;
+}
 
 function dgSetupSubscriptions(rmCode){
   arcClearSubs(DG);
@@ -11326,46 +11877,16 @@ function dgSetupSubscriptions(rmCode){
   arcSub(DG, 'draw', rmCode, 'join', d => {
     if(!DG.host || !DG.S || !d || !d.player) return;
     const p = d.player;
-    const existing = DG.S.players.find(x => x.pid === p.pid || (x.uid && p.uid && x.uid === p.uid));
-    if(existing){
-      existing.pid = p.pid;
-      existing.name = p.name;
-      existing.av = p.av;
-      existing.col = p.col;
-      existing.gone = false;
-      existing.lastSeen = Date.now();
-    } else {
-      const activeCount = DG.S.players.filter(x => !x.gone).length;
-      if(activeCount >= (DG.S.cfg.maxPlayers || 8)){
-        arcPub('draw', rmCode, 'priv', { toPid: p.pid, type: 'room_full' });
-        return;
-      }
-      DG.S.players.push({
-        pid: p.pid,
-        uid: p.uid,
-        name: p.name,
-        av: p.av,
-        col: p.col,
-        score: 0,
-        isHost: false,
-        isBot: false,
-        gone: false,
-        lastSeen: Date.now()
-      });
-      arcPub('draw', rmCode, 'feed', {
-        id: 'join_' + p.pid + '_' + Date.now(),
-        type: 'sys',
-        text: `👋 انضم ${p.name} إلى الغرفة!`
-      });
-    }
+    dgHostUpsertGuestPlayer(rmCode, p);
     dgBroadcastState();
-    // Also sync current canvas strokes to newly joined/rejoined player
-    if(DG.S.phase === 'drawing' && DG.strokes.length){
+    // Sync current canvas strokes to newly joined/rejoined player
+    if(DG.S.phase === 'drawing' && (DG.strokes.length || DG.currentStroke)){
+      const allStrokes = DG.currentStroke ? DG.strokes.concat([DG.currentStroke]) : DG.strokes;
       arcPub('draw', rmCode, 'draw', {
         action: 'sync_strokes',
         turnSeq: DG.S.turnSeq,
         drawerPid: DG.S.drawerPid,
-        strokes: DG.strokes
+        strokes: allStrokes
       });
     }
     // If the rejoined player is the active Drawer, re-send their private word
@@ -11389,6 +11910,27 @@ function dgSetupSubscriptions(rmCode){
     }
   });
 
+  // 1b. Guest Heartbeat & Stroke Sync Verification (processed by Host)
+  arcSub(DG, 'draw', rmCode, 'hb', pkt => {
+    if(!DG.host || !DG.S || !pkt || !pkt.pid) return;
+    const added = pkt.player ? dgHostUpsertGuestPlayer(rmCode, pkt.player) : false;
+    const p = DG.S.players.find(x => x.pid === pkt.pid);
+    if(p) p.lastSeen = Date.now();
+    if(added || pkt.turnSeq !== DG.S.turnSeq){
+      dgBroadcastState();
+    }
+    if(DG.S.phase === 'drawing' && pkt.turnSeq === DG.S.turnSeq && pkt.pid !== DG.S.drawerPid){
+      if(typeof pkt.strokeCount === 'number' && pkt.strokeCount !== DG.strokes.length && !DG.isDrawing){
+        arcPub('draw', rmCode, 'draw', {
+          action: 'sync_strokes',
+          turnSeq: DG.S.turnSeq,
+          drawerPid: DG.S.drawerPid,
+          strokes: DG.strokes
+        });
+      }
+    }
+  });
+
   // 2. Room State broadcast (processed by all clients)
   arcSub(DG, 'draw', rmCode, 'state', s => {
     if(!s || s.code !== rmCode) return;
@@ -11400,16 +11942,22 @@ function dgSetupSubscriptions(rmCode){
     const prevPhase = DG.S ? DG.S.phase : '';
     DG.S = s;
 
-    // Reset canvas & turn-local secrets when turnSeq changes
+    // Reset canvas & turn-local secrets only when turnSeq actually changes
     if(s.turnSeq !== prevTurnSeq){
       DG.strokes = [];
       DG.currentStroke = null;
       DG.isDrawing = false;
       if(s.drawerPid !== ME){
         DG.myWordChoices = null;
+        DG.myWordChoicesTurnSeq = -1;
         DG.mySecretWord = null;
-      } else if(DG.mySecretWord && DG.mySecretWord.turnSeq !== s.turnSeq){
-        DG.mySecretWord = null;
+      } else {
+        if(DG.myWordChoicesTurnSeq !== s.turnSeq){
+          DG.myWordChoices = null;
+        }
+        if(DG.mySecretWord && DG.mySecretWord.turnSeq !== s.turnSeq){
+          DG.mySecretWord = null;
+        }
       }
       dgRedrawCanvas();
     }
@@ -11419,10 +11967,12 @@ function dgSetupSubscriptions(rmCode){
     if(s.phase === 'lobby'){
       DG.mySecretWord = null;
       DG.myWordChoices = null;
+      DG.myWordChoicesTurnSeq = -1;
       DG.strokes = [];
+      DG.currentStroke = null;
     }
     // If I am the Drawer and haven't received my private packet yet, request it from Host
-    if(s.drawerPid === ME && ((s.phase === 'choose_word' && !DG.myWordChoices) || (s.phase === 'drawing' && !DG.mySecretWord))){
+    if(s.drawerPid === ME && ((s.phase === 'choose_word' && (!DG.myWordChoices || !DG.myWordChoices.length)) || (s.phase === 'drawing' && (!DG.mySecretWord || !DG.mySecretWord.word)))){
       arcPub('draw', rmCode, 'req_priv', { pid: ME, turnSeq: s.turnSeq });
     }
     if(s.phase === 'game_over' && prevPhase !== 'game_over'){
@@ -11461,11 +12011,13 @@ function dgSetupSubscriptions(rmCode){
       dgLeaveRoom(true);
       return;
     }
+    if(DG.S && pkt.turnSeq && pkt.turnSeq < DG.S.turnSeq) return;
     if(pkt.type === 'word_choices'){
       DG.myWordChoices = pkt.choices || [];
+      DG.myWordChoicesTurnSeq = pkt.turnSeq || (DG.S ? DG.S.turnSeq : 0);
       dgRender();
     } else if(pkt.type === 'secret_word'){
-      DG.mySecretWord = { word: pkt.word, cat: pkt.cat, turnSeq: pkt.turnSeq };
+      DG.mySecretWord = { word: pkt.word, cat: pkt.cat, turnSeq: pkt.turnSeq || (DG.S ? DG.S.turnSeq : 0) };
       DG.myWordChoices = null;
       dgRender();
     }
@@ -11474,37 +12026,80 @@ function dgSetupSubscriptions(rmCode){
   // 4. Drawer word selection packet (processed by Host)
   arcSub(DG, 'draw', rmCode, 'pick_word', pkt => {
     if(!DG.host || !DG.S || DG.S.phase !== 'choose_word') return;
-    if(!pkt || pkt.pid !== DG.S.drawerPid) return; // Security check: only active Drawer can pick
+    if(!pkt || pkt.pid !== DG.S.drawerPid) return;
     dgHostCommitWordChoice(pkt.choiceIndex || 0);
   });
 
-  // 5. Real-time Canvas Drawing packets (processed by all clients, strictly validated)
+  // 5. Real-time Canvas Drawing packets (processed by all clients, self-healing & strictly validated)
   arcSub(DG, 'draw', rmCode, 'draw', pkt => {
     if(!DG.S || !pkt) return;
-    // Security: only accept drawing commands from the active drawer (or host stroke sync) for current turnSeq
     if(pkt.turnSeq !== DG.S.turnSeq) return;
     if(pkt.drawerPid !== DG.S.drawerPid) return;
 
     if(pkt.action === 'stroke_start'){
-      if(pkt.drawerPid === ME) return; // Drawer already rendered locally
-      DG.currentStroke = pkt.stroke;
-      dgDrawSegmentOnCanvas(pkt.stroke, true);
+      if(pkt.drawerPid === ME || !pkt.stroke) return;
+      if(DG.strokes.some(st => st.id === pkt.stroke.id)) return;
+      if(DG.currentStroke && DG.currentStroke.id === pkt.stroke.id && DG.currentStroke.pts.length >= (pkt.stroke.pts ? pkt.stroke.pts.length : 0)){
+        return;
+      }
+      DG.currentStroke = {
+        id: pkt.stroke.id,
+        tool: pkt.stroke.tool || 'pen',
+        color: pkt.stroke.color || '#111827',
+        size: Number(pkt.stroke.size) || 8,
+        pts: Array.isArray(pkt.stroke.pts) ? pkt.stroke.pts.slice() : []
+      };
+      dgDrawSegmentOnCanvas(DG.currentStroke, true);
     } else if(pkt.action === 'stroke_move'){
       if(pkt.drawerPid === ME) return;
-      if(DG.currentStroke && DG.currentStroke.id === pkt.strokeId){
+      const sId = pkt.strokeId || (pkt.stroke && pkt.stroke.id);
+      if(!sId || DG.strokes.some(st => st.id === sId)) return;
+      if(!DG.currentStroke || DG.currentStroke.id !== sId){
+        // Self-heal if stroke_start was missed or delayed
+        const initPts = Array.isArray(pkt.pts) ? pkt.pts.slice() : (pkt.pt ? [pkt.pt] : []);
+        if(!initPts.length) return;
+        DG.currentStroke = {
+          id: sId,
+          tool: pkt.tool || 'pen',
+          color: pkt.color || '#111827',
+          size: Number(pkt.size) || 8,
+          pts: initPts
+        };
+        dgDrawSegmentOnCanvas(DG.currentStroke, false);
+        return;
+      }
+      if(Array.isArray(pkt.pts)){
+        const prevLen = DG.currentStroke.pts.length;
+        if(pkt.pts.length > prevLen){
+          for(let i = prevLen; i < pkt.pts.length; i++){
+            DG.currentStroke.pts.push(pkt.pts[i]);
+            dgDrawPointAppend(DG.currentStroke);
+          }
+        }
+      } else if(pkt.pt){
         DG.currentStroke.pts.push(pkt.pt);
         dgDrawPointAppend(DG.currentStroke);
       }
     } else if(pkt.action === 'stroke_full'){
-      if(pkt.drawerPid === ME) return;
-      DG.currentStroke = null;
-      if(!DG.strokes.some(st => st.id === pkt.stroke.id)){
+      if(pkt.drawerPid === ME || !pkt.stroke) return;
+      if(DG.currentStroke && DG.currentStroke.id === pkt.stroke.id){
+        DG.currentStroke = null;
+      }
+      const existingIdx = DG.strokes.findIndex(st => st.id === pkt.stroke.id);
+      if(existingIdx >= 0){
+        DG.strokes[existingIdx] = pkt.stroke;
+      } else {
         DG.strokes.push(pkt.stroke);
       }
       dgRedrawCanvas();
     } else if(pkt.action === 'undo'){
       if(pkt.drawerPid === ME) return;
-      DG.strokes.pop();
+      DG.currentStroke = null;
+      if(Array.isArray(pkt.strokes)){
+        DG.strokes = pkt.strokes;
+      } else {
+        DG.strokes.pop();
+      }
       dgRedrawCanvas();
     } else if(pkt.action === 'clear'){
       if(pkt.drawerPid === ME) return;
@@ -11512,8 +12107,10 @@ function dgSetupSubscriptions(rmCode){
       DG.currentStroke = null;
       dgRedrawCanvas();
     } else if(pkt.action === 'sync_strokes'){
-      if(Array.isArray(pkt.strokes) && pkt.strokes.length > DG.strokes.length){
+      if(pkt.drawerPid === ME && DG.isDrawing) return;
+      if(Array.isArray(pkt.strokes)){
         DG.strokes = pkt.strokes;
+        DG.currentStroke = null;
         dgRedrawCanvas();
       }
     }
@@ -11531,7 +12128,6 @@ function dgSetupSubscriptions(rmCode){
     if(item.type === 'correct'){
       beep(880, 0.11, 'sine', 0.1);
     } else if(item.type === 'close' && item.targetPid && item.targetPid !== ME){
-      // Only show "close guess" hint to the player who typed it
       return;
     }
     dgAddFeedItem(item);
@@ -11549,7 +12145,6 @@ function dgSetupSubscriptions(rmCode){
           type: 'sys',
           text: `🚪 غادر ${p.name || 'لاعب'} الغرفة.`
         });
-        // If the Drawer disconnected during choose_word or drawing, end turn gracefully
         if(DG.S.drawerPid === d.pid && (DG.S.phase === 'choose_word' || DG.S.phase === 'drawing')){
           dgHostEndTurn('غادر الرسام الجولة الحالية');
         } else {
@@ -11560,6 +12155,32 @@ function dgSetupSubscriptions(rmCode){
       toast('غادر مضيف الغرفة', 'warn');
     }
   });
+
+  // 9. Periodic Heartbeat & Auto-Discovery Retry Timer (DG.hbTimer)
+  if(DG.hbTimer) clearInterval(DG.hbTimer);
+  DG.hbTimer = setInterval(() => {
+    if(!DG.code || DG.code !== rmCode) return;
+    if(!DG.host){
+      if(!DG.S){
+        arcPub('draw', rmCode, 'join', { player: me0(), ts: Date.now() });
+      } else {
+        arcPub('draw', rmCode, 'hb', {
+          pid: ME,
+          player: me0(),
+          turnSeq: DG.S.turnSeq,
+          strokeCount: DG.strokes.length,
+          ts: Date.now()
+        });
+        if(DG.S.drawerPid === ME){
+          if(DG.S.phase === 'choose_word' && (!DG.myWordChoices || !DG.myWordChoices.length)){
+            arcPub('draw', rmCode, 'req_priv', { pid: ME, turnSeq: DG.S.turnSeq });
+          } else if(DG.S.phase === 'drawing' && (!DG.mySecretWord || !DG.mySecretWord.word)){
+            arcPub('draw', rmCode, 'req_priv', { pid: ME, turnSeq: DG.S.turnSeq });
+          }
+        }
+      }
+    }
+  }, 2200);
 
   // Host tick timer (manages phase countdowns, progressive hints, and turn transitions)
   if(DG.tickTimer) clearInterval(DG.tickTimer);
@@ -11643,22 +12264,25 @@ function dgHostStartChooseWordPhase(){
   DG.S.turnDelta = {};
   DG.strokes = [];
   DG.currentStroke = null;
+  DG.isDrawing = false;
 
   if(drawer.pid === ME){
     DG.myWordChoices = choices;
+    DG.myWordChoicesTurnSeq = DG.S.turnSeq;
     DG.mySecretWord = null;
   } else {
     DG.myWordChoices = null;
+    DG.myWordChoicesTurnSeq = -1;
     DG.mySecretWord = null;
   }
 
+  dgBroadcastState();
   dgSendPrivateToDrawer({
     toPid: drawer.pid,
     type: 'word_choices',
     turnSeq: DG.S.turnSeq,
     choices
   });
-  dgBroadcastState();
 
   arcPub('draw', DG.code, 'feed', {
     id: 'turn_' + DG.S.turnSeq,
@@ -11666,7 +12290,6 @@ function dgHostStartChooseWordPhase(){
     text: `🎨 الجولة ${DG.S.round}/${DG.S.cfg.rounds} — دور ${drawer.name} لاختيار كلمة والرسم!`
   });
 
-  // If the Drawer is a Bot, auto-pick a word and draw an illustration
   if(drawer.isBot){
     DG.H.botTimer = setTimeout(() => {
       if(DG.host && DG.S && DG.S.phase === 'choose_word' && DG.S.drawerPid === drawer.pid){
@@ -11698,6 +12321,7 @@ function dgHostCommitWordChoice(choiceIdx){
     DG.myWordChoices = null;
   }
 
+  dgBroadcastState();
   dgSendPrivateToDrawer({
     toPid: DG.S.drawerPid,
     type: 'secret_word',
@@ -11705,7 +12329,6 @@ function dgHostCommitWordChoice(choiceIdx){
     word: picked.word,
     cat: picked.cat
   });
-  dgBroadcastState();
 
   arcPub('draw', DG.code, 'feed', {
     id: 'drawstart_' + DG.S.turnSeq,
@@ -11713,20 +12336,29 @@ function dgHostCommitWordChoice(choiceIdx){
     text: `✏️ بدأ ${DG.S.drawerName} الرسم! الكلمة من تصنيف (${picked.cat}) وعدد حروفها (${DG.S.wordLen}).`
   });
 
-  // Schedule Bot drawing or Bot guessing if bots are present
   dgHostScheduleBotActions();
 }
 
 function dgPlayerPickWord(idx){
   if(!DG.S || DG.S.phase !== 'choose_word' || DG.S.drawerPid !== ME) return;
-  // Optimistically store the chosen word immediately for the Drawer so it displays right away
+  let chosen = null;
   if(Array.isArray(DG.myWordChoices) && DG.myWordChoices[idx]){
-    const chosen = DG.myWordChoices[idx];
+    chosen = DG.myWordChoices[idx];
     DG.mySecretWord = { word: chosen.word, cat: chosen.cat, turnSeq: DG.S.turnSeq };
   }
   if(DG.host){
     dgHostCommitWordChoice(idx);
   } else {
+    if(chosen){
+      const drawSecs = Number(DG.S.cfg && DG.S.cfg.drawTime) || 80;
+      DG.S.phase = 'drawing';
+      DG.S.phaseEndsAt = Date.now() + drawSecs * 1000;
+      DG.S.wordLen = dgCountLetters(chosen.word);
+      DG.S.wordCat = chosen.cat;
+      DG.S.hintMask = dgBuildInitialMask(chosen.word);
+      DG.myWordChoices = null;
+      dgRender();
+    }
     arcPub('draw', DG.code, 'pick_word', { pid: ME, choiceIndex: idx, ts: Date.now() });
   }
 }
@@ -11742,7 +12374,6 @@ function dgHostRevealOneHintLetter(hintNumber){
       hiddenIndices.push(i);
     }
   }
-  // Keep at least 2 characters hidden so the word isn't fully revealed by hints
   if(hiddenIndices.length <= 2) return;
   const pickIdx = hiddenIndices[Math.floor(Math.random() * hiddenIndices.length)];
   mask[pickIdx] = wordChars[pickIdx];
@@ -11807,7 +12438,6 @@ function dgHostHandleGuess(pkt){
   const sender = DG.S.players.find(p => p.pid === pkt.pid && !p.gone);
   if(!sender) return;
 
-  // Outside drawing phase, allow normal chat in the guess feed
   if(DG.S.phase !== 'drawing' || !DG.H.secretWordObj){
     arcPub('draw', DG.code, 'feed', {
       id: 'g_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
@@ -11825,7 +12455,6 @@ function dgHostHandleGuess(pkt){
   const normGuess = dgNormWord(rawText);
   const normSecret = dgNormWord(DG.H.secretWordObj.word);
 
-  // Security: Drawer cannot guess or type the secret word in chat
   if(sender.pid === DG.S.drawerPid){
     if(normGuess.includes(normSecret) || normSecret.includes(normGuess)){
       return;
@@ -11843,7 +12472,6 @@ function dgHostHandleGuess(pkt){
     return;
   }
 
-  // Already guessed player cannot leak the word
   if(DG.S.guessedPids.includes(sender.pid)){
     if(normGuess === normSecret || normGuess.includes(normSecret)){
       return;
@@ -11861,7 +12489,6 @@ function dgHostHandleGuess(pkt){
     return;
   }
 
-  // Check if guess matches the secret word!
   if(normGuess === normSecret){
     DG.S.guessedPids.push(sender.pid);
     const guessedOrder = DG.S.guessedPids.length;
@@ -11881,7 +12508,6 @@ function dgHostHandleGuess(pkt){
       DG.S.turnDelta[drawerObj.pid] = (DG.S.turnDelta[drawerObj.pid] || 0) + drawerPts;
     }
 
-    // Broadcast celebration WITHOUT revealing the word!
     arcPub('draw', DG.code, 'feed', {
       id: 'correct_' + DG.S.turnSeq + '_' + sender.pid,
       type: 'correct',
@@ -11894,7 +12520,6 @@ function dgHostHandleGuess(pkt){
       text: `🎉 خمّن ${sender.name} الكلمة الصحيحة! (+${guesserPts} نقطة)`
     });
 
-    // Check if all active non-drawer players have guessed the word
     const activeGuessers = DG.S.players.filter(p => !p.gone && p.pid !== DG.S.drawerPid);
     const allGuessed = activeGuessers.length > 0 && activeGuessers.every(p => DG.S.guessedPids.includes(p.pid));
     if(allGuessed){
@@ -11910,7 +12535,6 @@ function dgHostHandleGuess(pkt){
     return;
   }
 
-  // Check if it's a very close guess (1 letter off)
   if(dgIsCloseGuess(normGuess, normSecret)){
     arcPub('draw', DG.code, 'feed', {
       id: 'close_' + Date.now() + '_' + sender.pid,
@@ -11921,7 +12545,6 @@ function dgHostHandleGuess(pkt){
     return;
   }
 
-  // Normal wrong guess: display in public guess feed
   arcPub('draw', DG.code, 'feed', {
     id: 'g_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
     type: 'guess',
@@ -11955,7 +12578,6 @@ function dgSubmitGuess(rawVal){
 }
 window.dgSubmitGuess = dgSubmitGuess;
 
-// Intercept SharbRoomChat messages during Draw & Guess so players can't leak the secret word in side chat
 window.dgInterceptRoomChat = function(trimmedText){
   if(!DG.S || DG.S.phase !== 'drawing') return { blocked: false };
   const activeSecret = dgGetActiveDrawerSecret();
@@ -11981,7 +12603,6 @@ window.dgInterceptRoomChat = function(trimmedText){
 function dgHostScheduleBotActions(){
   if(!DG.host || !DG.S || DG.S.phase !== 'drawing') return;
   const drawer = DG.S.players.find(p => p.pid === DG.S.drawerPid);
-  // If Bot is the Drawer, sketch a fun geometric illustration on the canvas
   if(drawer && drawer.isBot){
     const botStrokes = [
       { id: 'bs1_' + Date.now(), tool: 'pen', color: '#2563eb', size: 8, pts: [[280,260],[340,180],[460,180],[520,260],[280,260]] },
@@ -12002,7 +12623,6 @@ function dgHostScheduleBotActions(){
       }, 900 * (idx + 1));
     });
   }
-  // If there are Bot Guessers, let them guess right after some strokes
   const botGuessers = DG.S.players.filter(p => !p.gone && p.isBot && p.pid !== DG.S.drawerPid);
   botGuessers.forEach((bot, idx) => {
     setTimeout(() => {
@@ -12091,13 +12711,26 @@ function dgClientCoordsToCanvas(canvas, clientX, clientY){
   return [x, y];
 }
 
+function dgFlushCurrentStrokeMove(){
+  DG.moveFlushTimer = null;
+  if(!DG.isDrawing || !DG.currentStroke || !dgCanIDrawNow()) return;
+  arcPub('draw', DG.code, 'draw', {
+    action: 'stroke_move',
+    turnSeq: DG.S.turnSeq,
+    drawerPid: ME,
+    strokeId: DG.currentStroke.id,
+    tool: DG.currentStroke.tool,
+    color: DG.currentStroke.color,
+    size: DG.currentStroke.size,
+    pts: DG.currentStroke.pts.slice()
+  });
+}
+
 function dgBindCanvasEvents(){
   const canvas = document.getElementById('dgCanvas');
   if(!canvas || canvas.dataset.bound === '1') return;
   canvas.dataset.bound = '1';
 
-  // Pointer Events cover mouse, touch, and pen with one consistent path.
-  // Keep coordinates in the canvas's intrinsic 800x500 coordinate space.
   canvas.style.touchAction = 'none';
   canvas.style.userSelect = 'none';
   canvas.style.webkitUserSelect = 'none';
@@ -12116,13 +12749,18 @@ function dgBindCanvasEvents(){
       size: DG.size,
       pts: [pt]
     };
-    // Render a visible dot immediately, even for a tap/click with no movement.
     dgDrawSegmentOnCanvas(DG.currentStroke, true);
     arcPub('draw', DG.code, 'draw', {
       action: 'stroke_start',
       turnSeq: DG.S.turnSeq,
       drawerPid: ME,
-      stroke: DG.currentStroke
+      stroke: {
+        id: DG.currentStroke.id,
+        tool: DG.currentStroke.tool,
+        color: DG.currentStroke.color,
+        size: DG.currentStroke.size,
+        pts: [pt]
+      }
     });
   };
 
@@ -12134,20 +12772,26 @@ function dgBindCanvasEvents(){
     if(lastPt && Math.hypot(pt[0] - lastPt[0], pt[1] - lastPt[1]) < 1) return;
     DG.currentStroke.pts.push(pt);
     dgDrawPointAppend(DG.currentStroke);
-    arcPub('draw', DG.code, 'draw', {
-      action: 'stroke_move',
-      turnSeq: DG.S.turnSeq,
-      drawerPid: ME,
-      strokeId: DG.currentStroke.id,
-      pt
-    });
+    if(!DG.moveFlushTimer){
+      DG.moveFlushTimer = setTimeout(dgFlushCurrentStrokeMove, 30);
+    }
   };
 
   const endStroke = (e) => {
     if(!DG.isDrawing || !DG.currentStroke) return;
     if(e && e.preventDefault) e.preventDefault();
+    if(DG.moveFlushTimer){
+      clearTimeout(DG.moveFlushTimer);
+      DG.moveFlushTimer = null;
+    }
     DG.isDrawing = false;
-    const finished = DG.currentStroke;
+    const finished = {
+      id: DG.currentStroke.id,
+      tool: DG.currentStroke.tool,
+      color: DG.currentStroke.color,
+      size: DG.currentStroke.size,
+      pts: DG.currentStroke.pts.slice()
+    };
     DG.currentStroke = null;
     if(!DG.strokes.some(st => st.id === finished.id)) DG.strokes.push(finished);
     if(dgCanIDrawNow()){
@@ -12173,10 +12817,14 @@ function dgBindCanvasEvents(){
     if(DG.isDrawing) endStroke();
   });
 
-  // Avoid a stuck stroke if the pointer is released outside the browser window.
-  window.addEventListener('blur', () => {
-    if(DG.isDrawing) endStroke();
-  });
+  if(!window.__dgBlurHooked){
+    window.__dgBlurHooked = true;
+    window.addEventListener('blur', () => {
+      if(DG.isDrawing){
+        endStroke();
+      }
+    });
+  }
 }
 
 function dgUndoStroke(){
@@ -12187,7 +12835,8 @@ function dgUndoStroke(){
   arcPub('draw', DG.code, 'draw', {
     action: 'undo',
     turnSeq: DG.S.turnSeq,
-    drawerPid: ME
+    drawerPid: ME,
+    strokes: DG.strokes.slice()
   });
 }
 window.dgUndoStroke = dgUndoStroke;
@@ -12205,7 +12854,7 @@ function dgClearCanvas(){
 }
 window.dgClearCanvas = dgClearCanvas;
 
-/* ================= UI RENDERING ================= */
+/* ================= UI RENDERING (WITH IN-PLACE DRAWING UPDATES) ================= */
 function dgUpdateTimerDOM(){
   const badge = document.getElementById('dgTimerVal');
   const wrap = document.getElementById('dgTimerBadge');
@@ -12244,12 +12893,38 @@ function dgRenderFeedOnly(){
   log.scrollTop = log.scrollHeight;
 }
 
+function dgBuildRankListHTML(S, sortedPlayers){
+  return sortedPlayers.map((p, i) => {
+    const pIsDrawer = S.phase !== 'lobby' && S.phase !== 'game_over' && S.drawerPid === p.pid;
+    const pGuessed = S.phase === 'drawing' && S.guessedPids && S.guessedPids.includes(p.pid);
+    return `
+      <div class="dg-rank-item ${pIsDrawer ? 'is-drawer' : ''} ${pGuessed ? 'has-guessed' : ''}">
+        <div class="dg-rank-player">
+          <span class="dg-rank-num ${i === 0 ? 'top1' : ''}">${i + 1}</span>
+          <span class="av" style="--c:${esc(p.col || '#38bdf8')};width:28px;height:28px;font-size:14px;flex-shrink:0">${esc(p.av || '🙂')}</span>
+          <div style="min-width:0;flex:1">
+            <div style="font-weight:800;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+              ${esc(p.name)} ${p.pid === ME ? '<span class="tiny mut">(أنت)</span>' : ''}
+            </div>
+            <div class="tiny" style="color:${pIsDrawer ? '#38bdf8' : (pGuessed ? '#4ade80' : 'var(--mut)')};white-space:nowrap">
+              ${pIsDrawer ? '🎨 الرسام الآن' : (pGuessed ? '✅ خمّن الكلمة!' : (p.isHost ? '👑 المضيف' : 'مخمّن'))}
+            </div>
+          </div>
+        </div>
+        <div class="dg-flex" style="gap:4px">
+          <span class="dg-rank-score">${p.score || 0}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 function dgRender(){
   const root = document.getElementById('dgRoot');
   if(!root) return;
 
   // 1. Entry Screen (No active room yet)
   if(!DG.code){
+    delete root.dataset.dgPhase;
     const cfg = DG.draftCfg;
     root.innerHTML = `
       <div class="dg-wrap">
@@ -12350,6 +13025,7 @@ function dgRender(){
   // 2. Active Room Screen (Waiting for state or active room)
   const S = DG.S;
   if(!S){
+    delete root.dataset.dgPhase;
     root.innerHTML = `
       <div class="dg-wrap">
         <section class="hero glass" style="text-align:center;padding:36px 20px">
@@ -12454,6 +13130,50 @@ function dgRender(){
       </div>`;
   }
 
+  const guessPlaceholder = (S.phase === 'drawing' && isDrawer)
+    ? 'أنت الرسام الآن — لا يمكنك التخمين 🎨'
+    : (S.phase === 'drawing' && S.guessedPids && S.guessedPids.includes(ME))
+      ? 'خمّنت الكلمة الصحيحة! ✅'
+      : 'اكتب تخمينك للكلمة هنا ثم اضغط إرسال...';
+
+  const guessDisabled = (S.phase === 'drawing' && (isDrawer || (S.guessedPids && S.guessedPids.includes(ME))));
+
+  // FAST IN-PLACE UPDATE DURING ACTIVE DRAWING:
+  // Never destroy #dgCanvas or #dgGuessInput while a turn is in 'drawing' phase!
+  if(
+    S.phase === 'drawing' &&
+    root.dataset.dgPhase === 'drawing' &&
+    Number(root.dataset.dgTurnSeq) === S.turnSeq &&
+    root.dataset.dgIsDrawer === (isDrawer ? '1' : '0') &&
+    root.dataset.dgCode === S.code &&
+    document.getElementById('dgCanvas')
+  ){
+    const topSlot = document.getElementById('dgTopWordBannerSlot');
+    if(topSlot && topSlot.innerHTML !== wordBannerHTML) topSlot.innerHTML = wordBannerHTML;
+    const barSlot = document.getElementById('dgCanvasWordBarSlot');
+    if(barSlot && barSlot.innerHTML !== canvasWordBarHTML) barSlot.innerHTML = canvasWordBarHTML;
+    const rankList = document.getElementById('dgRankList');
+    const newRankHTML = dgBuildRankListHTML(S, sortedPlayers);
+    if(rankList && rankList.innerHTML !== newRankHTML) rankList.innerHTML = newRankHTML;
+    const rankHead = document.getElementById('dgRankHeadTitle');
+    if(rankHead) rankHead.textContent = `🏆 ترتيب اللاعبين (${activePlayers.length}/${S.cfg.maxPlayers || 8})`;
+    const roundTag = document.getElementById('dgRoundTag');
+    if(roundTag) roundTag.innerHTML = `الجولة <b>${Math.min(S.round, S.cfg.rounds)}/${S.cfg.rounds}</b>`;
+    const gTag = document.getElementById('dgGuessedCountTag');
+    if(gTag) gTag.textContent = `${S.guessedPids ? S.guessedPids.length : 0} خمّنوها`;
+    const gInp = document.getElementById('dgGuessInput');
+    const gBtn = document.getElementById('dgGuessSubmitBtn');
+    if(gInp){
+      if(gInp.placeholder !== guessPlaceholder) gInp.placeholder = guessPlaceholder;
+      if(gInp.disabled !== !!guessDisabled) gInp.disabled = !!guessDisabled;
+    }
+    if(gBtn && gBtn.disabled !== !!guessDisabled){
+      gBtn.disabled = !!guessDisabled;
+    }
+    dgUpdateTimerDOM();
+    return;
+  }
+
   // Build Canvas Stage Overlay for Lobby, Choose Word, Turn End, or Game Over
   let overlayHTML = '';
   if(S.phase === 'lobby'){
@@ -12555,13 +13275,14 @@ function dgRender(){
       </div>`;
   }
 
-  const guessPlaceholder = (S.phase === 'drawing' && isDrawer)
-    ? 'أنت الرسام الآن — لا يمكنك التخمين 🎨'
-    : (S.phase === 'drawing' && S.guessedPids && S.guessedPids.includes(ME))
-      ? 'خمّنت الكلمة الصحيحة! ✅'
-      : 'اكتب تخمينك للكلمة هنا ثم اضغط إرسال...';
+  const prevInpEl = document.getElementById('dgGuessInput');
+  const prevInpVal = prevInpEl ? prevInpEl.value : '';
+  const wasInpFocused = prevInpEl && document.activeElement === prevInpEl;
 
-  const guessDisabled = (S.phase === 'drawing' && (isDrawer || (S.guessedPids && S.guessedPids.includes(ME))));
+  root.dataset.dgPhase = S.phase;
+  root.dataset.dgTurnSeq = String(S.turnSeq);
+  root.dataset.dgIsDrawer = isDrawer ? '1' : '0';
+  root.dataset.dgCode = S.code;
 
   root.innerHTML = `
     <div class="dg-wrap">
@@ -12571,10 +13292,10 @@ function dgRender(){
           <span class="tag host">🎨 كود الغرفة: <b id="dgRoomCodeDisp" style="letter-spacing:1.2px">${esc(S.code)}</b></span>
           <button type="button" class="btn ghost sm" id="dgBtnCopyCode">📋 نسخ الكود</button>
           <button type="button" class="btn ghost sm" id="dgBtnCopyLink">🔗 رابط الدعوة</button>
-          <span class="tag">الجولة <b>${Math.min(S.round, S.cfg.rounds)}/${S.cfg.rounds}</b></span>
+          <span class="tag" id="dgRoundTag">الجولة <b>${Math.min(S.round, S.cfg.rounds)}/${S.cfg.rounds}</b></span>
         </div>
 
-        ${wordBannerHTML}
+        <div id="dgTopWordBannerSlot" style="display:contents">${wordBannerHTML}</div>
 
         <div class="dg-flex">
           <div class="dg-timer-badge" id="dgTimerBadge">
@@ -12590,37 +13311,16 @@ function dgRender(){
         <!-- Col 1: Live Leaderboard & Friends Invite -->
         <div class="dg-panel dg-RankCol">
           <div class="dg-panel-head">
-            <span>🏆 ترتيب اللاعبين (${activePlayers.length}/${S.cfg.maxPlayers || 8})</span>
+            <span id="dgRankHeadTitle">🏆 ترتيب اللاعبين (${activePlayers.length}/${S.cfg.maxPlayers || 8})</span>
             <span class="tiny mut">النقاط</span>
           </div>
           <div class="dg-rank-list" id="dgRankList">
-            ${sortedPlayers.map((p, i) => {
-              const pIsDrawer = S.phase !== 'lobby' && S.phase !== 'game_over' && S.drawerPid === p.pid;
-              const pGuessed = S.phase === 'drawing' && S.guessedPids && S.guessedPids.includes(p.pid);
-              return `
-                <div class="dg-rank-item ${pIsDrawer ? 'is-drawer' : ''} ${pGuessed ? 'has-guessed' : ''}">
-                  <div class="dg-rank-player">
-                    <span class="dg-rank-num ${i === 0 ? 'top1' : ''}">${i + 1}</span>
-                    <span class="av" style="--c:${esc(p.col || '#38bdf8')};width:28px;height:28px;font-size:14px;flex-shrink:0">${esc(p.av || '🙂')}</span>
-                    <div style="min-width:0;flex:1">
-                      <div style="font-weight:800;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                        ${esc(p.name)} ${p.pid === ME ? '<span class="tiny mut">(أنت)</span>' : ''}
-                      </div>
-                      <div class="tiny" style="color:${pIsDrawer ? '#38bdf8' : (pGuessed ? '#4ade80' : 'var(--mut)')};white-space:nowrap">
-                        ${pIsDrawer ? '🎨 الرسام الآن' : (pGuessed ? '✅ خمّن الكلمة!' : (p.isHost ? '👑 المضيف' : 'مخمّن'))}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="dg-flex" style="gap:4px">
-                    <span class="dg-rank-score">${p.score || 0}</span>
-                  </div>
-                </div>`;
-            }).join('')}
+            ${dgBuildRankListHTML(S, sortedPlayers)}
           </div>
 
           <div style="margin-top:auto;padding-top:10px;border-top:1px solid rgba(148,163,184,.14)">
             <div class="tiny mut" style="margin-bottom:6px;font-weight:700">👥 دعوة صديق للغرفة مباشرة:</div>
-            <div style="max-height:150px;overflow-y:auto">${buildFriendsPanelListHTML('dg')}</div>
+            <div id="dgFriendsList" class="plist" style="max-height:210px;overflow-y:auto;margin:0">${buildFriendsPanelListHTML('dg')}</div>
           </div>
         </div>
 
@@ -12632,7 +13332,7 @@ function dgRender(){
           </div>
 
           <!-- Active Word Reminder / Hint Bar Directly Above Canvas -->
-          ${canvasWordBarHTML}
+          <div id="dgCanvasWordBarSlot" style="display:contents">${canvasWordBarHTML}</div>
 
           <div class="dg-canvas-stage">
             <canvas id="dgCanvas" width="800" height="500" class="${(isDrawer && S.phase === 'drawing') ? '' : 'readonly'}"></canvas>
@@ -12668,12 +13368,12 @@ function dgRender(){
         <div class="dg-panel dg-GuessCol">
           <div class="dg-panel-head">
             <span>💬 شات التخمين الذكي</span>
-            <span class="tag">${S.guessedPids ? S.guessedPids.length : 0} خمّنوها</span>
+            <span class="tag" id="dgGuessedCountTag">${S.guessedPids ? S.guessedPids.length : 0} خمّنوها</span>
           </div>
           <div class="dg-guess-log" id="dgGuessLog"></div>
           <form class="dg-guess-form" id="dgGuessForm" autocomplete="off">
             <input id="dgGuessInput" type="text" maxlength="100" placeholder="${esc(guessPlaceholder)}" ${guessDisabled ? 'disabled' : ''}>
-            <button type="submit" class="btn ok sm" ${guessDisabled ? 'disabled' : ''}>إرسال</button>
+            <button type="submit" id="dgGuessSubmitBtn" class="btn ok sm" ${guessDisabled ? 'disabled' : ''}>إرسال</button>
           </form>
         </div>
       </div>
@@ -12687,12 +13387,18 @@ function dgRender(){
   if(window.SharbRoomChat && typeof window.SharbRoomChat.refresh === 'function'){
     window.SharbRoomChat.refresh();
   }
-  root.querySelectorAll('[data-dginv]').forEach(btn => {
-    btn.onclick = () => {
-      const f = friends()[Number(btn.dataset.dginv)];
-      if(f && DG.code) dispatchInviteToFriend(f, DG.code, 'draw');
+  const dgFl = document.getElementById('dgFriendsList');
+  if(dgFl){
+    dgFl.onclick = e => {
+      const invBtn = e.target.closest('[data-dginv]');
+      if(invBtn){
+        const f = friends()[Number(invBtn.dataset.dginv)];
+        if(f && DG.code) dispatchInviteToFriend(f, DG.code, 'draw');
+        return;
+      }
+      handleFriendListClick(e, 'dg');
     };
-  });
+  }
 
   // Bind UI buttons
   const btnCopyCode = document.getElementById('dgBtnCopyCode');
@@ -12722,24 +13428,35 @@ function dgRender(){
     btn.onclick = () => dgPlayerPickWord(Number(btn.dataset.pickword));
   });
 
-  // Toolbar controls
+  const refreshToolbarInPlace = () => {
+    root.querySelectorAll('[data-dgcolor]').forEach(sw => {
+      sw.classList.toggle('on', DG.tool === 'pen' && DG.color === sw.dataset.dgcolor);
+    });
+    root.querySelectorAll('[data-dgsize]').forEach(sb => {
+      sb.classList.toggle('on', DG.size === Number(sb.dataset.dgsize));
+    });
+    const bp = document.getElementById('dgToolPen');
+    if(bp){ bp.classList.toggle('ok', DG.tool === 'pen'); bp.classList.toggle('ghost', DG.tool !== 'pen'); }
+    const be = document.getElementById('dgToolEraser');
+    if(be){ be.classList.toggle('ok', DG.tool === 'eraser'); be.classList.toggle('ghost', DG.tool !== 'eraser'); }
+  };
   root.querySelectorAll('[data-dgcolor]').forEach(sw => {
     sw.onclick = () => {
       DG.tool = 'pen';
       DG.color = sw.dataset.dgcolor;
-      dgRender();
+      refreshToolbarInPlace();
     };
   });
   root.querySelectorAll('[data-dgsize]').forEach(sb => {
     sb.onclick = () => {
       DG.size = Number(sb.dataset.dgsize);
-      dgRender();
+      refreshToolbarInPlace();
     };
   });
   const btnPen = document.getElementById('dgToolPen');
-  if(btnPen) btnPen.onclick = () => { DG.tool = 'pen'; dgRender(); };
+  if(btnPen) btnPen.onclick = () => { DG.tool = 'pen'; refreshToolbarInPlace(); };
   const btnEraser = document.getElementById('dgToolEraser');
-  if(btnEraser) btnEraser.onclick = () => { DG.tool = 'eraser'; dgRender(); };
+  if(btnEraser) btnEraser.onclick = () => { DG.tool = 'eraser'; refreshToolbarInPlace(); };
   const btnUndo = document.getElementById('dgToolUndo');
   if(btnUndo) btnUndo.onclick = () => dgUndoStroke();
   const btnClear = document.getElementById('dgToolClear');
@@ -12748,6 +13465,12 @@ function dgRender(){
   // Guess Chat form submission
   const guessForm = document.getElementById('dgGuessForm');
   const guessInp = document.getElementById('dgGuessInput');
+  if(guessInp && prevInpVal && !guessDisabled){
+    guessInp.value = prevInpVal;
+    if(wasInpFocused){
+      try{ guessInp.focus({preventScroll:true}); }catch(e){}
+    }
+  }
   if(guessForm && guessInp){
     guessForm.onsubmit = e => {
       e.preventDefault();
@@ -13804,6 +14527,7 @@ setInterval(()=>{
   window.SharbRoomChat = {
     getActiveRoomContext,
     syncRoomChatContext,
+    refresh: syncRoomChatContext,
     sendChatMessage,
     openChatPanel,
     closeChatPanel,
