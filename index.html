@@ -3588,6 +3588,600 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
   line-height: 1.35;
 }
 
+
+/* ============================================================================
+   SHARB GAMES — COMPLETE UI CORRECTIONS, MULTI-COLUMN PUBLIC ROOMS (5+ VISIBLE),
+   BALANCED 7-GAME GRID, QUICK STACK FIX, & UNO/DOMINO TEAM LOBBY SYSTEM
+   ============================================================================ */
+
+/* 1. Desktop 3-Column Proportions: Balanced, Harmonious 15px Spacing Across All Columns & Cards */
+.wrap {
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 14px 18px 48px;
+}
+.hub-col-left,
+.hub-col-right,
+.hub-col-center {
+  gap: 14px !important;
+  min-width: 0;
+}
+.hub-col-center > * {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+@media(min-width: 1180px){
+  .hub-grid-3col {
+    grid-template-columns: 385px minmax(0, 1fr) 290px;
+    gap: 15px !important;
+    align-items: start;
+  }
+}
+@media(min-width: 1480px){
+  .hub-grid-3col {
+    grid-template-columns: 415px minmax(0, 1fr) 300px;
+    gap: 16px !important;
+    align-items: start;
+  }
+}
+
+/* Compact Friends Card in Left Column so Public Rooms starts high in viewport */
+#hubLeftFriendsSidebar > section.hub-side-card:first-child {
+  padding: 11px 13px;
+  gap: 7px;
+}
+#hubLeftFriendsSidebar .hub-my-dock {
+  padding: 7px 10px;
+  border-radius: 13px;
+  gap: 8px;
+}
+#hubLeftFriendsSidebar #homeFl {
+  max-height: 96px !important;
+  overflow-y: auto;
+  padding-left: 2px;
+}
+#hubLeftFriendsSidebar #homeFl .empty {
+  padding: 7px 10px;
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+#hubLeftFriendsSidebar #homeFrStats:empty {
+  display: none;
+}
+
+/* 2. Fix Quick Stack Alignment: Override inherited justify-content:space-between so 1fr column stretches 100% flush with Center Column */
+.hub-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.hub-spotlight-card {
+  min-height: 226px;
+  padding: 20px 22px;
+  border-radius: 22px;
+  min-width: 0;
+}
+.hub-spotlight-foot {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hub-quick-stack {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: repeat(3, 1fr) !important;
+  justify-content: stretch !important;
+  justify-items: stretch !important;
+  align-content: stretch !important;
+  gap: 11px !important;
+  width: 100% !important;
+  height: 100%;
+  min-width: 0;
+}
+.hub-qcard {
+  height: 100%;
+  min-height: 66px;
+  padding: 10px 13px;
+  border-radius: 16px;
+  background: linear-gradient(155deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+  border: 1px solid var(--bd2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.hub-qcard:hover {
+  transform: translateY(-2px);
+  border-color: var(--ac);
+  background: linear-gradient(155deg, rgba(230,57,46,.16), rgba(255,255,255,.04));
+}
+.hub-qcard-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(230,57,46,.38), rgba(245,158,11,.22));
+  border: 1px solid rgba(255,140,120,.38);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.22), 0 4px 10px rgba(0,0,0,.22);
+}
+.hub-qcard-chev {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--ac2);
+  transition: transform .15s ease, background .15s ease;
+}
+.hub-qcard:hover .hub-qcard-chev {
+  background: var(--ac);
+  color: #fff;
+  transform: translateX(-2px);
+}
+
+/* 3. Fix Reference Image 2 (image_7a79bb.jpg & image_6c70c4.jpg): Balanced 7-Game Grid (3 + 2 + 2 Wide Cards, Zero Orphan, Zero Narrow Squish) */
+.hub-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+@media(min-width: 900px){
+  .hub-games-grid:not(.is-filtered) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .hub-games-grid:not(.is-filtered) > .hub-game-card:nth-child(-n+3) {
+    grid-column: span 4;
+  }
+  .hub-games-grid:not(.is-filtered) > .hub-game-card:nth-child(n+4) {
+    grid-column: span 6;
+  }
+}
+.hub-gc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+.hub-gc-foot > span {
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 800;
+}
+.hub-game-card {
+  min-height: 184px;
+  padding: 14px;
+  border-radius: 20px;
+}
+.hub-gc-art {
+  font-size: 32px;
+  margin: 6px 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1;
+}
+.hub-game-card .mt {
+  font-size: 14.5px;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-game-card .md {
+  font-size: 11.5px;
+  line-height: 1.42;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 4. Fix Reference Image 3 (image_7a79ba.png) & Req 6: Public Rooms Multi-Card Layout (5+ Visible) */
+#homePublicRoomsSec {
+  padding: 11px 12px;
+  gap: 7px;
+}
+#homePublicRoomsSec .pub-rooms-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: nowrap;
+  margin-bottom: 0;
+}
+#homePublicRoomsSec .pub-rooms-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+#homePublicRoomsSec .pub-rooms-title-wrap h2 {
+  font-size: 14px !important;
+  white-space: nowrap;
+  margin: 0;
+}
+#homePublicRoomsSec .pub-rooms-toolbar {
+  padding: 6px 8px !important;
+  margin-bottom: 0 !important;
+  gap: 5px !important;
+  border-radius: 12px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid var(--bd);
+}
+#homePublicRoomsSec .pub-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px !important;
+}
+#homePublicRoomsSec .pub-f-pill {
+  padding: 3px 7px !important;
+  font-size: 10.5px !important;
+  min-height: 24px !important;
+  border-radius: 999px;
+}
+#homePublicRoomsSec .pub-sort-wrap {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  width: 100%;
+  padding-top: 3px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+#homePublicRoomsSec .pub-sort-wrap label {
+  font-size: 10.5px !important;
+  white-space: nowrap;
+  color: var(--mut);
+  margin: 0;
+}
+#homePublicRoomsSec .pub-sort-wrap .csel-wrap {
+  flex: 1;
+  min-width: 0;
+}
+#homePublicRoomsSec .pub-sort-wrap .csel-btn {
+  padding: 4px 9px !important;
+  font-size: 11px !important;
+  min-height: 26px !important;
+  border-radius: 8px !important;
+}
+
+/* Multi-Column Compact Public Room Grid: Displays 6+ Rooms Simultaneously on Desktop */
+.pub-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 7px;
+}
+.hub-col-left .pub-rooms-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+}
+@media(max-width: 365px){
+  .hub-col-left .pub-rooms-grid,
+  .pub-rooms-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+.pub-room-card {
+  padding: 8px 9px !important;
+  gap: 5px !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+.pub-rc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+.pub-rc-game {
+  padding: 2px 6px !important;
+  font-size: 10.5px !important;
+  gap: 4px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pub-rc-status {
+  padding: 2px 6px !important;
+  font-size: 9.5px !important;
+  white-space: nowrap;
+}
+.pub-rc-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 3px !important;
+}
+.pub-rc-name {
+  font-size: 11.5px !important;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pub-rc-code {
+  font-size: 9.5px !important;
+  padding: 1px 5px !important;
+  flex-shrink: 0;
+}
+.pub-rc-meta-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--mut);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.pub-rc-meta-line b {
+  color: var(--tx);
+  max-width: 85px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+}
+.pub-rc-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 2px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.pub-rc-cap-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 52px;
+}
+.pub-rc-cap-mini span {
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+.pub-rc-JoinBtn {
+  padding: 4px 8px !important;
+  font-size: 10.5px !important;
+  min-height: 25px !important;
+  border-radius: 8px !important;
+  width: auto !important;
+  flex: 1;
+  white-space: nowrap;
+}
+#homePublicRoomsSec .pub-empty-box {
+  padding: 14px 12px !important;
+  border-radius: 14px;
+}
+#homePublicRoomsSec .pub-empty-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 10px;
+}
+#homePublicRoomsSec .pub-empty-actions .btn {
+  width: 100%;
+  padding: 7px 8px;
+  font-size: 11.5px;
+  min-height: 34px;
+}
+
+/* Hide redundant Right Sidebar Radar on Desktop since Left Sidebar shows 6+ Public Rooms */
+@media(min-width: 1180px){
+  #hubRightRadarWrap {
+    display: none !important;
+  }
+}
+
+/* 5. UNO (2-10 Players) & Domino (2-4 Players) Lobby & Team Selection UI */
+.lob-cfg-panel {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lob-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.lob-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid var(--bd);
+  color: var(--tx);
+  font-family: inherit;
+  text-align: right;
+  cursor: pointer;
+  transition: .16s ease;
+}
+.lob-mode-btn.on {
+  border-color: var(--ac);
+  background: rgba(230,57,46,.15);
+  box-shadow: 0 0 0 1px rgba(230,57,46,.28);
+}
+.lob-mode-btn b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 900;
+}
+.lob-mode-btn small {
+  display: block;
+  font-size: 11px;
+  color: var(--mut);
+}
+.lob-cap-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.lob-cap-pill {
+  min-width: 42px;
+  height: 36px;
+  padding: 0 11px;
+  border-radius: 11px;
+  border: 1.5px solid var(--bd);
+  background: rgba(255,255,255,.04);
+  color: var(--tx);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: .15s ease;
+}
+.lob-cap-pill.on {
+  background: var(--ac);
+  border-color: var(--ac2);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(230,57,46,.35);
+}
+.rm-teams-board {
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.24);
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rm-teams-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.rm-team-box {
+  padding: 10px;
+  border-radius: 13px;
+  border: 1.5px solid var(--bd);
+  background: rgba(255,255,255,.03);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rm-team-box.team-a {
+  border-color: rgba(56,189,248,.4);
+  background: rgba(56,189,248,.07);
+}
+.rm-team-box.team-b {
+  border-color: rgba(244,63,94,.4);
+  background: rgba(244,63,94,.07);
+}
+.rm-team-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 900;
+}
+.rm-team-members {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 28px;
+  font-size: 11.5px;
+}
+.rm-team-member-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 4px 7px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.26);
+  font-weight: 800;
+}
+.rm-team-valid {
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-align: center;
+}
+.rm-team-valid.ok {
+  background: rgba(34,197,94,.14);
+  border: 1px solid rgba(34,197,94,.38);
+  color: #4ade80;
+}
+.rm-team-valid.warn {
+  background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.4);
+  color: #fbbf24;
+}
+
+/* Compact Opponents Row when 5..10 players in UNO */
+.opps.crowded {
+  gap: 6px;
+}
+.opps.crowded .opp {
+  min-width: 104px;
+  max-width: 148px;
+  padding: 6px 8px;
+  border-radius: 12px;
+}
+.opps.crowded .oppmeta b {
+  font-size: 11.5px;
+  max-width: 92px;
+}
+.opps.crowded .oppmeta small {
+  font-size: 9.5px;
+  max-width: 98px;
+}
+.opps.crowded .backs.show {
+  max-height: 36px;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.opps.crowded .backs.show .unocard.sm {
+  width: 18px;
+  height: 26px;
+  margin-left: -9px;
+}
+.opps.crowded .backs.show .unocard.sm:first-child {
+  margin-left: 0;
+}
+@media(max-width: 520px){
+  .lob-mode-grid,
+  .rm-teams-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3667,54 +4261,51 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
             <button class="mini" id="homeCopyMe" title="نسخ كود الصداقة الخاص بك">📋 نسخ الكود</button>
           </div>
 
-          <!-- Add Friend Input -->
-          <div>
-            <label class="lbl" for="homeFn" style="font-size:11.5px;margin-bottom:5px">إضافة صديق بكود الصداقة:</label>
-            <div class="row" style="gap:6px">
-              <input id="homeFn" placeholder="اكتب كود صديقك…" style="font-size:12.5px;padding:8px 10px">
-              <button class="btn ok" id="homeFa" style="padding:8px 11px;font-size:12px;white-space:nowrap">＋ إضافة صديق</button>
-            </div>
+          <!-- Add Friend Input (Compact Single Row) -->
+          <div class="row" style="gap:6px">
+            <input id="homeFn" placeholder="🔑 أضف صديقًا بكود الصداقة…" style="font-size:12px;padding:7px 10px;min-height:34px">
+            <button class="btn ok" id="homeFa" style="padding:6px 11px;font-size:11.5px;min-height:34px;white-space:nowrap">＋ إضافة صديق</button>
           </div>
 
           <!-- Friends Stats Summary -->
-          <div class="fr-hub-stats" id="homeFrStats" style="margin:0"></div>
+          <div class="fr-hub-stats hide" id="homeFrStats" style="margin:0"></div>
 
           <!-- Online First + Collapsible Offline Friends List -->
-          <div id="homeFl" class="plist" style="max-height:none"></div>
+          <div id="homeFl" class="plist"></div>
         </section>
 
-        <!-- Public Rooms Browser Section Directly Under Friends -->
+        <!-- Public Rooms Browser Section Directly Under Friends (Multi-Column 5+ Visible Rooms) -->
         <section class="hub-side-card pub-rooms-sec" id="homePublicRoomsSec" aria-label="الغرف العامة المتاحة" style="margin-bottom:0">
           <div class="pub-rooms-head">
             <div class="pub-rooms-title-wrap">
-              <h2 style="font-size:15.5px">🌐 الغرف العامة المتاحة</h2>
-              <span class="bk-chip ok" id="pubRoomsCountBadge" style="font-size:11px;padding:3px 9px">0 غرف متاحة</span>
+              <h2>🌐 الغرف العامة</h2>
+              <span class="bk-chip ok" id="pubRoomsCountBadge" style="font-size:10.5px;padding:2px 8px;white-space:nowrap">0 غرف نشطة</span>
             </div>
-            <span class="pub-conn-pill" id="pubRoomsConnPill" style="font-size:10.5px;padding:3px 8px">
+            <span class="pub-conn-pill online" id="pubRoomsConnPill" style="font-size:10px;padding:3px 8px;white-space:nowrap">
               <span class="pub-conn-dot" id="pubRoomsConnDot"></span>
-              <span id="pubRoomsConnText">جاري البحث عن الغرف…</span>
+              <span id="pubRoomsConnText">متصل</span>
             </span>
           </div>
 
-          <div class="pub-rooms-actions" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px">
-            <button type="button" class="btn ok" id="pubRoomsQuickCreateBtn" title="إنشاء غرفة عامة أو خاصة جديدة" style="padding:8px 10px;font-size:12px;width:100%">➕ إنشاء غرفة جديدة</button>
-            <button type="button" class="btn g" id="pubRoomsRefreshBtn" title="تحديث قائمة الغرف العامة الآن" style="padding:8px 10px;font-size:12px;width:100%">🔄 تحديث الغرف</button>
+          <div class="pub-rooms-actions" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%">
+            <button type="button" class="btn ok" id="pubRoomsQuickCreateBtn" title="إنشاء غرفة عامة أو خاصة جديدة" style="padding:6px 10px;font-size:11.5px;min-height:32px;width:100%;white-space:nowrap">➕ إنشاء غرفة جديدة</button>
+            <button type="button" class="btn g" id="pubRoomsRefreshBtn" title="تحديث قائمة الغرف العامة الآن" style="padding:6px 10px;font-size:11.5px;min-height:32px;width:100%;white-space:nowrap">🔄 تحديث الغرف</button>
           </div>
 
-          <div class="pub-rooms-toolbar" style="padding:9px 10px;margin-bottom:4px;gap:8px">
-            <div class="pub-filter-pills" id="pubRoomsFilterPills" role="tablist" aria-label="تصفية الغرف حسب اللعبة" style="gap:5px">
-              <button type="button" class="pub-f-pill on" data-pubfilter="all" style="padding:4px 9px;font-size:11px;min-height:28px">🌟 الكل</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="domino" style="padding:4px 9px;font-size:11px;min-height:28px">🁫 دومينو</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="uno" style="padding:4px 9px;font-size:11px;min-height:28px">🎴 UNO</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="bakasa" style="padding:4px 9px;font-size:11px;min-height:28px">🕵️ البكاسة</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="chess" style="padding:4px 9px;font-size:11px;min-height:28px">♟️ شطرنج</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="ttt" style="padding:4px 9px;font-size:11px;min-height:28px">❌⭕ إكس أو</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="c4" style="padding:4px 9px;font-size:11px;min-height:28px">🔴🟡 كونكت فور</button>
-              <button type="button" class="pub-f-pill" data-pubfilter="draw" style="padding:4px 9px;font-size:11px;min-height:28px">🎨 ارسم وخمّن</button>
+          <div class="pub-rooms-toolbar">
+            <div class="pub-filter-pills" id="pubRoomsFilterPills" role="tablist" aria-label="تصفية الغرف حسب اللعبة">
+              <button type="button" class="pub-f-pill on" data-pubfilter="all">🌟 الكل</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="domino">🁫 دومينو</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="uno">🎴 UNO</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="bakasa">🕵️ البكاسة</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="chess">♟️ شطرنج</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="ttt">❌⭕ إكس أو</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="c4">🔴🟡 كونكت فور</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="draw">🎨 ارسم وخمّن</button>
             </div>
-            <div class="pub-sort-wrap" style="width:100%;justify-content:space-between">
-              <label for="pubRoomsSortSel" style="font-size:11.5px">ترتيب حسب:</label>
-              <select id="pubRoomsSortSel" style="flex:1;min-width:0;padding:5px 8px;font-size:11.5px">
+            <div class="pub-sort-wrap">
+              <label for="pubRoomsSortSel">ترتيب:</label>
+              <select id="pubRoomsSortSel">
                 <option value="recommended">المتاحة للانضمام والأحدث</option>
                 <option value="slots">الأماكن المتاحة أولًا</option>
                 <option value="status">حالة الغرفة (انتظار أولًا)</option>
@@ -3724,10 +4315,10 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
           </div>
 
           <div id="pubRoomsContainer">
-            <div class="pub-empty-box" id="pubRoomsInitialState" style="padding:18px 12px">
-              <div style="font-size:24px;margin-bottom:4px">📡</div>
-              <b style="font-size:13px">جاري اكتشاف الغرف العامة المتصلة…</b>
-              <div class="mut tiny" style="margin-top:4px;font-size:11px">يتم جلب الغرف العامة النشطة عبر الاتصال الفوري تلقائيًا</div>
+            <div class="pub-empty-box" id="pubRoomsInitialState">
+              <div style="font-size:22px;margin-bottom:3px">📡</div>
+              <b style="font-size:12.5px">جاري اكتشاف الغرف العامة المتصلة…</b>
+              <div class="mut tiny" style="margin-top:3px;font-size:10.5px">يتم جلب الغرف العامة النشطة عبر الاتصال الفوري تلقائيًا</div>
             </div>
           </div>
         </section>
@@ -3789,7 +4380,7 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
           <div class="hub-quick-stack">
             <button type="button" class="hub-qcard" id="hubQCardCreate">
               <div class="hub-qcard-left">
-                <span class="hub-qcard-thumb">➕</span>
+                <span class="hub-qcard-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
                 <span class="hub-qcard-txt">
                   <b>إنشاء غرفة لعب جديدة</b>
                   <small>غرفة عامة بالرئيسية أو خاصة بكود</small>
@@ -3910,7 +4501,7 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
                 <span class="hub-gc-play">▶</span>
                 <span class="hub-gc-badge" data-game-room-count="ttt">٢ لاعبين</span>
               </div>
-              <div class="hub-gc-art">❌⭕</div>
+              <div class="hub-gc-art"><span style="font-weight:900;font-size:28px;color:#fb7185;letter-spacing:2px">✕◯</span></div>
               <div class="hub-gc-body">
                 <div class="mt">إكس أو • XO</div>
                 <span class="md">مباريات (3×3) السريعة ضد ذكاء اصطناعي بثلاثة مستويات أو أونلاين مباشر مع الأصدقاء.</span>
@@ -3926,10 +4517,10 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
                 <span class="hub-gc-play">▶</span>
                 <span class="hub-gc-badge" data-game-room-count="c4">٢ لاعبين</span>
               </div>
-              <div class="hub-gc-art">🔴🟡</div>
+              <div class="hub-gc-art"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="4.5" fill="#ef4444"/><circle cx="17" cy="7" r="4.5" fill="#fde047"/><circle cx="7" cy="17" r="4.5" fill="#fde047"/><circle cx="17" cy="17" r="4.5" fill="#ef4444"/></svg></div>
               <div class="hub-gc-body">
                 <div class="mt">كونكت فور • Connect 4</div>
-                <span class="md">أسقط الأقراص في الشبكة (7×6) ووصّل ٤ أقراص متتالية أفقيًا أو رأسيًا أو قطريًا لتحقيق الفوز.</span>
+                <span class="md">أسقط الأقراص في الشبكة (7×6) ووصّل ٤ أقراص متتالية أفقيًا أو رأسيًا أو قطريًا للفوز.</span>
               </div>
               <div class="hub-gc-foot">
                 <span>تكتيك وذكاء</span>
@@ -3942,10 +4533,10 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
                 <span class="hub-gc-play">▶</span>
                 <span class="hub-gc-badge" data-game-room-count="draw">٢–١٠ لاعبين</span>
               </div>
-              <div class="hub-gc-art">🎨✏️</div>
+              <div class="hub-gc-art">🎨</div>
               <div class="hub-gc-body">
                 <div class="mt">ارسم وخمّن • Draw</div>
-                <span class="md">ارسم الكلمة السرية مباشرة على اللوحة التفاعلية ودع أصدقاءك يتنافسون على تخمينها في الشات!</span>
+                <span class="md">ارسم الكلمة السرية مباشرة على اللوحة التفاعلية وتنافس مع أصدقائك على تخمينها!</span>
               </div>
               <div class="hub-gc-foot">
                 <span>رسم وتخمين</span>
@@ -3999,8 +4590,8 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
             <div id="homeInvitesList"></div>
           </div>
 
-          <!-- Compact Active Public Rooms Radar -->
-          <div>
+          <!-- Compact Active Public Rooms Radar (Mobile/Tablet Drawer) -->
+          <div id="hubRightRadarWrap">
             <div class="fr-section-label">
               <span>📡 رادار الغرف العامة النشطة</span>
               <button type="button" class="mini" id="hubSideCreateRoomBtn">＋ غرفة جديدة</button>
@@ -4153,26 +4744,68 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
           </div>
         </div>
       </div>
-      <div class="optgrid">
+      <div class="lob-cfg-panel" id="lobbyCfgPanel">
         <div>
-          <label class="lbl">نظام اللعب وعدد اللاعبين</label>
-          <select id="np">
-            <option value="2">لاعبين ٢</option>
-            <option value="3">٣ لاعبين</option>
-            <option value="4-solo">٤ لاعبين (فردي / كل واحد لوحده)</option>
-            <option value="4-team" selected>٤ لاعبين (٢ ضد ٢ / فرق)</option>
-          </select>
+          <label class="lbl" id="lobbyPlayModeLabel">١. اختر نظام اللعب (فردي أو فرق):</label>
+          <div class="lob-mode-grid" id="lobbyPlaySystemSelector">
+            <button type="button" class="lob-mode-btn on" data-lob-tm="0" id="lobModeSoloBtn">
+              <span style="font-size:22px">👤</span>
+              <span>
+                <b id="lobModeSoloTitle">لعب فردي (Classic Individual)</b>
+                <small id="lobModeSoloSub">كل لاعب ينافس لحسابه الخاص</small>
+              </span>
+            </button>
+            <button type="button" class="lob-mode-btn" data-lob-tm="1" id="lobModeTeamBtn">
+              <span style="font-size:22px">🛡️</span>
+              <span>
+                <b id="lobModeTeamTitle">نظام الفرق (Team Mode)</b>
+                <small id="lobModeTeamSub">فريق أ 🔵 ضد فريق ب 🔴 — باختيار اللاعبين</small>
+              </span>
+            </button>
+          </div>
         </div>
-        <div id="targetWrap">
-          <label class="lbl">الهدف (عدد النقاط)</label>
-          <input type="number" id="tg" value="100" min="1" max="10000" placeholder="اكتب أي رقم">
+
+        <div class="optgrid" style="margin:0">
+          <div>
+            <label class="lbl" id="lobbyCapLabel">٢. سعة الغرفة (الحد الأقصى للاعبين):</label>
+            <div class="lob-cap-pills" id="lobbyCapPills"></div>
+            <select id="np" class="hide csel-native" data-no-csel="1">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4-solo">4-solo</option>
+              <option value="4-team" selected>4-team</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div id="targetWrap">
+            <label class="lbl">٣. الهدف (نقاط الفوز بالمباراة):</label>
+            <input type="number" id="tg" value="100" min="1" max="10000" placeholder="اكتب هدف النقاط">
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          <label class="switch" id="openTglWrap" style="width:fit-content;margin:0">
+            <input type="checkbox" id="openTgl">
+            <span class="track"></span>
+            <span>👁 أحجار الجميع مكشوفة</span>
+          </label>
+          <label class="switch" id="allowUnevenWrap" style="width:fit-content;margin:0">
+            <input type="checkbox" id="allowUnevenTgl">
+            <span class="track"></span>
+            <span>⚖️ السماح بفرق غير متساوية العدد (مثل ٢ ضد ١ أو ٣ ضد ٢)</span>
+          </label>
+          <label class="switch" id="fillBotsWrap" style="width:fit-content;margin:0">
+            <input type="checkbox" id="fillBotsTgl" checked>
+            <span class="track"></span>
+            <span>🤖 إكمال الأماكن الفارغة بالبوتات عند البدء</span>
+          </label>
         </div>
       </div>
-      <label class="switch" id="openTglWrap" style="width:fit-content">
-        <input type="checkbox" id="openTgl">
-        <span class="track"></span>
-        <span>👁 أحجار الجميع مكشوفة</span>
-      </label>
       <div class="vis-selector-box" id="lobbyVisSelectorBox">
         <label class="lbl" style="margin:0">نوع الغرفة عند الإنشاء (عامة أو خاصة):</label>
         <div class="vis-selector-grid">
@@ -4227,6 +4860,11 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
             <span id="rmVisLiveText">🌐 الغرفة الآن: <b>عامة</b></span>
             <button type="button" class="mini" id="rmVisToggleBtn">🔒 تحويل لخاصة</button>
           </div>
+          <div id="rmCapSummaryBar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:8px 0;padding:8px 11px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd)">
+            <span id="rmCapBadge" style="font-weight:900;font-size:13px">👥 اللاعبون: 1 / 4</span>
+            <span id="rmModeBadge" class="bk-chip ac" style="font-size:11px;padding:3px 9px">فردي</span>
+          </div>
+          <div id="rmTeamsBoard" class="rm-teams-board hide"></div>
           <div class="netstatus" id="netstatus">…</div>
           <div id="pls" class="plist"></div>
           <button class="btn ok" id="go" style="width:100%;margin-top:6px">ابدأ اللعب</button>
@@ -4437,14 +5075,97 @@ const BOT=['🤖','👾','🎩','🦾'];
 const MODE_NAMES={draw:'عادي (سحب)',block:'تسكير',fives:'أمريكي (٥)'};
 let GAME_TYPE='domino'; // domino | uno
 
-/* helper to parse players mode option */
-function getPlayersConfig(){
-  const val = $('#np').value;
-  if(val === '4-team') return { n: 4, tm: true };
-  if(val === '4-solo') return { n: 4, tm: false };
-  const n = parseInt(val, 10) || 4;
-  return { n, tm: false };
+/* helper to parse players mode option & manage UNO (2-10p) / Domino (2-4p) + Teams */
+var LOBBY_DRAFT = {
+  domino: { n: 4, tm: true, allowUneven: false, fillBots: true, target: 100 },
+  uno:    { n: 4, tm: false, allowUneven: false, fillBots: true, target: 500 }
+};
+window.LOBBY_DRAFT = LOBBY_DRAFT;
+
+function setHTMLIfChanged(el, nextHTML){
+  if(!el) return false;
+  if(el._sharbLastHTML === nextHTML) return false;
+  el._sharbLastHTML = nextHTML;
+  el.innerHTML = nextHTML;
+  return true;
 }
+window.setHTMLIfChanged = setHTMLIfChanged;
+
+function getPlayersConfig(){
+  const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+  const d = LOBBY_DRAFT[gt] || LOBBY_DRAFT.domino;
+  const maxAllowed = gt === 'uno' ? 10 : 4;
+  const n = Math.max(2, Math.min(maxAllowed, parseInt(d.n, 10) || 4));
+  const tm = !!d.tm;
+  const allowUneven = !!d.allowUneven || (tm && (n % 2 === 1));
+  const fillBots = d.fillBots !== false;
+  return { n, tm, allowUneven, fillBots };
+}
+
+function syncLobbyConfigUI(){
+  const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+  const d = LOBBY_DRAFT[gt];
+  const maxCap = gt === 'uno' ? 10 : 4;
+  if(d.n > maxCap) d.n = maxCap;
+  if(d.n < 2) d.n = 2;
+  if(d.tm && (d.n % 2 === 1)) d.allowUneven = true;
+
+  // Update Mode Buttons (Individual vs Teams)
+  const soloBtn = $('#lobModeSoloBtn');
+  const teamBtn = $('#lobModeTeamBtn');
+  if(soloBtn) soloBtn.classList.toggle('on', !d.tm);
+  if(teamBtn) teamBtn.classList.toggle('on', !!d.tm);
+
+  if($('#lobModeSoloTitle')){
+    $('#lobModeSoloTitle').textContent = gt === 'uno' ? 'أونو فردي كلاسيكي (Individual UNO)' : 'دومينو فردي (Individual Domino)';
+    $('#lobModeSoloSub').textContent = gt === 'uno' ? 'كل لاعب ينافس لحسابه الخاص (٢–١٠ لاعبين)' : 'كل لاعب ينافس لحسابه الخاص (٢–٤ لاعبين)';
+  }
+  if($('#lobModeTeamTitle')){
+    $('#lobModeTeamTitle').textContent = gt === 'uno' ? 'أونو فرق (Team UNO — فريق أ ضد ب)' : 'دومينو فرق (Team Domino — فريق أ ضد ب)';
+    $('#lobModeTeamSub').textContent = gt === 'uno' ? 'اختر فريقك قبل البدء (1v1، 2v1، 2v2 حتى 5v5)' : 'اختر فريقك قبل البدء (1v1، 2v1، أو 2v2)';
+  }
+
+  // Render Capacity Pills (2..10 for UNO, 2..4 for Domino)
+  const capWrap = $('#lobbyCapPills');
+  if(capWrap){
+    const caps = gt === 'uno' ? [2,3,4,5,6,7,8,9,10] : [2,3,4];
+    capWrap.innerHTML = caps.map(c => `<button type="button" class="lob-cap-pill ${d.n === c ? 'on' : ''}" data-lob-cap="${c}">${c} لاعبين</button>`).join('');
+  }
+
+  // Keep legacy #np select synced
+  const npSel = $('#np');
+  if(npSel){
+    if(d.n === 4) npSel.value = d.tm ? '4-team' : '4-solo';
+    else npSel.value = String(d.n);
+  }
+
+  // Target input
+  const tgInp = $('#tg');
+  if(tgInp && document.activeElement !== tgInp){
+    tgInp.value = String(d.target || (gt === 'uno' ? 500 : 100));
+  }
+
+  // Uneven teams & Fill bots toggles
+  const allowWrap = $('#allowUnevenWrap');
+  const allowChk = $('#allowUnevenTgl');
+  if(allowWrap) allowWrap.classList.toggle('hide', !d.tm);
+  if(allowChk) allowChk.checked = !!d.allowUneven;
+
+  const fillChk = $('#fillBotsTgl');
+  if(fillChk) fillChk.checked = d.fillBots !== false;
+
+  // If currently hosting an open room in lobby, live-sync lobbyMeta to guests & Public Directory!
+  if(typeof host !== 'undefined' && host && typeof code !== 'undefined' && code && !G){
+    lobbyMeta.n = d.n;
+    lobbyMeta.tm = !!d.tm;
+    lobbyMeta.allowUneven = !!d.allowUneven;
+    lobbyMeta.fillBots = d.fillBots !== false;
+    lobbyMeta.target = parseInt(d.target, 10) || (gt === 'uno' ? 500 : 100);
+    renderRoomPlayers();
+    broadcastLobby();
+  }
+}
+window.syncLobbyConfigUI = syncLobbyConfigUI;
 
 /* ================= profile ================= */
 let TAB=uid().slice(0,4);
@@ -4615,11 +5336,11 @@ function goToLobby(gt){
   if(GAME_TYPE==='uno'){
     $('#dominoModesWrap').classList.add('hide');
     $('#openTglWrap').classList.add('hide');
-    $('#targetWrap').classList.add('hide');
+    $('#targetWrap').classList.remove('hide');
     $('#rulesDomino').classList.add('hide');
     $('#rulesUno').classList.remove('hide');
-    $('#heroTitle').textContent='صفحة UNO';
-    $('#heroDesc').textContent='UNO كلاسيكي كامل — مطابقة اللون أو الرقم أو الرمز، كروت الفعل، وايلد، اختيار اللون، إعلان UNO، وعقوبة نسيان الإعلان. الغرف مخصصة لUNO فقط.';
+    $('#heroTitle').textContent='🎴 غرفة وإعدادات UNO (٢ إلى ١٠ لاعبين • فردي أو فرق)';
+    $('#heroDesc').textContent='UNO كلاسيكي كامل — اختر سعة الغرفة من ٢ إلى ١٠ لاعبين، والعب فرديًا أو بنظام الفرق (Team A ضد Team B) مع اختيار كل لاعب لفريقه بحرية قبل بدء المباراة.';
     setSharbHeaderBrand('SHARB GAMES • UNO','Your Ultimate Online Gaming Hub • ٢–١٠ لاعبين','🎴');
   }else{
     $('#dominoModesWrap').classList.remove('hide');
@@ -4627,10 +5348,12 @@ function goToLobby(gt){
     $('#targetWrap').classList.remove('hide');
     $('#rulesDomino').classList.remove('hide');
     $('#rulesUno').classList.add('hide');
-    $('#heroTitle').textContent='صفحة الدومينو';
-    $('#heroDesc').textContent='دومينو فقط — غرف مخصصة للدومينو فقط.';
+    $('#heroTitle').textContent='🁫 غرفة وإعدادات الدومينو (٢ إلى ٤ لاعبين • فردي أو فرق)';
+    $('#heroDesc').textContent='دومينو احترافي (عادي سحب • تسكير • أمريكي ٥) — اختر سعة الغرفة (٢ أو ٣ أو ٤ لاعبين) ونظام اللعب الفردي أو الفرق مع اختيار كل لاعب لفريقه.';
     setSharbHeaderBrand('SHARB GAMES • دومينو','Your Ultimate Online Gaming Hub • ٢–٤ لاعبين','🁫');
   }
+  syncLobbyConfigUI();
+  renderRoomPlayers();
 }
 function setGameType(gt){ goToLobby(gt); }
 function toast(msg,kind='',ms=3200){
@@ -5232,18 +5955,17 @@ function renderFriends(){
   const inc=incomingRequests();
   const out=sentRequests();
   const onlineCount=list.filter(f=>isOnline(f.uid)).length;
-  if($('#fl'))$('#fl').innerHTML=buildFriendsPanelListHTML('');
-  if($('#homeFl'))$('#homeFl').innerHTML=buildFriendsPanelListHTML('h');
-  if($('#bkFriendsList'))$('#bkFriendsList').innerHTML=buildFriendsPanelListHTML('bk');
-  if($('#dgFriendsList'))$('#dgFriendsList').innerHTML=buildFriendsPanelListHTML('dg');
+  if($('#fl'))setHTMLIfChanged($('#fl'), buildFriendsPanelListHTML(''));
+  if($('#homeFl'))setHTMLIfChanged($('#homeFl'), buildFriendsPanelListHTML('h'));
+  if($('#bkFriendsList'))setHTMLIfChanged($('#bkFriendsList'), buildFriendsPanelListHTML('bk'));
+  if($('#dgFriendsList'))setHTMLIfChanged($('#dgFriendsList'), buildFriendsPanelListHTML('dg'));
   if($('#homeMyCode'))$('#homeMyCode').textContent=PF.uid;
   if($('#homeHeroUid'))$('#homeHeroUid').textContent=PF.uid;
   if($('#myCode'))$('#myCode').textContent=PF.uid;
   if($('#homeFrStats')){
-    $('#homeFrStats').innerHTML=`<span class="bk-chip ac">👥 الأصدقاء: <b>${list.length}</b></span>
-      <span class="bk-chip ok">🟢 متصلون الآن: <b>${onlineCount}</b></span>
-      ${inc.length?`<span class="bk-chip warn">👋 طلبات واردة: <b>${inc.length}</b></span>`:''}
-      ${out.length?`<span class="bk-chip">⏳ بانتظار القبول: <b>${out.length}</b></span>`:''}`;
+    const hasReqs = (inc.length + out.length) > 0;
+    $('#homeFrStats').classList.toggle('hide', !hasReqs);
+    setHTMLIfChanged($('#homeFrStats'), hasReqs ? `${inc.length?`<span class="bk-chip warn">👋 طلبات واردة: <b>${inc.length}</b></span>`:''}${out.length?`<span class="bk-chip">⏳ بانتظار القبول: <b>${out.length}</b></span>`:''}` : '');
   }
   if($('#hubFriendsOnlineCountBadge')){
     $('#hubFriendsOnlineCountBadge').textContent = `${onlineCount} متصل • ${list.length} الكل`;
@@ -5486,11 +6208,35 @@ async function createRoom(){
   if(G){G=null;showScreen('lobby');closeOverlay()}
   host=true;NET.want=true;
   let parsedTarget = parseInt($('#tg').value, 10);
-  if (isNaN(parsedTarget) || parsedTarget <= 0) parsedTarget = 100;
+  if (isNaN(parsedTarget) || parsedTarget <= 0) parsedTarget = GAME_TYPE === 'uno' ? 500 : 100;
+  LOBBY_DRAFT[GAME_TYPE === 'uno' ? 'uno' : 'domino'].target = parsedTarget;
   const cfg = getPlayersConfig();
-  if(GAME_TYPE==='uno'){ lobbyMeta={n:Math.min(cfg.n,10),tm:false,mode:'uno',open:false,target:500}; }
-  else { lobbyMeta={n:Math.min(cfg.n,4),tm:cfg.tm,mode:selectedMode(),open:$('#openTgl').checked,target:parsedTarget}; }
-  lobbyPl=[me0()];
+  if(GAME_TYPE==='uno'){
+    lobbyMeta={
+      gameType:'uno',
+      n:Math.max(2,Math.min(10,cfg.n)),
+      tm:!!cfg.tm,
+      allowUneven:!!cfg.allowUneven,
+      fillBots:cfg.fillBots!==false,
+      mode:'uno',
+      open:false,
+      target:parsedTarget
+    };
+  }else{
+    lobbyMeta={
+      gameType:'domino',
+      n:Math.max(2,Math.min(4,cfg.n)),
+      tm:!!cfg.tm,
+      allowUneven:!!cfg.allowUneven,
+      fillBots:cfg.fillBots!==false,
+      mode:selectedMode(),
+      open:$('#openTgl').checked,
+      target:parsedTarget
+    };
+  }
+  const hostMe = me0();
+  hostMe.team = 0;
+  lobbyPl=[hostMe];
   code=genCode();
   $('#rm').classList.remove('hide');$('#joinEmpty').classList.add('hide');
   $('#rc').textContent=code;$('#go').classList.remove('hide');
@@ -5538,13 +6284,25 @@ function hostRoute(kind,d){
   if(kind==='join'){hostIncoming(d)}
   else if(kind==='act'){
     const pid=d.pid||(d.me&&d.me.pid);
-    if(pid&&d.a)applyAct(d.a,pid);
+    if(!pid||!d.a)return;
+    // Allow lobby team selection before the match starts
+    if(!G && d.a.t==='setTeam'){
+      const targetPid = (pid===ME && d.a.targetPid) ? d.a.targetPid : pid;
+      const p = lobbyPl.find(x => x.pid === targetPid);
+      if(p){
+        p.team = d.a.team === 1 ? 1 : 0;
+        renderRoomPlayers();
+        broadcastLobby();
+      }
+      return;
+    }
+    applyAct(d.a,pid);
   }else if(kind==='hb'){
     const pid=d.pid||(d.me&&d.me.pid);
     if(!pid)return;
     const g=NET.guests.get(pid);
     if(g){g.last=Date.now();if(G)broadcastState()}
-    else if(d.me)hostIncoming({t:'join',me:d.me});
+    else if(d.me)hostIncoming({t:'join',me:d.me,via:d.via});
   }else if(kind==='bye'){
     if(d.pid)hostGuestGone(d.pid);
   }
@@ -5561,6 +6319,8 @@ function hostIncoming(d){
     pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'private',msg:'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة'});
     return;
   }
+  const maxAllowed = GAME_TYPE === 'uno' ? Math.max(2, Math.min(10, +lobbyMeta.n || 4)) : Math.max(2, Math.min(4, +lobbyMeta.n || 4));
+  lobbyMeta.n = maxAllowed;
   const existingIdx=lobbyPl.findIndex(p=>p.pid===pid||(p.uid&&me.uid&&p.uid===me.uid&&p.pid!==ME));
   if(G){
     const seat=G.seats.find(s=>s.pid===pid||(s.uid&&s.uid===me.uid&&s.bot));
@@ -5575,15 +6335,24 @@ function hostIncoming(d){
     }
     return;
   }
-  if(existingIdx<0 && lobbyPl.length>=lobbyMeta.n){
-    pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'full',msg:'الغرفة مليانة ('+lobbyMeta.n+' لاعبين)'});
+  if(existingIdx<0 && lobbyPl.length>=maxAllowed){
+    pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'full',msg:`الغرفة مكتملة العدد (${maxAllowed}/${maxAllowed} لاعبين)`});
     if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
     return;
   }
   const known=NET.guests.has(pid)||existingIdx>=0;
   NET.guests.set(pid,{last:Date.now(),me});
   if(typeof pubDirClearReservation==='function')pubDirClearReservation(pid);
-  if(existingIdx>=0)lobbyPl[existingIdx]=me;else lobbyPl.push(me);
+  if(existingIdx>=0){
+    me.team = typeof lobbyPl[existingIdx].team === 'number' ? lobbyPl[existingIdx].team : (typeof me.team === 'number' ? me.team : (existingIdx % 2));
+    lobbyPl[existingIdx]=me;
+  }else{
+    // Auto-assign new joiner to the smaller team so teams start balanced
+    const cntA = lobbyPl.filter(p => (p.team || 0) === 0).length;
+    const cntB = lobbyPl.filter(p => p.team === 1).length;
+    me.team = cntA <= cntB ? 0 : 1;
+    lobbyPl.push(me);
+  }
   renderRoomPlayers();broadcastLobby();
   if(!known){
     toast(me.name+' دخل الغرفة 🎉','ok');
@@ -5701,11 +6470,16 @@ function guestIncoming(kind,d){
   NET.lastBeat=Date.now();
   if(kind==='lobby'){
     lobbyPl=Array.isArray(d.lp)?d.lp:[];
-    if(d.meta)lobbyMeta=Object.assign(lobbyMeta,d.meta);
+    if(d.meta){
+      lobbyMeta=Object.assign(lobbyMeta,d.meta);
+      if(d.meta.gameType && (d.meta.gameType==='uno'||d.meta.gameType==='domino') && GAME_TYPE!==d.meta.gameType){
+        GAME_TYPE=d.meta.gameType;
+      }
+    }
     if(d.code){code=d.code;$('#rc').textContent=code}
     $('#rm').classList.remove('hide');$('#joinEmpty').classList.add('hide');
     renderRoomPlayers();
-    if(!G)setNetStatus('متصل ✅ '+lobbyPl.length+' لاعبين — مستني المضيف','ok');
+    if(!G)setNetStatus(`متصل ✅ (${lobbyPl.length}/${lobbyMeta.n||4} لاعبين) — بانتظار بدء المضيف`,'ok');
   }else if(kind==='state'){
     const wasLobby=!G;
     G=d.g;
@@ -6185,7 +6959,15 @@ let unoPendingColor=false,unoPendingWild=null; // for wild/wild draw4
 let unoLastUnoAt=0; // track for penalty window in UI if needed
 const UNO_COLORS=['red','blue','green','yellow'];
 const selectedMode=()=>mode;
-const sc=i=>(G&&G.tm)?i%2:i;
+const seatTeam=i=>{
+  if(!G||!G.seats||!G.seats[i]) return i%2;
+  return (typeof G.seats[i].team === 'number') ? G.seats[i].team : (i%2);
+};
+const sc=i=>(G&&G.tm)?seatTeam(i):i;
+const unoStep=(from,steps=1)=>{
+  if(!G||!G.n) return 0;
+  return ((from + G.dir * steps) % G.n + G.n) % G.n;
+};
 const mySeat=()=>G?G.seats.findIndex(s=>s.pid===ME):-1;
 const ends=()=>G.chain.length?[G.chain[0].a,G.chain[G.chain.length-1].b]:null;
 const pipSum=h=>h.reduce((s,t)=>s+t[0]+t[1],0);
@@ -6218,10 +7000,105 @@ function chainAfter(idx,side){
   return G.chain.concat([{a:e[1],b:t[0]===e[1]?t[1]:t[0]}]);
 }
 
-/* ================= start / deal ================= */
+/* ================= start / deal / team validation ================= */
+function buildPlannedSeats(meta, playersList, gt){
+  const maxAllowed = gt === 'uno' ? 10 : 4;
+  const cap = Math.max(2, Math.min(maxAllowed, +meta.n || 4));
+  const fillBots = meta.fillBots !== false;
+  const humans = (playersList || []).slice(0, cap).map((p, idx) => ({
+    pid: p.pid,
+    uid: p.uid || p.pid,
+    name: p.name || 'لاعب',
+    av: p.av || '🙂',
+    col: p.col || COLS[idx % COLS.length],
+    st: p.st || null,
+    bot: false,
+    team: typeof p.team === 'number' ? (p.team === 1 ? 1 : 0) : (idx % 2)
+  }));
+  const seats = humans.slice();
+  const targetCount = (fillBots || seats.length < 2) ? cap : Math.max(2, seats.length);
+  let b = 0;
+  while(seats.length < targetCount){
+    b++;
+    const i = seats.length;
+    let botTeam = i % 2;
+    if(meta.tm){
+      const cntA = seats.filter(s => s.team === 0).length;
+      const cntB = seats.filter(s => s.team === 1).length;
+      botTeam = cntA <= cntB ? 0 : 1;
+    }
+    seats.push({
+      pid: 'bot_' + i + '_' + rnd(9999),
+      uid: 'bot_' + i,
+      name: 'بوت ' + b,
+      av: BOT[(b - 1) % BOT.length],
+      col: COLS[(i + 2) % COLS.length],
+      bot: true,
+      team: botTeam
+    });
+  }
+  // If 4-player 2v2 team mode, interleave Team A and Team B around the table (A, B, A, B) while keeping chosen teams
+  if(meta.tm && seats.length === 4){
+    const tA = seats.filter(s => s.team === 0);
+    const tB = seats.filter(s => s.team === 1);
+    if(tA.length === 2 && tB.length === 2){
+      return [tA[0], tB[0], tA[1], tB[1]];
+    }
+  }
+  return seats;
+}
+
+function validateLobbyTeamConfig(meta, playersList, gt){
+  const seats = buildPlannedSeats(meta, playersList, gt);
+  if(!meta.tm){
+    return { ok: seats.length >= 2, reason: '', seats, cntA: 0, cntB: 0 };
+  }
+  const cntA = seats.filter(s => s.team === 0).length;
+  const cntB = seats.filter(s => s.team === 1).length;
+  if(cntA < 1 || cntB < 1){
+    return {
+      ok: false,
+      reason: '⚠️ يجب أن يضم كل فريق (فريق أ 🔵 وفريق ب 🔴) لاعبًا واحدًا على الأقل قبل بدء المباراة!',
+      seats, cntA, cntB
+    };
+  }
+  if(!meta.allowUneven && cntA !== cntB){
+    return {
+      ok: false,
+      reason: `⚠️ الفرق غير متساوية العدد (${cntA} في فريق أ ضد ${cntB} في فريق ب) — وازن الفريقين أو فعّل «السماح بفرق غير متساوية»`,
+      seats, cntA, cntB
+    };
+  }
+  return {
+    ok: true,
+    reason: `✅ توزيع الفرق جاهز: 🔵 فريق أ (${cntA}) ضد 🔴 فريق ب (${cntB})`,
+    seats, cntA, cntB
+  };
+}
+window.validateLobbyTeamConfig = validateLobbyTeamConfig;
+
+function requestSetPlayerTeam(targetPid, teamVal){
+  const t = teamVal === 1 ? 1 : 0;
+  if(host || !code){
+    const p = lobbyPl.find(x => x.pid === (targetPid || ME));
+    if(p){
+      p.team = t;
+      renderRoomPlayers();
+      if(host && code) broadcastLobby();
+    }
+    return;
+  }
+  pub(roomTopic(code, 'act'), { t: 'act', pid: ME, a: { t: 'setTeam', team: t, targetPid: targetPid || ME } }, { qos: 1 });
+}
+window.requestSetPlayerTeam = requestSetPlayerTeam;
+
 function startGame(){
   if(!host)return;
-  if(!lobbyPl.length)lobbyPl=[me0()];
+  if(!lobbyPl.length){
+    const m = me0();
+    m.team = 0;
+    lobbyPl = [m];
+  }
   const meta=Object.assign({},lobbyMeta);
   const gt=GAME_TYPE;
   if(gt==='uno'){
@@ -6231,36 +7108,32 @@ function startGame(){
     if(meta.n>4) meta.n=4;
     if(meta.n<2) meta.n=2;
   }
+  const check = validateLobbyTeamConfig(meta, lobbyPl, gt);
+  if(!check.ok){
+    toast(check.reason || 'تأكد من توازن الفرق أولًا', 'warn', 4200);
+    return;
+  }
+  const plannedSeats = check.seats;
   G={
-    phase:'play',type:gt,mode:gt==='uno'?'uno':(meta.mode||'draw'),open:!!meta.open&&gt!=='uno',n:+meta.n||4,tm:!!meta.tm&&gt!=='uno',target:+meta.target||100,
-    seats:[],hands:[],chain:[],yard:[],turn:0,passes:0,scores:[],round:0,msg:'',res:null,must:null,last:null,
+    phase:'play',
+    type:gt,
+    mode:gt==='uno'?'uno':(meta.mode||'draw'),
+    open:!!meta.open&&gt!=='uno',
+    n:plannedSeats.length,
+    maxPlayers:+meta.n||plannedSeats.length,
+    tm:!!meta.tm,
+    allowUneven:!!meta.allowUneven,
+    teamsLocked:true,
+    target:+meta.target||(gt==='uno'?500:100),
+    seats:plannedSeats,
+    hands:[],chain:[],yard:[],turn:0,passes:0,scores:[],round:0,msg:'',res:null,must:null,last:null,
     dir:1, // 1 forward, -1 reverse
     color:null, // active color for UNO
     uno:null, // {seat, deadline, called}
     drawPile:[], discard:[],
     unoWindow:4000
   };
-  if(G.n>10)G.n=10; if(G.n<2)G.n=2;
-  const limit = gt==='uno'?Math.min(G.n,10):Math.min(G.n,4);
-  const used=lobbyPl.slice(0,limit);
-  let b=0;
-  for(let i=0;i<limit;i++){
-    const p=used[i];
-    if(p&&p.pid){
-      G.seats.push({pid:p.pid,uid:p.uid||p.pid,name:p.name,av:p.av,col:p.col,st:p.st||null,bot:false});
-    }else{
-      b++;
-      G.seats.push({pid:'bot_'+i+'_'+rnd(9999),uid:'bot_'+i,name:'بوت '+b,av:BOT[(b-1)%BOT.length],col:COLS[(i+2)%COLS.length],bot:true});
-    }
-  }
-  if(G.seats.length < limit){
-    for(let i=G.seats.length;i<limit;i++){
-      b++;
-      G.seats.push({pid:'bot_'+i+'_'+rnd(9999),uid:'bot_'+i,name:'بوت '+b,av:BOT[(b-1)%BOT.length],col:COLS[(i+2)%COLS.length],bot:true});
-    }
-  }
-  G.n = G.seats.length;
-  G.scores=gt==='uno'?G.seats.map(()=>0):(G.tm?[0,0]:G.seats.map(()=>0));
+  G.scores = G.tm ? [0,0] : G.seats.map(()=>0);
   G.round=0;rec=false;resultKey='';pending=-1;hintIdx=-1;lastLen=0;lastTurn=-1;unoPendingColor=false;unoPendingWild=null;
   deal();
   showScreen('game');
@@ -6272,65 +7145,88 @@ function startGame(){
 }
 function soloGame(){
   teardownNet(false);
-  host=true;code='';lobbyPl=[me0()];
+  host=true;code='';
+  const m = me0();
+  m.team = 0;
+  lobbyPl=[m];
   let parsedTarget = parseInt($('#tg').value, 10);
-  if (isNaN(parsedTarget) || parsedTarget <= 0) parsedTarget = 100;
+  if (isNaN(parsedTarget) || parsedTarget <= 0) parsedTarget = GAME_TYPE === 'uno' ? 500 : 100;
   const cfg = getPlayersConfig();
-  if(GAME_TYPE==='uno'){ lobbyMeta={n:Math.min(cfg.n,4),tm:false,mode:'uno',open:false,target:500}; }
-  else { lobbyMeta={n:Math.min(cfg.n,4),tm:cfg.tm,mode:selectedMode(),open:$('#openTgl').checked,target:parsedTarget}; }
+  if(GAME_TYPE==='uno'){
+    lobbyMeta={
+      gameType:'uno',
+      n:Math.max(2,Math.min(10,cfg.n)),
+      tm:!!cfg.tm,
+      allowUneven:!!cfg.allowUneven,
+      fillBots:true,
+      mode:'uno',
+      open:false,
+      target:parsedTarget
+    };
+  }else{
+    lobbyMeta={
+      gameType:'domino',
+      n:Math.max(2,Math.min(4,cfg.n)),
+      tm:!!cfg.tm,
+      allowUneven:!!cfg.allowUneven,
+      fillBots:true,
+      mode:selectedMode(),
+      open:$('#openTgl').checked,
+      target:parsedTarget
+    };
+  }
   startGame();
 }
 function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=rnd(i+1);const tmp=a[i];a[i]=a[j];a[j]=tmp}return a}
-function buildUnoDeck(){
+function buildUnoDeck(numPlayers){
   const deck=[];
   const colors=['red','blue','green','yellow'];
-  const numbers=[0,1,2,3,4,5,6,7,8,9];
-  colors.forEach(c=>{
-    // 0 once, 1-9 twice
-    deck.push({type:'num',color:c,val:0});
-    for(let v=1;v<=9;v++){deck.push({type:'num',color:c,val:v}); deck.push({type:'num',color:c,val:v});}
-    // action cards twice
-    deck.push({type:'skip',color:c}); deck.push({type:'skip',color:c});
-    deck.push({type:'reverse',color:c}); deck.push({type:'reverse',color:c});
-    deck.push({type:'draw2',color:c}); deck.push({type:'draw2',color:c});
-  });
-  // wilds 4 each
-  for(let i=0;i<4;i++){deck.push({type:'wild'}); deck.push({type:'wild4'});}
+  const copies = (numPlayers && numPlayers > 6) ? 2 : 1; // 2 decks (216 cards) for 7-10 players so draw pile stays rich
+  for(let cp=0; cp<copies; cp++){
+    colors.forEach(c=>{
+      deck.push({type:'num',color:c,val:0});
+      for(let v=1;v<=9;v++){deck.push({type:'num',color:c,val:v}); deck.push({type:'num',color:c,val:v});}
+      deck.push({type:'skip',color:c}); deck.push({type:'skip',color:c});
+      deck.push({type:'reverse',color:c}); deck.push({type:'reverse',color:c});
+      deck.push({type:'draw2',color:c}); deck.push({type:'draw2',color:c});
+    });
+    for(let i=0;i<4;i++){deck.push({type:'wild'}); deck.push({type:'wild4'});}
+  }
   shuffleArr(deck);
   return deck;
 }
 function deal(){
   if(G.type==='uno'){
-    const deck=buildUnoDeck();
-    G.hands=G.seats.map((_,i)=>deck.splice(0,7));
+    const deck=buildUnoDeck(G.n);
+    G.hands=G.seats.map(()=>deck.splice(0,7));
     G.drawPile=deck;
     G.discard=[];
-    // flip first card (cannot be wild draw4 by rules; if it is, reshuffle logic simplified)
+    // flip first card (cannot be wild4)
+    let safety=0;
     let first=G.drawPile.pop();
-    if(first && first.type==='wild4'){
+    while(first && first.type==='wild4' && safety<20){
       G.drawPile.unshift(first);
       shuffleArr(G.drawPile);
       first=G.drawPile.pop();
+      safety++;
     }
     G.discard.push(first);
-    G.color=first.color||null;
+    G.color=first.color||UNO_COLORS[rnd(UNO_COLORS.length)];
     G.dir=1;G.passes=0;G.res=null;G.uno=null;G.phase='play';
     G.round=(G.round||0)+1;
-    // if first is action, apply it appropriately
     let start=0;
     G.turn=start;
     G.msg=G.seats[start].name+' يبدأ';
     pending=-1;hintIdx=-1;lastLen=0;lastTurn=-1;unoPendingColor=false;unoPendingWild=null;
-    // apply initial action if needed (simplified correct flow)
-    if(first.type==='skip'){G.turn=(G.turn+G.dir+G.n)%G.n;G.msg='بدأت الجولة، تخطي على أول لاعب';}
-    else if(first.type==='reverse'){G.dir=-1; if(G.n===2){G.turn=(G.turn+G.dir+G.n)%G.n;} else {G.msg='بدأت الجولة، عكس الاتجاه';}}
-    else if(first.type==='draw2'){ /* give to first player */ drawCardsTo(G.turn,2); G.turn=(G.turn+G.dir+G.n)%G.n; G.msg='بدأت الجولة، سحب ٢ للدور الأول ثم يتغير';}
+    if(first.type==='skip'){G.turn=unoStep(G.turn,1);G.msg='بدأت الجولة، تخطي على أول لاعب';}
+    else if(first.type==='reverse'){G.dir=-1; if(G.n===2){G.turn=unoStep(G.turn,1);} else {G.msg='بدأت الجولة، عكس الاتجاه';}}
+    else if(first.type==='draw2'){ drawCardsTo(G.turn,2); G.turn=unoStep(G.turn,1); G.msg='بدأت الجولة، سحب ٢ للدور الأول ثم يتغير';}
     broadcastState();render();scheduleBot();return;
   }
   const bag=[];
   for(let a=0;a<=6;a++)for(let b=a;b<=6;b++)bag.push([a,b]);
   for(let i=bag.length-1;i>0;i--){const j=rnd(i+1);const tmp=bag[i];bag[i]=bag[j];bag[j]=tmp}
-  const per=(G.mode!=='block'&&G.n>=4)?6:7; // 4 لاعبين: ٦ أحجار عشان تفضل كومة للسحب (٤ أحجار)
+  const per = 7; // 7 tiles per player for 2, 3, or 4 players (28 tiles total)
   G.hands=G.seats.map((_,i)=>bag.slice(i*per,i*per+per));
   G.yard=G.mode==='block'?[]:bag.slice(G.n*per);
   G.chain=[];G.passes=0;G.res=null;G.must=null;G.last=null;G.phase='play';
@@ -6359,7 +7255,12 @@ function deal(){
 function reshuffleIfNeeded(){
   if(!G||G.type!=='uno')return;
   if(G.drawPile.length>0)return;
-  if(G.discard.length<=1)return;
+  if(G.discard.length<=1){
+    // Emergency replenish if all cards are held in hands in a 10-player match
+    const extra = buildUnoDeck(2);
+    G.drawPile.push(...extra);
+    return;
+  }
   const top=G.discard.pop();
   G.drawPile=G.discard.slice();
   G.discard=[top];
@@ -6372,7 +7273,6 @@ function drawCardsTo(i,n){
     if(!G.drawPile.length)break;
     G.hands[i].push(G.drawPile.pop());
   }
-  // if player now has >1 and had uno window maybe clear
   if(G.hands[i] && G.hands[i].length!==1 && G.uno && G.uno.seat===i) G.uno=null;
 }
 function canPlayUno(i,idx){
@@ -6398,7 +7298,6 @@ function applyAct(a,pid){
     if(a.t==='unoCall'){
       if(G.uno && G.uno.seat===i && !G.uno.called){
         if(Date.now() > (G.uno.deadline||0)){
-          // window closed, apply penalty
           G.uno=null;
           drawCardsTo(i,2);
           G.msg=G.seats[i].name+' فاتته مهلة إعلان UNO فسحب ٢ كرت';
@@ -6426,12 +7325,12 @@ function applyAct(a,pid){
         const col=a.color && UNO_COLORS.includes(a.color)?a.color:UNO_COLORS[0];
         G.color=col; unoPendingColor=false;
         if(unoPendingWild.type==='wild4'){
-          const next=(G.turn+G.dir+G.n)%G.n;
+          const next=unoStep(G.turn,1);
           drawCardsTo(next,4);
-          G.turn=(next+G.dir+G.n)%G.n;
+          G.turn=unoStep(next,1);
           G.msg='اختير اللون '+col+'، '+G.seats[next].name+' يسحب ٤ ويتخطى دوره';
         }else{
-          G.turn=(G.turn+G.dir+G.n)%G.n;
+          G.turn=unoStep(G.turn,1);
           G.msg='تم اختيار اللون '+col+'، دور '+G.seats[G.turn].name;
         }
         const playedBy = i;
@@ -6467,7 +7366,7 @@ function doDrawUno(i){
   G.msg=G.seats[i].name+' سحب كرت';
   beep(190,.06,'triangle',.06);
   if(G.uno && G.uno.seat===i) G.uno=null;
-  G.turn=(G.turn+G.dir+G.n)%G.n;
+  G.turn=unoStep(G.turn,1);
   return true;
 }
 function doPlayUno(i,idx,colorChoice){
@@ -6477,10 +7376,8 @@ function doPlayUno(i,idx,colorChoice){
   if(!h||idx<0||idx>=h.length)return false;
   const c=h[idx];
   if(!canPlayUno(i,idx))return false;
-  // remove card
   h.splice(idx,1);
   G.discard.push(c);
-  // set color
   if(c.type==='wild'||c.type==='wild4'){
     G.color=colorChoice && UNO_COLORS.includes(colorChoice)?colorChoice:null;
   }else{
@@ -6493,7 +7390,6 @@ function doPlayUno(i,idx,colorChoice){
     finishUnoRound(i);
     return true;
   }
-  // set uno window if becomes 1
   if(h.length===1){
     const isBot = G.seats[i] && G.seats[i].bot;
     G.uno={seat:i,deadline:Date.now()+4000,called: isBot ? (Math.random() >= 0.4) : false};
@@ -6508,63 +7404,89 @@ function doPlayUno(i,idx,colorChoice){
   }else if(G.uno && G.uno.seat===i){
     G.uno=null;
   }
-  // handle actions
   if(c.type==='skip'){
-    G.turn=(G.turn+G.dir*2+G.n)%G.n;
+    const skipped = unoStep(i,1);
+    G.turn=unoStep(i,2);
+    G.msg=`${G.seats[i].name} لعب تخطي (Skip) — تم تخطي ${G.seats[skipped].name}`;
     return true;
   }else if(c.type==='reverse'){
     G.dir=-G.dir;
     if(G.n===2){
-      G.turn=(G.turn+G.dir*2+G.n)%G.n; // in 2p reverse acts like skip
+      G.turn=unoStep(i,2); // in 2p reverse acts like skip
     }else{
-      G.turn=(G.turn+G.dir+G.n)%G.n;
+      G.turn=unoStep(i,1);
     }
+    G.msg=`${G.seats[i].name} عكس اتجاه اللعب (Reverse ⇄)`;
     return true;
   }else if(c.type==='draw2'){
-    const next=(G.turn+G.dir+G.n)%G.n;
+    const next=unoStep(i,1);
     drawCardsTo(next,2);
-    G.turn=(next+G.dir+G.n)%G.n;
-    G.msg=G.seats[i].name+' لعب Draw Two، '+G.seats[next].name+' يسحب ٢';
+    G.turn=unoStep(next,1);
+    G.msg=G.seats[i].name+' لعب +2، '+G.seats[next].name+' يسحب كرتين';
     return true;
   }else if(c.type==='wild'){
+    if(G.color && UNO_COLORS.includes(G.color)){
+      G.turn=unoStep(i,1);
+      G.msg=`${G.seats[i].name} لعب Wild واختار اللون ${G.color}`;
+      return true;
+    }
     unoPendingColor=true; unoPendingWild=c;
-    // don't advance turn yet, wait for color
-    G.turn=i; // keep turn on player to choose color
+    G.turn=i;
     return true;
   }else if(c.type==='wild4'){
-    // must be playable only if no color match? simplified: allow if no other card matches color? classic rule; implement basic: allow and require color choice with penalty
+    if(G.color && UNO_COLORS.includes(G.color)){
+      const next=unoStep(i,1);
+      drawCardsTo(next,4);
+      G.turn=unoStep(next,1);
+      G.msg=`${G.seats[i].name} لعب +4 Wild (${G.color}) — ${G.seats[next].name} يسحب ٤ كروت`;
+      return true;
+    }
     unoPendingColor=true; unoPendingWild=c;
     G.turn=i;
     return true;
   }else{
-    G.turn=(G.turn+G.dir+G.n)%G.n;
+    G.turn=unoStep(i,1);
     return true;
   }
 }
+function unoHandPoints(h){
+  const values={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,skip:20,reverse:20,draw2:20,wild:50,wild4:50};
+  let s=0;
+  for(const c of (h||[])){
+    if(c.type==='num') s+=values[c.val]||0;
+    else s+=values[c.type]||0;
+  }
+  return s;
+}
 function finishUnoRound(winner){
   if(G.type!=='uno')return;
-  // calculate points (sum of others)
-  const values={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,skip:20,reverse:20,draw2:20,wild:50,wild4:50};
+  const handSums = G.hands.map(unoHandPoints);
   let pts=0;
-  for(let i=0;i<G.n;i++){
-    if(i===winner)continue;
-    const h=G.hands[i]||[];
-    for(const c of h){
-      if(c.type==='num')pts+=values[c.val]||0;
-      else pts+=values[c.type]||0;
+  let winTeam = -1;
+  if(G.tm){
+    winTeam = seatTeam(winner);
+    // Genuine Team UNO scoring: sum card points from opposing team's hands
+    for(let i=0;i<G.n;i++){
+      if(seatTeam(i) !== winTeam) pts += handSums[i];
     }
-  }
-  if(G.tm && G.n===4){
-    const tw=winner%2; G.scores[tw]+=pts;
+    G.scores[winTeam] = (G.scores[winTeam] || 0) + pts;
   }else{
-    G.scores[winner]+=pts;
+    for(let i=0;i<G.n;i++){
+      if(i===winner)continue;
+      pts += handSums[i];
+    }
+    G.scores[winner] = (G.scores[winner] || 0) + pts;
   }
   const max=Math.max.apply(null,G.scores);
   const reached=max>= (G.target||500);
   const champs=G.scores.map((s,idx)=>s===max?idx:-1).filter(idx=>idx>=0);
-  G.res={winner,pts,reason:'empty',sums:G.scores.slice(),champs};
+  G.res={winner,team:winTeam,pts,reason:'empty',sums:handSums,champs};
   G.phase=reached?'over':'round';
-  G.msg=G.seats[winner].name+' انتهى كروته وأعلن فوز الجولة 🎉';
+  if(G.tm){
+    G.msg=`${G.seats[winner].name} أنهى كروته وفاز ${winTeam===0?'الفريق أ 🔵':'الفريق ب 🔴'} بالجولة (+${pts} نقطة) 🎉`;
+  }else{
+    G.msg=G.seats[winner].name+' أنهى كروته وفاز بالجولة (+'+pts+' نقطة) 🎉';
+  }
   if(reached)confetti(46);else beep(520,.12,'sine',.1);
 }
 function afterChange(){
@@ -6637,11 +7559,29 @@ function finishRound(winner,reason){
   const total=sums.reduce((a,b)=>a+b,0);
   let pts=0,winSeat=winner,winTeam=-1;
   if(G.tm){
-    const ts=[0,0];
-    for(let i=0;i<n;i++)ts[i%2]+=sums[i];
-    if(reason==='blocked')winTeam=ts[0]<ts[1]?0:(ts[1]<ts[0]?1:-1);
-    else winTeam=winner>=0?winner%2:-1;
-    if(winTeam>=0)pts=reason==='target'?0:ts[1-winTeam];
+    const ts=[0,0], tCnt=[0,0], tMin=[Infinity,Infinity];
+    for(let i=0;i<n;i++){
+      const tm = seatTeam(i);
+      ts[tm] += sums[i];
+      tCnt[tm]++;
+      if(sums[i] < tMin[tm]) tMin[tm] = sums[i];
+    }
+    if(reason==='blocked'){
+      if(tCnt[0] === tCnt[1]){
+        winTeam = ts[0]<ts[1] ? 0 : (ts[1]<ts[0] ? 1 : -1);
+      }else{
+        // Flexible uneven teams (e.g. 2 vs 1): compare lowest hand pip total first, then average pips per player
+        if(tMin[0] !== tMin[1]) winTeam = tMin[0] < tMin[1] ? 0 : 1;
+        else {
+          const avg0 = ts[0] / Math.max(1, tCnt[0]);
+          const avg1 = ts[1] / Math.max(1, tCnt[1]);
+          winTeam = avg0 < avg1 ? 0 : (avg1 < avg0 ? 1 : -1);
+        }
+      }
+    }else{
+      winTeam = winner>=0 ? seatTeam(winner) : -1;
+    }
+    if(winTeam>=0) pts = reason==='target' ? 0 : ts[1-winTeam];
   }else{
     if(reason==='blocked'){
       const m=Math.min.apply(null,sums);
@@ -6661,7 +7601,7 @@ function finishRound(winner,reason){
   const champs=G.scores.map((s,i)=>s===max?i:-1).filter(i=>i>=0);
   G.res={winner:winSeat,team:winTeam,pts,reason,sums,total,champs};
   G.phase=reached?'over':'round';
-  if(reason==='empty')G.msg=G.seats[winner].name+' خلّص أحجاره 🎉';
+  if(reason==='empty')G.msg=G.seats[winner].name+(G.tm?` قاد ${winTeam===0?'فريق أ 🔵':'فريق ب 🔴'} للفوز 🎉`:' خلّص أحجاره 🎉');
   else if(reason==='blocked')G.msg='اللعب اتقفل — الأقل نقاطًا هو الفايز';
   else G.msg='وصلنا للهدف! 🎯';
   if(reached)confetti(46);else beep(520,.12,'sine',.1);
@@ -6672,13 +7612,9 @@ function updateStats(){
   const me=mySeat();
   PF.st.g++;
   if(me>=0){
-    if(G.type==='uno'){
-      if(G.res&&G.res.champs&&G.res.champs.includes(me))PF.st.w++;
-    }else{
-      const my=sc(me);
-      if(G.res&&G.res.champs&&G.res.champs.includes(my))PF.st.w++;
-      PF.st.p+=(G.scores[my]||0);
-    }
+    const my = sc(me);
+    if(G.res&&G.res.champs&&G.res.champs.includes(my))PF.st.w++;
+    PF.st.p+=(G.scores[my]||0);
     PF.st.r+=G.round;
   }
   savePF();renderProfileBtn();
@@ -6687,8 +7623,7 @@ function nextRound(){
   if(!host||!G)return;
   closeOverlay();resultKey='';
   if(G.phase==='over'){
-    if(G.type==='uno'){ G.scores=G.seats.map(()=>0); }
-    else { G.scores=G.tm?[0,0]:G.seats.map(()=>0); }
+    G.scores = G.tm ? [0,0] : G.seats.map(()=>0);
     G.round=0;rec=false;
   }
   pending=-1;hintIdx=-1;unoPendingColor=false;unoPendingWild=null;
@@ -6702,7 +7637,6 @@ function nextRound(){
 function scheduleBot(){
   clearTimeout(botTimer);
   if(!host||!G||G.phase!=='play')return;
-  // if waiting for color selection from human? if it's bot's turn and pending color (bot chose already but we set turn; better handle)
   if(G.type==='uno' && unoPendingColor){
     const s2=G.seats[G.turn];
     if(s2 && s2.bot){
@@ -6732,12 +7666,9 @@ function botChooseColor(i){
     return;
   }
   G.color=best; unoPendingColor=false;
-  G.turn=(G.turn+G.dir+G.n)%G.n;
+  G.turn=unoStep(G.turn,1);
   if(G.hands[i] && G.hands[i].length===1 && (!G.uno||G.uno.seat!==i)){
     G.uno={seat:i,deadline:Date.now()+4000,called: Math.random() >= 0.35};
-    if(!G.uno.called){
-      // bots may forget randomly
-    }
   }
   if(G.hands[i] && G.hands[i].length===0){finishUnoRound(i);broadcastState();render();scheduleBot();return;}
   broadcastState();render();scheduleBot();
@@ -6760,7 +7691,6 @@ function botMove(){
     const i=G.turn,h=G.hands[i];
     const seat=G.seats[i];
     if(!seat||!h)return;
-    // find playable
     for(let k=0;k<h.length;k++){
       if(canPlayUno(i,k)){
         const c=h[k];
@@ -6772,11 +7702,6 @@ function botMove(){
         }else{
           applyAct({t:'play',i:k},seat.pid);
         }
-        setTimeout(()=>{
-          if(G && G.type==='uno'){
-            const si=G.turn===i?i:(()=>{ /* not directly */ return -1; })();
-          }
-        }, 50);
         if(G.hands[i] && G.hands[i].length===1 && (!G.uno||G.uno.seat!==i)){
           setTimeout(()=>{
             if(G && G.type==='uno' && G.uno && G.uno.seat===i && !G.uno.called){ G.uno.called=true; if(host){broadcastState();render();} }
@@ -6890,21 +7815,98 @@ function renderRoom(){
 function renderRoomPlayers(){
   const wrap=$('#pls');
   if(!wrap)return;
+  const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+  const maxCap = Math.max(2, Math.min(gt === 'uno' ? 10 : 4, +lobbyMeta.n || 4));
+  const curCount = lobbyPl.length;
+
+  // Update capacity & mode summary bar inside #rm
+  const capBadge = $('#rmCapBadge');
+  if(capBadge) capBadge.textContent = `👥 اللاعبون في الغرفة: ${curCount} / ${maxCap}`;
+  const modeBadge = $('#rmModeBadge');
+  if(modeBadge){
+    const gLabel = gt === 'uno' ? '🎴 UNO' : (`🁫 دومينو (${MODE_NAMES[lobbyMeta.mode]||lobbyMeta.mode})`);
+    const tLabel = lobbyMeta.tm ? '🛡️ نظام الفرق (فريق أ ضد ب)' : '👤 فردي كلاسيكي';
+    modeBadge.textContent = `${gLabel} • ${tLabel}`;
+  }
+
+  // Render interactive Team Selection Board when Team Mode is enabled
+  const teamsBoard = $('#rmTeamsBoard');
+  const check = validateLobbyTeamConfig(lobbyMeta, lobbyPl, gt);
+  if(teamsBoard){
+    if(lobbyMeta.tm){
+      teamsBoard.classList.remove('hide');
+      const meObj = lobbyPl.find(p => p.pid === ME);
+      const myTeam = meObj && typeof meObj.team === 'number' ? meObj.team : 0;
+      const teamAHumans = lobbyPl.filter((p, idx) => (typeof p.team === 'number' ? p.team : (idx % 2)) === 0);
+      const teamBHumans = lobbyPl.filter((p, idx) => (typeof p.team === 'number' ? p.team : (idx % 2)) === 1);
+      const botsA = Math.max(0, check.cntA - teamAHumans.length);
+      const botsB = Math.max(0, check.cntB - teamBHumans.length);
+
+      teamsBoard.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <b style="font-size:12.5px">🛡️ اختيار الفرق قبل بدء المباراة (مفتوح للجميع):</b>
+          <span class="mut tiny">${lobbyMeta.allowUneven ? '⚖️ مسموح بفرق غير متساوية' : '⚖️ يتطلب تساوي الفريقين'}</span>
+        </div>
+        <div class="rm-teams-cols">
+          <div class="rm-team-box team-a">
+            <div class="rm-team-head">
+              <span style="color:#38bdf8">🔵 الفريق أ (Team A)</span>
+              <span class="bk-chip ac" style="font-size:10.5px;padding:1px 7px">${check.cntA} لاعب</span>
+            </div>
+            <div class="rm-team-members">
+              ${teamAHumans.map(p => `<div class="rm-team-member-chip"><span>${esc(p.av||'🙂')} ${esc(p.name)}</span>${p.pid===ME?'<span class="tiny mut">(أنت)</span>':''}</div>`).join('')}
+              ${botsA > 0 ? `<div class="mut tiny">+ ${botsA} بوت تلقائي عند البدء</div>` : ''}
+              ${teamAHumans.length === 0 && botsA === 0 ? `<div class="mut tiny">لا يوجد لاعبون بعد</div>` : ''}
+            </div>
+            <button type="button" class="btn ${myTeam === 0 ? 'ok' : 'g'}" data-pick-my-team="0" style="padding:6px 10px;font-size:11.5px;min-height:32px;width:100%">
+              ${myTeam === 0 ? '✅ أنت في الفريق أ' : '🔵 انضم للفريق أ'}
+            </button>
+          </div>
+
+          <div class="rm-team-box team-b">
+            <div class="rm-team-head">
+              <span style="color:#fb7185">🔴 الفريق ب (Team B)</span>
+              <span class="bk-chip warn" style="font-size:10.5px;padding:1px 7px">${check.cntB} لاعب</span>
+            </div>
+            <div class="rm-team-members">
+              ${teamBHumans.map(p => `<div class="rm-team-member-chip"><span>${esc(p.av||'🙂')} ${esc(p.name)}</span>${p.pid===ME?'<span class="tiny mut">(أنت)</span>':''}</div>`).join('')}
+              ${botsB > 0 ? `<div class="mut tiny">+ ${botsB} بوت تلقائي عند البدء</div>` : ''}
+              ${teamBHumans.length === 0 && botsB === 0 ? `<div class="mut tiny">لا يوجد لاعبون بعد</div>` : ''}
+            </div>
+            <button type="button" class="btn ${myTeam === 1 ? 'ok' : 'g'}" data-pick-my-team="1" style="padding:6px 10px;font-size:11.5px;min-height:32px;width:100%">
+              ${myTeam === 1 ? '✅ أنت في الفريق ب' : '🔴 انضم للفريق ب'}
+            </button>
+          </div>
+        </div>
+        <div class="rm-team-valid ${check.ok ? 'ok' : 'warn'}" id="rmTeamValidMsg">${esc(check.reason)}</div>
+      `;
+    }else{
+      teamsBoard.classList.add('hide');
+      teamsBoard.innerHTML = '';
+    }
+  }
+
   if(!lobbyPl.length){
     wrap.innerHTML='<div class="empty">مستنين لاعبين يدخلوا الغرفة…</div>';
   }else{
     wrap.innerHTML=lobbyPl.map((p,i)=>{
       const isMe=p.pid===ME;
+      const pTeam = typeof p.team === 'number' ? p.team : (i % 2);
       const tags=[];
       if(i===0)tags.push('<span class="tag host">المضيف</span>');
-      if(lobbyMeta.tm)tags.push(`<span class="tag team${i%2}">فريق ${i%2+1}</span>`);
+      if(lobbyMeta.tm){
+        tags.push(`<span class="tag team${pTeam}">${pTeam === 0 ? '🔵 فريق أ' : '🔴 فريق ب'}</span>`);
+        if(isMe || host){
+          tags.push(`<button type="button" class="mini" data-switch-pteam="${i}" title="تبديل الفريق">🔄 لـ ${pTeam === 0 ? 'فريق ب' : 'فريق أ'}</button>`);
+        }
+      }
       const canAdd=!isMe&&p.uid&&!isFriend(p.uid);
       return `<div class="player">
         <span class="pc" data-lp="${i}">
           <span class="av" style="--c:${esc(p.col||COLS[0])}">${esc(p.av||'🙂')}</span>
           <span><b>${esc(p.name)}</b><small>${isMe?'أنت':'جاهز للعب'}</small></span>
         </span>
-        <span style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+        <span style="display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap">
           ${tags.join('')}
           ${canAdd?`<button class="mini ok" data-addf="${i}">＋ صديق</button>`:''}
         </span>
@@ -6913,10 +7915,28 @@ function renderRoomPlayers(){
   }
   const go=$('#go');
   go.classList.toggle('hide',!host);
-  go.textContent=(host&&lobbyPl.length>1)?'ابدأ اللعب':'ابدأ اللعب (هتلعب مع بوتات)';
-  go.disabled=lobbyPl.length<1;
+  if(lobbyMeta.tm && !check.ok){
+    go.textContent = '⚠️ وازن الفرق أولًا لبدء المباراة';
+    go.disabled = true;
+  }else{
+    const willUseBots = lobbyMeta.fillBots !== false && lobbyPl.length < maxCap;
+    go.textContent = willUseBots
+      ? `🚀 ابدأ اللعب (${lobbyPl.length} لاعب + ${maxCap - lobbyPl.length} بوت)`
+      : `🚀 ابدأ اللعب الآن (${lobbyPl.length}/${maxCap})`;
+    go.disabled = lobbyPl.length < 1;
+  }
 }
 $('#pls').addEventListener('click',e=>{
+  const sw=e.target.closest('[data-switch-pteam]');
+  if(sw){
+    const idx=+sw.getAttribute('data-switch-pteam');
+    const p=lobbyPl[idx];
+    if(p){
+      const curT = typeof p.team === 'number' ? p.team : (idx % 2);
+      requestSetPlayerTeam(p.pid, curT === 0 ? 1 : 0);
+    }
+    return;
+  }
   const add=e.target.closest('[data-addf]');
   if(add){const p=lobbyPl[+add.dataset.addf];if(p)addFriend(p);return}
   const pc=e.target.closest('[data-lp]');
@@ -6928,18 +7948,19 @@ function oppHTML(s,i){
   const isTurn=G.phase==='play'&&G.turn===i;
   const hand=G.hands[i]||[];
   const cnt=hand.length;
+  const tmTag = G.tm ? `<span class="tag team${seatTeam(i)}" style="font-size:9.5px;padding:1px 6px">${seatTeam(i)===0?'🔵 أ':'🔴 ب'}</span>` : '';
   let tiles='';
   if(G.type==='uno'){
-    const show=Math.min(cnt,12);
+    const maxBacks = G.n >= 6 ? 6 : 10;
+    const show=Math.min(cnt,maxBacks);
     for(let k=0;k<show;k++)tiles+=`<div class="unocard backuno sm"></div>`;
     if(cnt>show)tiles+=`<span class="more">+${cnt-show}</span>`;
-    const team=''; 
     return `<div class="opp ${isTurn?'turn':''}">
       <div class="opphead">
         <span class="av sm" style="--c:${esc(s.col||COLS[0])}">${esc(s.av||'🙂')}</span>
         <div class="oppmeta">
-          <b>${esc(s.name)}</b>
-          <small>${cnt} كرت</small>
+          <div style="display:flex;align-items:center;gap:4px"><b>${esc(s.name)}</b>${tmTag}</div>
+          <small>${G.tm ? (seatTeam(i)===0?'فريق أ • ':'فريق ب • ') : ''}${G.scores[sc(i)]||0} نقطة • ${cnt} كرت</small>
         </div>
       </div>
       <div class="backs show">${tiles}</div>
@@ -6952,12 +7973,12 @@ function oppHTML(s,i){
     for(let k=0;k<show;k++)tiles+=backHTML('xs');
     if(cnt>show)tiles+=`<span class="more">+${cnt-show}</span>`;
   }
-  const team=G.tm?`فريق ${i%2+1} • `:'';
+  const team=G.tm?(seatTeam(i)===0?'🔵 فريق أ • ':'🔴 فريق ب • '):'';
   return `<div class="opp ${isTurn?'turn':''}">
     <div class="opphead">
       <span class="av sm" style="--c:${esc(s.col||COLS[0])}">${esc(s.av||'🙂')}</span>
       <div class="oppmeta">
-        <b>${esc(s.name)}</b>
+        <div style="display:flex;align-items:center;gap:4px"><b>${esc(s.name)}</b>${tmTag}</div>
         <small>${team}${G.scores[sc(i)]} نقطة • ${cnt} أحجار</small>
       </div>
     </div>
@@ -6967,15 +7988,23 @@ function oppHTML(s,i){
 function reasonText(r){
   if(!G)return '';
   if(G.type==='uno'){
-    if(r.reason==='empty'&&r.winner>=0)return `${G.seats[r.winner].name} انتهى كروته`;
+    if(r.reason==='empty'&&r.winner>=0){
+      return G.tm
+        ? `${G.seats[r.winner].name} أنهى أوراقه وقاد ${r.team===0?'الفريق أ 🔵':'الفريق ب 🔴'} للفوز بالجولة!`
+        : `${G.seats[r.winner].name} أنهى كروته أولًا!`;
+    }
     return '';
   }
   if(r.reason==='blocked'){
-    if(G.tm)return r.team>=0?`فريق ${r.team+1} كان الأقل نقاطًا`:'تعادل في النقاط';
+    if(G.tm)return r.team>=0?`${r.team===0?'الفريق أ 🔵':'الفريق ب 🔴'} كان الأقل نقاطًا في القفلة`:'تعادل في النقاط';
     return r.winner>=0?`${G.seats[r.winner].name} كان الأقل نقاطًا`:'تعادل في النقاط';
   }
   if(r.reason==='target')return 'النقاط وصلت للهدف أثناء اللعب';
-  if(r.reason==='empty'&&r.winner>=0)return `${G.seats[r.winner].name} خلّص أحجاره`;
+  if(r.reason==='empty'&&r.winner>=0){
+    return G.tm
+      ? `${G.seats[r.winner].name} خلّص أحجاره وقاد ${r.team===0?'الفريق أ 🔵':'الفريق ب 🔴'} للفوز!`
+      : `${G.seats[r.winner].name} خلّص أحجاره`;
+  }
   return '';
 }
 function showResult(){
@@ -6983,17 +8012,31 @@ function showResult(){
   const r=G.res,over=G.phase==='over';
   const ch=r.champs||[];
   let title,sub;
+  const teamAMembers = G.seats.filter((_, idx) => seatTeam(idx) === 0).map(s => s.name).join(' ، ');
+  const teamBMembers = G.seats.filter((_, idx) => seatTeam(idx) === 1).map(s => s.name).join(' ، ');
+
   if(G.type==='uno'){
     if(over){
-      if(ch.length===1)title=`🏆 ${esc(G.seats[ch[0]].name)} فائز باللعبة!`;
-      else title='🏆 تعادل!';
-      sub='وصلنا للهدف';
+      if(G.tm){
+        title = ch.length===1 ? `🏆 ${ch[0]===0?'الفريق أ 🔵':'الفريق ب 🔴'} فاز بالمباراة!` : '🏆 تعادل بين الفريقين!';
+      }else{
+        title = ch.length===1 ? `🏆 ${esc(G.seats[ch[0]].name)} فائز باللعبة!` : '🏆 تعادل!';
+      }
+      sub='وصلنا لهدف '+(G.target||500)+' نقطة';
     }else{
       title=r.reason==='empty'?'🎉 انتهت الجولة':'🎉 الجولة خلصت';
-      sub=r.reason==='empty'&&r.winner>=0?`${G.seats[r.winner].name} خلص كروته`:'';
+      sub=reasonText(r);
     }
-    const scoreHTML=`<div class="scores">${G.seats.map((s,i)=>`<span class="score ${ch.includes(i)?'win':''}">${esc(s.av)} ${esc(s.name)} — ${G.scores[i]} نقطة</span>`).join('')}</div>`;
-    const ptsLine=r.pts?`<p class="mut">+${r.pts} نقطة في الجولة</p>`:'';
+    const scoreHTML = G.tm
+      ? `<div class="scores">
+           <span class="score ${ch.includes(0)?'win':''}">🔵 الفريق أ (${esc(teamAMembers)}) — ${G.scores[0]} نقطة</span>
+           <span class="score ${ch.includes(1)?'win':''}">🔴 الفريق ب (${esc(teamBMembers)}) — ${G.scores[1]} نقطة</span>
+         </div>`
+      : `<div class="scores">${G.seats.map((s,i)=>`<span class="score ${ch.includes(i)?'win':''}">${esc(s.av)} ${esc(s.name)} — ${G.scores[i]} نقطة</span>`).join('')}</div>`;
+    const remain = Array.isArray(r.sums)
+      ? `<div class="mut tiny" style="margin-top:8px">نقاط الأوراق المتبقية</div><div class="scores">${G.seats.map((s,i)=>`<span class="score">${esc(s.name)}: ${r.sums[i]||0}</span>`).join('')}</div>`
+      : '';
+    const ptsLine=r.pts?`<p class="mut">+${r.pts} نقطة مضافة في هذه الجولة</p>`:'';
     const actions=host
       ? `<button class="btn ok" data-res="next" style="width:100%;margin-top:8px">${over?'لعبة جديدة':'الجولة الجاية'}</button>`
       : `<div class="mut tiny" style="margin-top:8px">مستني المضيف يبدأ الجولة الجاية…</div>`;
@@ -7002,6 +8045,7 @@ function showResult(){
       <p class="mut">${esc(sub)}</p>
       ${ptsLine}
       ${scoreHTML}
+      ${remain}
       ${actions}
     </div>`,'result');
     const btn=$('[data-res="next"]');
@@ -7009,7 +8053,7 @@ function showResult(){
     return;
   }
   if(over){
-    if(G.tm)title=ch.length===1?`🏆 فريق ${ch[0]+1} كسب!`:'🏆 تعادل!';
+    if(G.tm)title=ch.length===1?`🏆 ${ch[0]===0?'الفريق أ 🔵':'الفريق ب 🔴'} كسب المباراة!`:'🏆 تعادل!';
     else title=ch.length===1?`🏆 ${esc(G.seats[ch[0]].name)} كسب!`:'🏆 تعادل!';
     sub='وصلنا لهدف '+G.target+' نقطة';
   }else{
@@ -7018,8 +8062,8 @@ function showResult(){
   }
   const scoreHTML=G.tm
     ? `<div class="scores">
-         <span class="score ${ch.includes(0)?'win':''}">🔵 فريق ١ — ${G.scores[0]}</span>
-         <span class="score ${ch.includes(1)?'win':''}">🔴 فريق ٢ — ${G.scores[1]}</span>
+         <span class="score ${ch.includes(0)?'win':''}">🔵 الفريق أ (${esc(teamAMembers)}) — ${G.scores[0]}</span>
+         <span class="score ${ch.includes(1)?'win':''}">🔴 الفريق ب (${esc(teamBMembers)}) — ${G.scores[1]}</span>
        </div>`
     : `<div class="scores">${G.seats.map((s,i)=>`<span class="score ${ch.includes(i)?'win':''}">${esc(s.av)} ${esc(s.name)} — ${G.scores[i]}</span>`).join('')}</div>`;
   const remain=`<div class="scores">${G.seats.map((s,i)=>`<span class="score">${esc(s.name)}: ${r.sums[i]}</span>`).join('')}</div>`;
@@ -7199,39 +8243,45 @@ function render(){
   if(pending>=0&&(!myTurn||!G.hands[me]||!G.hands[me][pending]))pending=-1;
 
   if(G.type==='uno'){
-    const bits=['<b>UNO كلاسيكي</b>'];
+    const bits=[`<b>${G.tm ? '🛡️ UNO فرق' : '🎴 UNO فردي'}</b>`];
     bits.push(`<span class="pill">جولة ${G.round}</span>`);
     bits.push(`<span class="pill">اتجاه ${G.dir===1?'→':'←'}</span>`);
     if(G.color)bits.push(`<span class="pill">لون: ${G.color}</span>`);
     bits.push(`<span class="pill">سحب: ${G.drawPile.length}</span>`);
     bits.push(`<span class="pill">لاعبون: ${G.n}</span>`);
+    if(G.tm)bits.push(`<span class="pill t0">🔵 أ: ${G.scores[0]||0}</span><span class="pill t1">🔴 ب: ${G.scores[1]||0}</span>`);
     if(code)bits.push(`<span class="pill">كود ${esc(code)}</span>`);
-    $('#info').innerHTML=bits.join(' ');
+    setHTMLIfChanged($('#info'), bits.join(' '));
   }else{
-    const bits=[`<b>${esc(MODE_NAMES[G.mode]||G.mode)}</b>`];
+    const bits=[`<b>${esc(MODE_NAMES[G.mode]||G.mode)}${G.tm ? ' • فرق' : ' • فردي'}</b>`];
     if(G.open)bits.push('<span class="pill">👁 مكشوف</span>');
     bits.push(`<span class="pill">جولة ${G.round}</span>`);
     bits.push(`<span class="pill">هدف ${G.target}</span>`);
-    if(G.tm)bits.push(`<span class="pill t0">🔵 ${G.scores[0]}</span><span class="pill t1">🔴 ${G.scores[1]}</span>`);
+    if(G.tm)bits.push(`<span class="pill t0">🔵 أ: ${G.scores[0]}</span><span class="pill t1">🔴 ب: ${G.scores[1]}</span>`);
     if(code)bits.push(`<span class="pill">كود ${esc(code)}</span>`);
-    $('#info').innerHTML=bits.join(' ');
+    setHTMLIfChanged($('#info'), bits.join(' '));
   }
 
-  $('#opps').innerHTML=G.seats.map((s,i)=>i===me?'':oppHTML(s,i)).join('');
+  const oppsEl = $('#opps');
+  if(oppsEl){
+    oppsEl.classList.toggle('crowded', G.n >= 5);
+    setHTMLIfChanged(oppsEl, G.seats.map((s,i)=>i===me?'':oppHTML(s,i)).join(''));
+  }
 
   if(me>=0){
     const s=G.seats[me];
+    const myTmLabel = G.tm ? (seatTeam(me)===0 ? '🔵 فريق أ • ' : '🔴 فريق ب • ') : '';
     if(G.type==='uno'){
-      $('#me').innerHTML=`<span class="av sm" style="--c:${esc(s.col)}">${esc(s.av)}</span>
+      setHTMLIfChanged($('#me'), `<span class="av sm" style="--c:${esc(s.col)}">${esc(s.av)}</span>
         <span><b>${esc(s.name)} (أنت)</b>
-        <small>نقاط ${G.scores[me]} • ${G.hands[me].length} كرت</small></span>`;
+        <small>${myTmLabel}نقاط ${G.scores[sc(me)]||0} • ${G.hands[me].length} كرت</small></span>`);
     }else{
-      $('#me').innerHTML=`<span class="av sm" style="--c:${esc(s.col)}">${esc(s.av)}</span>
+      setHTMLIfChanged($('#me'), `<span class="av sm" style="--c:${esc(s.col)}">${esc(s.av)}</span>
         <span><b>${esc(s.name)} (أنت)</b>
-        <small>${G.tm?'فريق '+(me%2+1)+' • ':''}${G.scores[sc(me)]} نقطة • ${G.hands[me].length} أحجار</small></span>`;
+        <small>${myTmLabel}${G.scores[sc(me)]} نقطة • ${G.hands[me].length} أحجار</small></span>`);
     }
   }else{
-    $('#me').innerHTML='<span class="mut">مش في اللعبة</span>';
+    setHTMLIfChanged($('#me'), '<span class="mut">مش في اللعبة</span>');
   }
 
   const n=G.chain.length;
@@ -16857,8 +17907,8 @@ function pubDirGetActiveHostRoom(){
     const rKey = `${gType}_${code}`;
     if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
     const modeLbl = gType === 'uno'
-      ? `أونو كلاسيكي • هدف ${lobbyMeta.target || 500}`
-      : `${lobbyMeta.mode === 'block' ? 'تسكير' : (lobbyMeta.mode === 'fives' ? 'أمريكي ٥' : 'عادي')}${lobbyMeta.tm && maxP === 4 ? ' • فرق ٢×٢' : ' • فردي'}`;
+      ? `أونو ${lobbyMeta.tm ? 'فرق 🛡️' : 'فردي'} • هدف ${lobbyMeta.target || 500}`
+      : `${lobbyMeta.mode === 'block' ? 'تسكير' : (lobbyMeta.mode === 'fives' ? 'أمريكي ٥' : 'عادي')}${lobbyMeta.tm ? ' • فرق 🛡️' : ' • فردي'}`;
     return {
       roomKey: rKey,
       game: gType,
@@ -17329,20 +18379,20 @@ function pubDirRender(){
   if(countBadge){
     countBadge.textContent = allPublic.length === 0
       ? '0 غرف نشطة'
-      : `${allPublic.length} غرف عامة (${joinableTotal} متاحة للدخول)`;
+      : `${allPublic.length} غرف (${joinableTotal} متاحة)`;
     countBadge.className = 'bk-chip ' + (joinableTotal > 0 ? 'ok' : 'ac');
   }
 
   if(connPill && connText){
     if(PUB_DIR.netError){
       connPill.className = 'pub-conn-pill error';
-      connText.textContent = 'تعذر الاتصال بمزود الغرف — وضع محلي';
+      connText.textContent = 'وضع محلي';
     } else if(PUB_DIR.loading){
       connPill.className = 'pub-conn-pill';
-      connText.textContent = 'جاري البحث عن الغرف العامة…';
+      connText.textContent = 'جاري الفحص…';
     } else {
       connPill.className = 'pub-conn-pill online';
-      connText.textContent = (NET.client && NET.ready) ? 'متصل ومحدّث تلقائيًا' : 'متصل محليًا وبانتظار الشبكة';
+      connText.textContent = (NET.client && NET.ready) ? 'متصل مباشر' : 'جاهز محليًا';
     }
   }
 
@@ -17374,24 +18424,28 @@ function pubDirRender(){
   const filtered = pubDirGetFilteredSortedRooms();
   if(filtered.length === 0){
     const filterName = PUB_DIR.filterGame !== 'all' && SHARB_GAME_META[PUB_DIR.filterGame]
-      ? ` في لعبة ${SHARB_GAME_META[PUB_DIR.filterGame].icon} ${SHARB_GAME_META[PUB_DIR.filterGame].name}`
+      ? ` في ${SHARB_GAME_META[PUB_DIR.filterGame].icon} ${SHARB_GAME_META[PUB_DIR.filterGame].name}`
       : '';
-    container.innerHTML = `<div class="pub-empty-box">
-      <div style="font-size:32px;margin-bottom:6px">🌐</div>
-      <b>لا توجد غرف عامة متاحة${esc(filterName)} في هذه اللحظة</b>
-      <div class="mut tiny" style="margin:6px auto 14px;max-width:460px;line-height:1.6">
+    setHTMLIfChanged(container, `<div class="pub-empty-box">
+      <div style="font-size:24px;margin-bottom:4px">🌐</div>
+      <b style="font-size:12.5px">لا توجد غرف عامة متاحة${esc(filterName)} الآن</b>
+      <div class="mut tiny" style="margin:4px auto 0;max-width:340px;line-height:1.45;font-size:11px">
         كن أول من يفتح غرفة عامة الآن لتظهر هنا لجميع اللاعبين وينضموا إليك بضغطة واحدة!
       </div>
-      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-        <button type="button" class="btn ok" data-pubact="quickCreate">➕ إنشاء غرفة عامة الآن</button>
+      <div class="pub-empty-actions">
+        <button type="button" class="btn ok" data-pubact="quickCreate">＋ إنشاء غرفة عامة</button>
         ${PUB_DIR.filterGame !== 'all' ? `<button type="button" class="btn g" data-pubact="resetFilter">عرض كل الألعاب</button>` : `<button type="button" class="btn g" data-pubact="refresh">🔄 تحديث القائمة</button>`}
       </div>
-    </div>`;
+    </div>`);
     return;
   }
 
   const myHost = pubDirGetActiveHostRoom();
-  const cardsHTML = filtered.map(rm => {
+  const showAll = !!PUB_DIR.showAllRooms;
+  const visibleRooms = showAll ? filtered : filtered.slice(0, 6);
+  const hiddenCount = Math.max(0, filtered.length - visibleRooms.length);
+
+  const cardsHTML = visibleRooms.map(rm => {
     const meta = SHARB_GAME_META[rm.game] || SHARB_GAME_META.domino;
     const isFull = rm.playersCount >= rm.maxPlayers;
     const isWaiting = rm.status === 'waiting' && !isFull;
@@ -17402,38 +18456,38 @@ function pubDirRender(){
     const pct = Math.min(100, Math.round((rm.playersCount / Math.max(1, rm.maxPlayers)) * 100));
 
     let statusClass = 'waiting';
-    let statusText = '🟢 في انتظار اللاعبين';
+    let statusText = '🟢 انتظار';
     if(isPlaying){
       statusClass = 'playing';
-      statusText = '🔵 في المباراة';
+      statusText = '🔵 باللعب';
     } else if(isFinished){
       statusClass = 'finished';
-      statusText = '🏁 انتهت الجولة';
+      statusText = '🏁 انتهت';
     } else if(isFull){
       statusClass = 'full';
-      statusText = '🟠 الغرفة ممتلئة';
+      statusText = '🟠 ممتلئة';
     }
 
-    let btnLabel = '🚀 انضمام للغرفة';
+    let btnLabel = 'انضمام 🚀';
     let btnDisabled = false;
     let btnClass = 'btn ok pub-rc-JoinBtn';
     if(isJoiningThis){
-      btnLabel = '⏳ جاري التحقق والانضمام…';
+      btnLabel = '⏳ جاري…';
       btnDisabled = true;
       btnClass = 'btn g pub-rc-JoinBtn';
     } else if(isMyRoom){
-      btnLabel = '👑 غرفتك الحالية (فتح الغرفة)';
+      btnLabel = '👑 غرفتك';
       btnClass = 'btn pub-rc-JoinBtn';
     } else if(isPlaying){
-      btnLabel = '⏳ المباراة جارية الآن';
+      btnLabel = '⏳ جارية';
       btnDisabled = true;
       btnClass = 'btn g pub-rc-JoinBtn';
     } else if(isFinished){
-      btnLabel = '🏁 انتهت الجولة (بانتظار المضيف)';
+      btnLabel = '🏁 انتهت';
       btnDisabled = true;
       btnClass = 'btn g pub-rc-JoinBtn';
     } else if(isFull){
-      btnLabel = '🔒 الغرفة مكتملة العدد';
+      btnLabel = '🔒 ممتلئة';
       btnDisabled = true;
       btnClass = 'btn g pub-rc-JoinBtn';
     }
@@ -17445,43 +18499,37 @@ function pubDirRender(){
           <span class="pub-rc-status ${statusClass}">${statusText}</span>
         </div>
 
-        <div class="pub-rc-title-row" style="margin-top:9px">
+        <div class="pub-rc-title-row">
           <div class="pub-rc-name" title="${esc(rm.roomName)}">${esc(rm.roomName)}</div>
-          <span class="pub-rc-code" title="مُعرّف الغرفة">#${esc(rm.code)}</span>
+          <span class="pub-rc-code" title="كود الغرفة">#${esc(rm.code)}</span>
         </div>
 
-        <div class="pub-rc-host" style="margin-top:6px">
-          <span class="pub-rc-host-info">
-            <span class="av sm" style="--c:${esc(rm.hostCol)};width:22px;height:22px;font-size:12px">${esc(rm.hostAv)}</span>
-            <span>المضيف: <b>${esc(rm.hostName)}</b></span>
-          </span>
-          <span class="tiny mut">${pubDirFormatAge(rm.createdAt)}</span>
-        </div>
-
-        <div style="margin-top:7px">
-          <span class="tag" style="font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block">${esc(rm.modeLabel)}</span>
+        <div class="pub-rc-meta-line" title="${esc(rm.modeLabel)}">
+          <span>👤 <b>${esc(rm.hostName)}</b></span>
+          <span>${esc(rm.modeLabel)}</span>
         </div>
       </div>
 
-      <div>
-        <div class="pub-rc-cap">
-          <div class="pub-rc-cap-row">
-            <span class="mut tiny">👥 اللاعبون داخل الغرفة</span>
-            <span><b>${rm.playersCount}</b> / ${rm.maxPlayers}</span>
-          </div>
-          <div class="pub-rc-bar ${isFull ? 'full' : ''}">
+      <div class="pub-rc-foot-row">
+        <div class="pub-rc-cap-mini" title="اللاعبون حاليا: ${rm.playersCount} من ${rm.maxPlayers}">
+          <span>👥 <b>${rm.playersCount}</b>/${rm.maxPlayers}</span>
+          <div class="pub-rc-bar ${isFull ? 'full' : ''}" style="height:4px">
             <i style="width:${pct}%"></i>
           </div>
         </div>
 
-        <button type="button" class="${btnClass}" data-pubjoin="${esc(rm.roomKey)}" ${btnDisabled ? 'disabled' : ''} style="margin-top:10px">
+        <button type="button" class="${btnClass}" data-pubjoin="${esc(rm.roomKey)}" ${btnDisabled ? 'disabled' : ''}>
           ${btnLabel}
         </button>
       </div>
     </article>`;
   }).join('');
 
-  container.innerHTML = `<div class="pub-rooms-grid" id="pubRoomsGrid">${cardsHTML}</div>`;
+  const moreBtnHTML = (filtered.length > 6)
+    ? `<button type="button" class="mini" data-pubact="toggleShowAll" style="width:100%;margin-top:6px;padding:6px;text-align:center;justify-content:center">${showAll ? 'طي القائمة (عرض أول ٦ غرف) ▴' : `عرض كل الغرف العامة (+${hiddenCount} غرف إضافية) ▾`}</button>`
+    : '';
+
+  setHTMLIfChanged(container, `<div class="pub-rooms-grid" id="pubRoomsGrid">${cardsHTML}</div>${moreBtnHTML}`);
 }
 window.pubDirRender = pubDirRender;
 
@@ -17683,18 +18731,40 @@ function openQuickCreateRoomModal(){
   let selGame = PUB_DIR.filterGame !== 'all' ? PUB_DIR.filterGame : 'domino';
   let selVis = 'public';
   const renderModal = () => {
-    const html = `<div class="card" style="max-width:480px;text-align:right">
+    const isUnoOrDom = selGame === 'uno' || selGame === 'domino';
+    const d = isUnoOrDom ? LOBBY_DRAFT[selGame] : null;
+    const capOpts = selGame === 'uno' ? [2,3,4,5,6,7,8,9,10] : (selGame === 'domino' ? [2,3,4] : []);
+    const extraCfgHTML = isUnoOrDom ? `
+      <label class="lbl">٢. نظام اللعب وسعة الغرفة (${selGame === 'uno' ? '٢–١٠ لاعبين' : '٢–٤ لاعبين'}):</label>
+      <div class="lob-mode-grid" style="margin-bottom:8px">
+        <button type="button" class="lob-mode-btn ${!d.tm ? 'on' : ''}" data-qctm="0" style="padding:8px 10px">
+          <span>👤</span>
+          <span><b>فردي (Individual)</b><small>كل لاعب لنفسه</small></span>
+        </button>
+        <button type="button" class="lob-mode-btn ${d.tm ? 'on' : ''}" data-qctm="1" style="padding:8px 10px">
+          <span>🛡️</span>
+          <span><b>فرق (Team A vs B)</b><small>باختيار اللاعبين</small></span>
+        </button>
+      </div>
+      <div class="lob-cap-pills" style="margin-bottom:12px">
+        ${capOpts.map(c => `<button type="button" class="lob-cap-pill ${d.n === c ? 'on' : ''}" data-qccap="${c}" style="height:32px;font-size:12px;min-width:38px">${c}</button>`).join('')}
+      </div>
+    ` : '';
+
+    const html = `<div class="card" style="max-width:500px;text-align:right">
       <h2 style="margin:0 0 6px;text-align:center">➕ إنشاء غرفة لعب جديدة</h2>
-      <p class="mut tiny" style="text-align:center;margin:0 0 12px">اختر اللعبة وحدد ما إذا كانت الغرفة <b>عامة</b> (تظهر للجميع في الرئيسية) أو <b>خاصة</b> (بالكود فقط)</p>
+      <p class="mut tiny" style="text-align:center;margin:0 0 12px">اختر اللعبة وسعة الغرفة وما إذا كانت <b>عامة</b> أو <b>خاصة</b></p>
 
       <label class="lbl">١. اختر اللعبة:</label>
-      <div class="quick-g-pills" style="margin-bottom:12px">
+      <div class="quick-g-pills" style="margin-bottom:10px">
         ${Object.values(SHARB_GAME_META).map(g => `
           <div class="quick-g-pill ${selGame === g.id ? 'on' : ''}" data-qcgame="${g.id}">${g.icon} ${esc(g.name)}</div>
         `).join('')}
       </div>
 
-      <label class="lbl">٢. اختر ظهور الغرفة:</label>
+      ${extraCfgHTML}
+
+      <label class="lbl">اختر ظهور الغرفة:</label>
       <div class="vis-selector-grid" style="margin-bottom:10px">
         <button type="button" class="vis-opt-btn ${selVis === 'public' ? 'on' : ''}" data-qcvis="public">
           <span class="vis-ico">🌐</span>
@@ -17712,7 +18782,7 @@ function openQuickCreateRoomModal(){
         </button>
       </div>
 
-      <label class="lbl" for="qcRoomNameInp">٣. اسم الغرفة (اختياري):</label>
+      <label class="lbl" for="qcRoomNameInp">اسم الغرفة (اختياري):</label>
       <input id="qcRoomNameInp" maxlength="28" value="${esc(SHARB_ROOM_CFG.roomNames[selGame] || '')}" placeholder="مثال: تحدي المحترفين — غرفة ${esc(PF.name)}" style="margin-bottom:14px">
 
       <div class="row" style="justify-content:center;gap:10px">
@@ -17734,6 +18804,28 @@ function openQuickCreateRoomModal(){
         const inp = $('#qcRoomNameInp');
         if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
         selVis = el.getAttribute('data-qcvis') === 'private' ? 'private' : 'public';
+        renderModal();
+      };
+    });
+    $$('[data-qctm]').forEach(el => {
+      el.onclick = () => {
+        const inp = $('#qcRoomNameInp');
+        if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
+        if(LOBBY_DRAFT[selGame]){
+          LOBBY_DRAFT[selGame].tm = el.getAttribute('data-qctm') === '1';
+          if(LOBBY_DRAFT[selGame].tm && (LOBBY_DRAFT[selGame].n % 2 === 1)) LOBBY_DRAFT[selGame].allowUneven = true;
+        }
+        renderModal();
+      };
+    });
+    $$('[data-qccap]').forEach(el => {
+      el.onclick = () => {
+        const inp = $('#qcRoomNameInp');
+        if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
+        if(LOBBY_DRAFT[selGame]){
+          LOBBY_DRAFT[selGame].n = parseInt(el.getAttribute('data-qccap'), 10) || 4;
+          if(LOBBY_DRAFT[selGame].tm && (LOBBY_DRAFT[selGame].n % 2 === 1)) LOBBY_DRAFT[selGame].allowUneven = true;
+        }
         renderModal();
       };
     });
@@ -17860,6 +18952,10 @@ function initPublicRoomsSystem(){
       const act = pubActBtn.getAttribute('data-pubact');
       if(act === 'refresh') pubDirRequestRefresh(true);
       else if(act === 'quickCreate') openQuickCreateRoomModal();
+      else if(act === 'toggleShowAll'){
+        PUB_DIR.showAllRooms = !PUB_DIR.showAllRooms;
+        pubDirRender();
+      }
       else if(act === 'resetFilter'){
         PUB_DIR.filterGame = 'all';
         pubDirRender();
@@ -18058,7 +19154,7 @@ function syncHubWidgets(){
     } else {
       activeSlot.innerHTML = `<div class="mut tiny" style="padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px dashed var(--bd);display:flex;align-items:center;justify-content:space-between;gap:8px">
         <span>لست منضمًا لأي غرفة حاليًا</span>
-        <button type="button" class="mini ok" data-pubact="quickCreate">＋ إنشاء غرفة</button>
+        <button type="button" class="mini ok" data-pubact="quickCreate">➕ إنشاء غرفة جديدة</button>
       </div>`;
     }
   }
@@ -18160,6 +19256,8 @@ window.pubDirRender = function(){
 function applyHubSearchAndCategoryFilter(){
   const q = String(SHARB_HUB.searchQuery || '').trim().toLowerCase();
   const cat = SHARB_HUB.gameCategory || 'all';
+  const gridEl = document.getElementById('hubGamesGrid');
+  if(gridEl) gridEl.classList.toggle('is-filtered', Boolean(q || cat !== 'all'));
   $$('#hubGamesGrid .hub-game-card').forEach(card => {
     const itemCat = card.getAttribute('data-gcat-item') || 'all';
     const titleText = (card.getAttribute('data-gtitle') || '') + ' ' + (card.textContent || '');
@@ -18439,6 +19537,83 @@ function initSharbHubRedesign(){
     }
   });
 }
+
+// Bind UNO & Domino Lobby Interactive Controls (Mode, Capacity 2-10 / 2-4, Uneven Teams, Fill Bots, Team Pick)
+(function bindLobbyUpgrades(){
+  document.addEventListener('click', e => {
+    const tmBtn = e.target.closest('[data-lob-tm]');
+    if(tmBtn){
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      LOBBY_DRAFT[gt].tm = tmBtn.getAttribute('data-lob-tm') === '1';
+      if(LOBBY_DRAFT[gt].tm && (LOBBY_DRAFT[gt].n % 2 === 1)) LOBBY_DRAFT[gt].allowUneven = true;
+      syncLobbyConfigUI();
+      beep(460, .05, 'sine', .05);
+      return;
+    }
+
+    const capBtn = e.target.closest('[data-lob-cap]');
+    if(capBtn){
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      const maxAllowed = gt === 'uno' ? 10 : 4;
+      const val = Math.max(2, Math.min(maxAllowed, parseInt(capBtn.getAttribute('data-lob-cap'), 10) || 4));
+      LOBBY_DRAFT[gt].n = val;
+      if(LOBBY_DRAFT[gt].tm && (val % 2 === 1)) LOBBY_DRAFT[gt].allowUneven = true;
+      syncLobbyConfigUI();
+      beep(480, .05, 'sine', .05);
+      return;
+    }
+
+    const pickTeamBtn = e.target.closest('[data-pick-my-team]');
+    if(pickTeamBtn){
+      const t = parseInt(pickTeamBtn.getAttribute('data-pick-my-team'), 10) === 1 ? 1 : 0;
+      requestSetPlayerTeam(ME, t);
+      beep(520, .05, 'sine', .05);
+      return;
+    }
+  });
+
+  const allowChk = document.getElementById('allowUnevenTgl');
+  if(allowChk){
+    allowChk.addEventListener('change', () => {
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      LOBBY_DRAFT[gt].allowUneven = !!allowChk.checked;
+      syncLobbyConfigUI();
+    });
+  }
+
+  const fillChk = document.getElementById('fillBotsTgl');
+  if(fillChk){
+    fillChk.addEventListener('change', () => {
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      LOBBY_DRAFT[gt].fillBots = !!fillChk.checked;
+      syncLobbyConfigUI();
+    });
+  }
+
+  const tgInp = document.getElementById('tg');
+  if(tgInp){
+    tgInp.addEventListener('change', () => {
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      const v = parseInt(tgInp.value, 10);
+      if(v > 0) LOBBY_DRAFT[gt].target = v;
+      syncLobbyConfigUI();
+    });
+  }
+
+  const npSel = document.getElementById('np');
+  if(npSel){
+    npSel.addEventListener('change', () => {
+      const gt = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      const val = npSel.value;
+      if(val === '4-team'){ LOBBY_DRAFT[gt].n = 4; LOBBY_DRAFT[gt].tm = true; }
+      else if(val === '4-solo'){ LOBBY_DRAFT[gt].n = 4; LOBBY_DRAFT[gt].tm = false; }
+      else { LOBBY_DRAFT[gt].n = parseInt(val, 10) || 4; }
+      syncLobbyConfigUI();
+    });
+  }
+
+  syncLobbyConfigUI();
+})();
 
 initSharbHubRedesign();
 
