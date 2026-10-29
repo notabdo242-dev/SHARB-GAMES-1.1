@@ -76,13 +76,16 @@
   --grad1: radial-gradient(1100px 680px at 10% -10%,rgba(34,197,94,.26),transparent 64%);
   --grad2: radial-gradient(920px 620px at 106% 114%,rgba(16,185,129,.16),transparent 62%);
 }
-:root[data-sharb="crimson"]{
-  --bg1:#100406;--bg2:#1f0a0d;
-  --glass:rgba(255,255,255,.06);--glass2:rgba(255,255,255,.11);
-  --bd:rgba(255,90,90,.24);--tx:#fff5f5;--mut:#f0b3b3;
-  --ac:#ef4444;--ac2:#f87171;--gr:#22c55e;
-  --grad1: radial-gradient(1100px 680px at 10% -10%,rgba(239,68,68,.26),transparent 64%);
-  --grad2: radial-gradient(920px 620px at 106% 114%,rgba(220,38,38,.16),transparent 62%);
+:root[data-sharb="crimson"], :root:not([data-sharb]){
+  --bg1:#140708;--bg2:#1e0b0d;
+  --glass:rgba(36,14,17,.82);--glass2:rgba(52,20,24,.9);
+  --bd:rgba(255,115,100,.15);--tx:#fff5f5;--mut:#c89a98;
+  --ac:#e6392e;--ac2:#ff5c4d;--gr:#22c55e;--gold:#f59e0b;--red:#ff453a;
+  --felt:#145a44;--felt2:#093528;--wood1:#5b2618;--wood2:#2b1009;
+  --r:22px;--sh:0 20px 50px rgba(0,0,0,.55);
+  --grad1: radial-gradient(1100px 680px at 15% -10%,rgba(230,57,46,.25),transparent 64%);
+  --grad2: radial-gradient(920px 620px at 100% 110%,rgba(245,158,11,.12),transparent 62%);
+  color-scheme:dark;
 }
 :root[data-sharb="light"]{
   --bg1:#f7f9fc;--bg2:#eef3fb;
@@ -189,7 +192,7 @@ label.lbl{display:block;font-size:12.5px;color:var(--mut);margin:0 0 6px 2px;fon
   text-align:right;
 }
 .csel-btn:hover:not(.disabled){border-color:var(--ac);transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 20px rgba(0,0,0,.22)}
-.csel-wrap.open .csel-btn{border-color:var(--ac);box-shadow:0 0 0 3px rgba(10,132,255,.22),0 10px 26px rgba(0,0,0,.3)}
+.csel-wrap.open .csel-btn{border-color:var(--ac);box-shadow:0 0 0 3px rgba(230,57,46,.22),0 10px 26px rgba(0,0,0,.3)}
 .csel-btn.disabled{opacity:.55;cursor:not-allowed}
 .csel-btn .csel-lbl{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .csel-btn .csel-arr{
@@ -216,9 +219,9 @@ label.lbl{display:block;font-size:12.5px;color:var(--mut);margin:0 0 6px 2px;fon
   padding:9px 12px;border-radius:11px;font-size:13.5px;font-weight:700;
   color:var(--tx);cursor:pointer;transition:.15s;border:1px solid transparent;
 }
-.csel-opt:hover{background:var(--glass2);border-color:var(--bd);transform:translateX(-2px)}
+.csel-opt:hover{background:var(--glass2);border-color:var(--bd)}
 .csel-opt.on{
-  background:linear-gradient(135deg,rgba(10,132,255,.26),rgba(10,132,255,.10));
+  background:linear-gradient(135deg,rgba(230,57,46,.26),rgba(230,57,46,.10));
   border-color:var(--ac);color:var(--ac2);font-weight:800;
 }
 :root[data-theme="light"] .csel-opt.on{color:var(--ac);background:rgba(10,132,255,.12)}
@@ -449,7 +452,7 @@ label.lbl{display:block;font-size:12.5px;color:var(--mut);margin:0 0 6px 2px;fon
 /* ---------- overlay / toasts ---------- */
 .ov{position:fixed;inset:0;background:rgba(3,10,18,.72);display:flex;align-items:center;justify-content:center;z-index:60;backdrop-filter:blur(9px);padding:18px;animation:fade .18s}
 @keyframes fade{from{opacity:0}}
-.ov .card{background:linear-gradient(165deg,#0d2233,#0a1a26);border:1px solid rgba(255,255,255,.14);max-width:400px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);border-radius:24px;padding:22px;max-height:92vh;overflow:auto;color:#f2f6fa}
+.ov .card{background:linear-gradient(165deg,var(--bg2),var(--bg1));border:1px solid var(--bd2);max-width:400px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.72);border-radius:24px;padding:20px;max-height:94vh;overflow-y:auto;overflow-x:hidden;color:var(--tx)}
 :root[data-theme="light"] .ov .card{background:linear-gradient(165deg,#ffffff,#eef4fa);color:#10202e}
 .ov h2{font-size:22px;font-weight:900;margin:8px 0}
 .ov p{margin:6px 0;font-size:13px;line-height:1.6}
@@ -2137,130 +2140,1936 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
   .bk-stepper{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stt{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ================= PUBLIC & PRIVATE MULTIPLAYER ROOMS SYSTEM ================= */
+.pub-rooms-sec {
+  margin-bottom: 0;
+  border: 1px solid var(--bd);
+  background: var(--glass);
+  position: relative;
+  overflow: visible;
+}
+:root[data-theme="light"] .pub-rooms-sec,
+:root[data-sharb="light"] .pub-rooms-sec {
+  background: linear-gradient(165deg, rgba(255,255,255,.96), rgba(240,247,255,.96));
+  border-color: rgba(2,132,199,.25);
+}
+.pub-rooms-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.pub-rooms-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.pub-rooms-title-wrap h2 {
+  margin: 0;
+  font-size: clamp(17px, 2.2vw, 21px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pub-conn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--bd);
+  color: var(--mut);
+}
+.pub-conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245,158,11,.6);
+  flex-shrink: 0;
+}
+.pub-conn-pill.online .pub-conn-dot {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34,197,94,.75);
+}
+.pub-conn-pill.error .pub-conn-dot {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239,68,68,.75);
+}
+.pub-rooms-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pub-rooms-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid var(--bd);
+  margin-bottom: 14px;
+}
+:root[data-theme="light"] .pub-rooms-toolbar,
+:root[data-sharb="light"] .pub-rooms-toolbar {
+  background: rgba(15,23,42,.035);
+}
+.pub-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.pub-f-pill {
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid var(--bd);
+  background: rgba(255,255,255,.04);
+  color: var(--tx);
+  transition: all .16s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+}
+.pub-f-pill:hover {
+  border-color: var(--ac);
+  background: rgba(56,189,248,.1);
+}
+.pub-f-pill.on {
+  background: linear-gradient(135deg, var(--ac), var(--ac2));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(10,132,255,.3);
+}
+.pub-sort-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 auto;
+}
+.pub-sort-wrap label {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mut);
+  white-space: nowrap;
+}
+.pub-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 12px;
+}
+.pub-room-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid var(--bd);
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+  min-width: 0;
+  position: relative;
+}
+.pub-room-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56,189,248,.42);
+  box-shadow: 0 10px 26px rgba(0,0,0,.22);
+}
+:root[data-theme="light"] .pub-room-card,
+:root[data-sharb="light"] .pub-room-card {
+  background: #ffffff;
+  border-color: rgba(15,23,42,.12);
+  box-shadow: 0 4px 14px rgba(15,23,42,.05);
+}
+.pub-room-card.is-waiting {
+  border-color: rgba(34,197,94,.32);
+}
+.pub-room-card.is-full,
+.pub-room-card.is-playing {
+  opacity: .92;
+}
+.pub-rc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.pub-rc-game {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(56,189,248,.14);
+  color: var(--ac2);
+  border: 1px solid rgba(56,189,248,.28);
+  max-width: 100%;
+}
+:root[data-theme="light"] .pub-rc-game,
+:root[data-sharb="light"] .pub-rc-game {
+  color: #0369a1;
+  background: rgba(2,132,199,.1);
+}
+.pub-rc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pub-rc-status.waiting {
+  background: rgba(34,197,94,.16);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,.35);
+}
+.pub-rc-status.full {
+  background: rgba(245,158,11,.16);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,.35);
+}
+.pub-rc-status.playing {
+  background: rgba(56,189,248,.16);
+  color: #38bdf8;
+  border: 1px solid rgba(56,189,248,.35);
+}
+.pub-rc-status.finished {
+  background: rgba(168,85,247,.16);
+  color: #c084fc;
+  border: 1px solid rgba(168,85,247,.35);
+}
+:root[data-theme="light"] .pub-rc-status.waiting,
+:root[data-sharb="light"] .pub-rc-status.waiting { color: #15803d; }
+:root[data-theme="light"] .pub-rc-status.full,
+:root[data-sharb="light"] .pub-rc-status.full { color: #b45309; }
+:root[data-theme="light"] .pub-rc-status.playing,
+:root[data-sharb="light"] .pub-rc-status.playing { color: #0369a1; }
+:root[data-theme="light"] .pub-rc-status.finished,
+:root[data-sharb="light"] .pub-rc-status.finished { color: #7e22ce; }
+
+.pub-rc-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.pub-rc-name {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--tx);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+.pub-rc-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid var(--bd);
+  direction: ltr;
+  flex-shrink: 0;
+}
+.pub-rc-host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--mut);
+  min-width: 0;
+}
+.pub-rc-host-info {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.pub-rc-host-info b {
+  color: var(--tx);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pub-rc-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.pub-rc-cap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pub-rc-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.09);
+  overflow: hidden;
+}
+:root[data-theme="light"] .pub-rc-bar,
+:root[data-sharb="light"] .pub-rc-bar {
+  background: rgba(15,23,42,.1);
+}
+.pub-rc-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #38bdf8);
+  transition: width .25s ease;
+}
+.pub-rc-bar.full > i {
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+.pub-rc-JoinBtn {
+  width: 100%;
+  min-height: 42px;
+  font-weight: 900;
+  margin-top: 2px;
+}
+.pub-empty-box {
+  text-align: center;
+  padding: 26px 16px;
+  border-radius: 16px;
+  border: 1px dashed var(--bd);
+  background: rgba(255,255,255,.02);
+}
+
+/* Visibility Selector & Live Toggle Bar */
+.vis-selector-box {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--bd);
+}
+:root[data-theme="light"] .vis-selector-box,
+:root[data-sharb="light"] .vis-selector-box {
+  background: rgba(15,23,42,.03);
+}
+.vis-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+.vis-opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--bd);
+  background: rgba(255,255,255,.03);
+  color: var(--tx);
+  cursor: pointer;
+  text-align: right;
+  transition: all .15s ease;
+  width: 100%;
+  font-family: inherit;
+}
+.vis-opt-btn:hover {
+  border-color: var(--ac);
+}
+.vis-opt-btn.on {
+  border-color: var(--ac);
+  background: rgba(10,132,255,.14);
+  box-shadow: 0 4px 14px rgba(10,132,255,.16);
+}
+.vis-opt-btn .vis-ico {
+  font-size: 19px;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+.vis-opt-btn .vis-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.vis-opt-btn .vis-txt b {
+  font-size: 13px;
+  font-weight: 900;
+}
+.vis-opt-btn .vis-txt small {
+  font-size: 11px;
+  color: var(--mut);
+  line-height: 1.4;
+}
+.vis-live-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 11px;
+  border-radius: 12px;
+  background: rgba(56,189,248,.09);
+  border: 1px solid rgba(56,189,248,.24);
+  margin: 8px 0;
+  font-size: 12px;
+}
+@media(max-width:480px){
+  .pub-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+  .pub-rooms-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pub-rooms-actions {
+    width: 100%;
+  }
+  .pub-rooms-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
+
+/* ============================================================================
+   SHARB GAMES — MODERN 3-COLUMN GAMING HUB DESIGN SYSTEM (Reference Inspired)
+   ============================================================================ */
+.wrap {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 14px 18px 48px;
+}
+
+/* Modern Studio Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 18px;
+  margin-bottom: 18px;
+  border-radius: 22px;
+  background: var(--glass);
+  border: 1px solid var(--bd);
+  box-shadow: var(--sh);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+.topbar-start {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.hub-greeting {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: clamp(15px, 1.6vw, 20px);
+  white-space: nowrap;
+  padding-right: 12px;
+  border-right: 1px solid var(--bd);
+}
+.hub-greeting .greet-muted {
+  color: var(--mut);
+  font-weight: 600;
+}
+.hub-greeting b {
+  color: var(--tx);
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+.hub-search-box {
+  flex: 1 1 280px;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.hub-search-box input {
+  width: 100%;
+  height: 40px;
+  padding: 0 38px 0 34px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  font-size: 13px;
+  font-weight: 700;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+:root[data-theme="light"] .hub-search-box input,
+:root[data-sharb="light"] .hub-search-box input {
+  background: rgba(15,23,42,.05);
+}
+.hub-search-box input:focus {
+  outline: none;
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px rgba(230,57,46,.18);
+}
+.hub-search-ico {
+  position: absolute;
+  right: 13px;
+  font-size: 14px;
+  color: var(--mut);
+  pointer-events: none;
+}
+.hub-search-clear {
+  position: absolute;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.1);
+  color: var(--mut);
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.hub-notif-btn {
+  position: relative;
+}
+.hub-notif-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ac);
+  box-shadow: 0 0 8px var(--ac);
+}
+.hub-drawer-trigger {
+  display: none;
+}
+
+/* 3-Column Desktop Hub Layout:
+   Physical Left = Friends Sidebar | Center = Main Content | Physical Right = Rooms & Stats Sidebar */
+.hub-grid-3col {
+  display: grid;
+  direction: ltr;
+  grid-template-columns: 330px minmax(0, 1fr) 310px;
+  gap: 18px;
+  align-items: start;
+}
+.hub-col-left .pub-rooms-grid {
+  grid-template-columns: 1fr;
+}
+.hub-my-dock #homeCopyMe {
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  font-size: 11.5px;
+}
+.hub-col-left,
+.hub-col-center,
+.hub-col-right {
+  direction: rtl;
+  min-width: 0;
+}
+.hub-col-left,
+.hub-col-right {
+  position: relative;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.hub-col-center {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Sidebar Cards & Headers */
+.hub-side-card {
+  padding: 16px;
+  border-radius: 22px;
+  background: var(--glass);
+  border: 1px solid var(--bd);
+  box-shadow: var(--sh);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hub-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hub-side-head h2 {
+  font-size: 15.5px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+.hub-drawer-close {
+  display: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--bd);
+  background: rgba(255,255,255,.06);
+  color: var(--tx);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* My Identity Dock in Friends Sidebar */
+.hub-my-dock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid var(--bd);
+}
+:root[data-theme="light"] .hub-my-dock,
+:root[data-sharb="light"] .hub-my-dock {
+  background: rgba(15,23,42,.04);
+}
+.hub-my-dock-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.hub-av-ring {
+  position: relative;
+  flex-shrink: 0;
+}
+.hub-av-ring::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--bg1);
+}
+.hub-status-pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 900;
+  background: var(--ac);
+  color: #fff;
+  margin-top: 2px;
+}
+.hub-status-pill.online {
+  background: rgba(34,197,94,.18);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,.38);
+}
+.hub-status-pill.away {
+  background: rgba(245,158,11,.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,.38);
+}
+.hub-status-pill.offline {
+  background: rgba(255,255,255,.07);
+  color: var(--mut);
+}
+
+/* Friends Collapsible Offline Section */
+.fr-section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 900;
+  color: var(--mut);
+  padding: 4px 2px;
+  letter-spacing: .2px;
+}
+.fr-offline-details {
+  border-top: 1px solid var(--bd);
+  padding-top: 8px;
+  margin-top: 6px;
+}
+.fr-offline-details summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mut);
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.03);
+  user-select: none;
+}
+.fr-offline-details summary::-webkit-details-marker {
+  display: none;
+}
+.fr-offline-details summary::after {
+  content: '▾';
+  font-size: 12px;
+  transition: transform .18s ease;
+}
+.fr-offline-details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+/* Center Hero Row: Featured Game Spotlight + 3 Stacked Action Cards (Reference Layout) */
+.hub-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(250px, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.hub-spotlight-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 270px;
+  border: 1px solid rgba(255,110,90,.28);
+  background:
+    radial-gradient(circle at 22% 30%, rgba(255,165,0,.34), transparent 48%),
+    linear-gradient(125deg, #2a080a 0%, #7c1613 48%, #c8281e 85%, #e65c2e 100%);
+  color: #fff;
+  box-shadow: 0 22px 50px rgba(0,0,0,.45);
+}
+.hub-spotlight-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .9;
+  background:
+    radial-gradient(180px 180px at 22% 52%, rgba(255,200,90,.38), transparent 70%),
+    linear-gradient(90deg, rgba(18,5,7,.15) 0%, rgba(18,5,7,.75) 68%, rgba(18,5,7,.92) 100%);
+}
+.hub-spotlight-svg {
+  position: absolute;
+  left: -10px;
+  bottom: -12px;
+  width: 250px;
+  height: 230px;
+  pointer-events: none;
+  opacity: .88;
+}
+.hub-spotlight-content {
+  position: relative;
+  z-index: 2;
+  max-width: 68%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hub-feat-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hub-feat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 900;
+  background: #e6392e;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230,57,46,.45);
+}
+.hub-feat-ico-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #ffd8d4;
+}
+.hub-spotlight-title {
+  font-size: clamp(23px, 2.8vw, 33px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: .3px;
+  color: #fff;
+  text-shadow: 0 4px 18px rgba(0,0,0,.45);
+}
+.hub-spotlight-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255,240,238,.88);
+  margin: 0;
+}
+.hub-spotlight-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.hub-reviews-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #18080a;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+}
+.hub-spot-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 3 Stacked Quick Action Cards beside Hero (matching Reference Right-of-Hero Stack) */
+.hub-quick-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+.hub-qcard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--glass);
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease;
+  text-align: right;
+  color: var(--tx);
+  width: 100%;
+  font-family: inherit;
+}
+.hub-qcard:hover {
+  border-color: var(--ac);
+  background: var(--glass2);
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+}
+.hub-qcard-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.hub-qcard-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(230,57,46,.28), rgba(245,158,11,.18));
+  border: 1px solid rgba(255,120,100,.28);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.15);
+}
+.hub-qcard-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.hub-qcard-txt b {
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-qcard-txt small {
+  font-size: 11.5px;
+  color: var(--mut);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-qcard-chev {
+  font-size: 16px;
+  color: var(--mut);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+/* Section Headers ("Latest Activities / See More" style from Reference) */
+.hub-sec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.hub-sec-header h2 {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Redesigned Game Cards Grid (Inspired by Reference "Latest Activities" Cards) */
+.hub-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 14px;
+}
+.hub-game-card {
+  position: relative;
+  border-radius: 22px;
+  padding: 16px;
+  min-height: 215px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  background: var(--glass);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.hub-game-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gcard-bg, linear-gradient(160deg, rgba(230,57,46,.18), rgba(15,6,8,.92)));
+  z-index: 0;
+  transition: opacity .2s ease;
+}
+:root[data-theme="light"] .hub-game-card::before,
+:root[data-sharb="light"] .hub-game-card::before {
+  opacity: .16;
+}
+.hub-game-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--ac);
+  box-shadow: 0 16px 34px rgba(0,0,0,.38);
+}
+.hub-gc-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hub-gc-play {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ac);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(230,57,46,.45);
+}
+.hub-gc-badge {
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(0,0,0,.42);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(8px);
+}
+.hub-gc-art {
+  position: relative;
+  z-index: 1;
+  font-size: 42px;
+  line-height: 1;
+  margin: 12px 0 8px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+.hub-gc-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hub-gc-body .mt {
+  font-size: 16.5px;
+  font-weight: 900;
+  color: var(--tx);
+}
+.hub-gc-body .md {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--mut);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hub-gc-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 11.5px;
+  color: var(--mut);
+  font-weight: 800;
+}
+
+/* Right Sidebar Statistics Card (Reference Circular Progress Ring + 3 Medallions) */
+.hub-stats-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(230,57,46,.22), transparent 62%),
+    var(--glass);
+}
+.hub-ring-wrap {
+  position: relative;
+  width: 156px;
+  height: 156px;
+  margin: 4px auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hub-ring-svg {
+  width: 156px;
+  height: 156px;
+  transform: rotate(-90deg);
+}
+.hub-ring-bg {
+  fill: none;
+  stroke: rgba(255,255,255,.08);
+  stroke-width: 11;
+}
+:root[data-theme="light"] .hub-ring-bg,
+:root[data-sharb="light"] .hub-ring-bg {
+  stroke: rgba(15,23,42,.1);
+}
+.hub-ring-fg {
+  fill: none;
+  stroke: var(--ac);
+  stroke-width: 11;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px rgba(230,57,46,.5));
+  transition: stroke-dashoffset .4s ease;
+}
+.hub-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hub-ring-center small {
+  font-size: 11px;
+  color: var(--mut);
+  font-weight: 700;
+}
+.hub-ring-center b {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--tx);
+  line-height: 1.15;
+}
+.hub-ring-center span {
+  font-size: 11px;
+  color: var(--ac2);
+  font-weight: 800;
+}
+.hub-medallions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  text-align: center;
+  margin-top: 4px;
+}
+.hub-medallion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.hub-med-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(230,57,46,.14);
+  border: 1.5px solid rgba(230,57,46,.45);
+  color: var(--ac2);
+  box-shadow: inset 0 0 12px rgba(230,57,46,.18);
+}
+.hub-medallion b {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--tx);
+}
+.hub-medallion small {
+  font-size: 11px;
+  color: var(--mut);
+}
+
+/* Right Sidebar Active Room & Compact Radar */
+.hub-active-room-box {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(34,197,94,.1);
+  border: 1px solid rgba(34,197,94,.35);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hub-radar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px;
+  border-radius: 13px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--bd);
+}
+:root[data-theme="light"] .hub-radar-item,
+:root[data-sharb="light"] .hub-radar-item {
+  background: rgba(15,23,42,.03);
+}
+
+/* Mobile Bottom Nav & Responsive Drawers for Tablet/Mobile */
+.hub-mobile-nav {
+  display: none;
+}
+.hub-drawer-backdrop {
+  display: none;
+}
+
+@media(max-width: 1179px){
+  .hub-grid-3col {
+    display: block;
+    direction: rtl;
+  }
+  .hub-drawer-trigger {
+    display: inline-flex;
+  }
+  .hub-drawer-close {
+    display: inline-flex;
+  }
+  .hub-col-left,
+  .hub-col-right {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(340px, 88vw);
+    max-height: 100dvh;
+    z-index: 1200;
+    padding: 16px;
+    background: var(--bg1);
+    border: 1px solid var(--bd);
+    box-shadow: 0 24px 60px rgba(0,0,0,.75);
+    transition: transform .24s cubic-bezier(.22,1,.36,1);
+  }
+  .hub-col-left {
+    left: 0;
+    transform: translateX(-105%);
+    border-radius: 0 22px 22px 0;
+  }
+  .hub-col-right {
+    right: 0;
+    transform: translateX(105%);
+    border-radius: 22px 0 0 22px;
+  }
+  .hub-col-left.drawer-open,
+  .hub-col-right.drawer-open {
+    transform: translateX(0);
+  }
+  .hub-drawer-backdrop.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(4px);
+    z-index: 1150;
+  }
+}
+
+@media(max-width: 820px){
+  .hub-hero-row {
+    grid-template-columns: 1fr;
+  }
+  .hub-spotlight-content {
+    max-width: 100%;
+  }
+  .hub-spotlight-svg {
+    opacity: .25;
+  }
+  .hub-greeting {
+    display: none;
+  }
+}
+
+@media(max-width: 768px){
+  .wrap {
+    padding-bottom: 84px;
+  }
+  .hub-mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: max(8px, env(safe-area-inset-bottom, 8px));
+    padding: 6px;
+    border-radius: 20px;
+    background: rgba(20,7,9,.94);
+    border: 1px solid var(--bd2);
+    box-shadow: 0 14px 36px rgba(0,0,0,.65);
+    backdrop-filter: blur(18px);
+    z-index: 1100;
+  }
+  :root[data-theme="light"] .hub-mobile-nav,
+  :root[data-sharb="light"] .hub-mobile-nav {
+    background: rgba(255,255,255,.95);
+  }
+  .hub-mnav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 4px;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    color: var(--mut);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .hub-mnav-btn.on {
+    background: rgba(230,57,46,.18);
+    color: var(--ac2);
+  }
+  .hub-mnav-btn span:first-child {
+    font-size: 16px;
+    line-height: 1;
+  }
+}
+
+
+/* ================= IN-GAME STUDIO REDESIGN & ANTI-SHAKE BOARD PRIORITY ================= */
+#lobby, #game, #bakasa, #chess, #ttt, #c4, #draw, #dominoPage, #unoPage {
+  max-width: 1420px;
+  margin: 0 auto;
+}
+.gamebar,
+.dg-top-bar,
+.bk-status-bar {
+  border-radius: 18px;
+  background: var(--glass);
+  border: 1px solid var(--bd2);
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  padding: 10px 14px;
+}
+.table .felt {
+  border-radius: 24px;
+  border: 2px solid var(--bd2);
+  box-shadow: inset 0 0 60px rgba(0,0,0,.45), 0 20px 50px rgba(0,0,0,.5);
+}
+.ch-board-frame,
+.ttt-frame,
+.c4-frame,
+.dg-canvas-stage {
+  box-shadow: 0 18px 44px rgba(0,0,0,.48);
+  border: 1.5px solid var(--bd2);
+  contain: layout style;
+}
+.dg-guess-log,
+.glog-l,
+.ch-san-box {
+  contain: content;
+  overscroll-behavior: contain;
+}
+.arc-pcard.active-turn,
+.ch-pbar.active-turn {
+  border-color: var(--ac) !important;
+  box-shadow: 0 0 0 2px rgba(230,57,46,.28), 0 10px 24px rgba(0,0,0,.3) !important;
+}
+
+
+/* Sleek Custom Scrollbars & Dropdown Containment Fixes */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.18) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ac);
+}
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.pub-sort-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  width: 100%;
+}
+.pub-sort-wrap .csel-wrap {
+  width: 100%;
+  min-width: 0;
+}
+.pub-sort-wrap .csel-btn {
+  padding: 8px 11px;
+  font-size: 12px;
+  border-radius: 11px;
+}
+.pub-sort-wrap .csel-menu {
+  z-index: 120;
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-x: hidden;
+}
+.play-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow: visible;
+}
+.play-picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  text-align: right;
+  color: var(--tx);
+  width: 100%;
+  font-family: inherit;
+}
+.play-picker-row:hover {
+  border-color: var(--ac);
+  background: var(--glass2);
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+}
+.play-picker-ico {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.22), 0 4px 10px rgba(0,0,0,.25);
+}
+.play-picker-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.play-picker-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.play-picker-title b {
+  font-size: 14.5px;
+  font-weight: 900;
+  color: var(--tx);
+}
+.play-picker-title .en-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--mut);
+  direction: ltr;
+}
+.play-picker-sub {
+  font-size: 12px;
+  color: var(--mut);
+  line-height: 1.35;
+}
+
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header class="topbar">
-    <div class="brand" id="brandHomeClick" title="SHARB GAMES — Your Ultimate Online Gaming Hub">
-      <span class="logo" id="brandLogo">
-        <img class="sharb-logo-img" id="brandLogoImg" data-sharb-logo="1" src="" alt="SHARB GAMES Logo">
-        <span class="logo-badge hide" id="brandGameBadge"></span>
-      </span>
-      <div>
-        <div class="brand-title-row">
-          <h1 id="brandTitle">SHARB GAMES</h1>
+    <div class="topbar-start">
+      <div class="brand" id="brandHomeClick" title="SHARB GAMES — Your Ultimate Online Gaming Hub">
+        <span class="logo" id="brandLogo">
+          <img class="sharb-logo-img" id="brandLogoImg" data-sharb-logo="1" src="" alt="SHARB GAMES Logo">
+          <span class="logo-badge hide" id="brandGameBadge"></span>
+        </span>
+        <div>
+          <div class="brand-title-row">
+            <h1 id="brandTitle">SHARB GAMES</h1>
+          </div>
+          <div class="mut" id="brandSub">Your Ultimate Online Gaming Hub</div>
         </div>
-        <div class="mut" id="brandSub">Your Ultimate Online Gaming Hub</div>
+      </div>
+
+      <div class="hub-greeting" id="hubGreetingBox">
+        <span class="greet-muted" id="hubGreetPrefix">مساء الخير،</span>
+        <b id="hubGreetName">لاعب</b>
       </div>
     </div>
+
+    <div class="hub-search-box" id="hubSearchWrap">
+      <span class="hub-search-ico">🔍</span>
+      <input id="hubSearchInput" type="search" placeholder="ابحث عن لعبة أو غرفة عامة أو مضيف…" autocomplete="off">
+      <button type="button" class="hub-search-clear hide" id="hubSearchClearBtn" title="مسح البحث">✕</button>
+    </div>
+
     <div class="bar-actions">
       <button class="iconbtn hide" id="backHome" title="الرجوع للرئيسية">🏠 <span>الرئيسية</span></button>
+      <button class="iconbtn hub-drawer-trigger" id="hubToggleFriendsBtn" type="button" title="قائمة الأصدقاء">👥 <span>الأصدقاء</span></button>
+      <button class="iconbtn hub-drawer-trigger" id="hubToggleRoomsBtn" type="button" title="الغرف والدعوات">🚪 <span>الغرف</span></button>
+      <button class="iconbtn hub-notif-btn" id="hubNotifBtn" type="button" title="الدعوات وطلبات الصداقة">
+        🔔
+        <span class="hub-notif-dot hide" id="hubNotifDot"></span>
+      </button>
       <button class="iconbtn" id="themesBtn" title="الثيمات">🎨 <span>الثيمات</span></button>
       <button class="iconbtn" id="snd" title="الصوت">🔊</button>
       <button class="profile" id="pb"></button>
     </div>
   </header>
 
+  <div class="hub-drawer-backdrop" id="hubDrawerBackdrop"></div>
+
   <main id="home">
-    <section class="hero glass" style="padding:28px 26px">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:14px">
-          <span class="hero-brand-logo">
-            <img data-sharb-logo="1" src="" alt="SHARB GAMES Channel Logo">
-          </span>
+    <div class="hub-grid-3col">
+
+      <!-- ================= A. LEFT SIDEBAR — FRIENDS HUB ================= -->
+      <aside class="hub-col-left" id="hubLeftFriendsSidebar" aria-label="شريط الأصدقاء">
+        <section class="hub-side-card">
+          <div class="hub-side-head">
+            <h2>👥 الأصدقاء</h2>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="bk-chip ok" id="hubFriendsOnlineCountBadge" style="font-size:11px;padding:3px 9px">0 متصل</span>
+              <button type="button" class="hub-drawer-close" data-close-drawer="friends" title="إغلاق">✕</button>
+            </div>
+          </div>
+
+          <!-- Current Player Identity & Friend Code -->
+          <div class="hub-my-dock">
+            <div class="hub-my-dock-user">
+              <div class="hub-av-ring">
+                <span class="av sm" id="hubMyDockAv" style="--c:#e6392e">😎</span>
+              </div>
+              <div style="min-width:0">
+                <div style="font-weight:900;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="hubMyDockName">لاعب</div>
+                <div class="mut tiny" style="display:flex;align-items:center;gap:4px">
+                  <span>كودك:</span>
+                  <b id="homeMyCode" style="direction:ltr;color:var(--ac2);letter-spacing:.8px">------</b>
+                </div>
+              </div>
+            </div>
+            <button class="mini" id="homeCopyMe" title="نسخ كود الصداقة الخاص بك">📋 نسخ الكود</button>
+          </div>
+
+          <!-- Add Friend Input -->
           <div>
-            <h2 style="font-size:28px;letter-spacing:.5px;direction:ltr;text-align:right">SHARB GAMES</h2>
-            <span class="hero-tagline-en">Your Ultimate Online Gaming Hub</span>
-            <p style="margin:6px 0 0">اختار لعبتك أو ادعُ أصدقاءك وابدأ التحدي فورًا على منصة <b>SHARB GAMES</b></p>
+            <label class="lbl" for="homeFn" style="font-size:11.5px;margin-bottom:5px">إضافة صديق بكود الصداقة:</label>
+            <div class="row" style="gap:6px">
+              <input id="homeFn" placeholder="اكتب كود صديقك…" style="font-size:12.5px;padding:8px 10px">
+              <button class="btn ok" id="homeFa" style="padding:8px 11px;font-size:12px;white-space:nowrap">＋ إضافة صديق</button>
+            </div>
+          </div>
+
+          <!-- Friends Stats Summary -->
+          <div class="fr-hub-stats" id="homeFrStats" style="margin:0"></div>
+
+          <!-- Online First + Collapsible Offline Friends List -->
+          <div id="homeFl" class="plist" style="max-height:none"></div>
+        </section>
+
+        <!-- Public Rooms Browser Section Directly Under Friends -->
+        <section class="hub-side-card pub-rooms-sec" id="homePublicRoomsSec" aria-label="الغرف العامة المتاحة" style="margin-bottom:0">
+          <div class="pub-rooms-head">
+            <div class="pub-rooms-title-wrap">
+              <h2 style="font-size:15.5px">🌐 الغرف العامة المتاحة</h2>
+              <span class="bk-chip ok" id="pubRoomsCountBadge" style="font-size:11px;padding:3px 9px">0 غرف متاحة</span>
+            </div>
+            <span class="pub-conn-pill" id="pubRoomsConnPill" style="font-size:10.5px;padding:3px 8px">
+              <span class="pub-conn-dot" id="pubRoomsConnDot"></span>
+              <span id="pubRoomsConnText">جاري البحث عن الغرف…</span>
+            </span>
+          </div>
+
+          <div class="pub-rooms-actions" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <button type="button" class="btn ok" id="pubRoomsQuickCreateBtn" title="إنشاء غرفة عامة أو خاصة جديدة" style="padding:8px 10px;font-size:12px;width:100%">➕ إنشاء غرفة جديدة</button>
+            <button type="button" class="btn g" id="pubRoomsRefreshBtn" title="تحديث قائمة الغرف العامة الآن" style="padding:8px 10px;font-size:12px;width:100%">🔄 تحديث الغرف</button>
+          </div>
+
+          <div class="pub-rooms-toolbar" style="padding:9px 10px;margin-bottom:4px;gap:8px">
+            <div class="pub-filter-pills" id="pubRoomsFilterPills" role="tablist" aria-label="تصفية الغرف حسب اللعبة" style="gap:5px">
+              <button type="button" class="pub-f-pill on" data-pubfilter="all" style="padding:4px 9px;font-size:11px;min-height:28px">🌟 الكل</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="domino" style="padding:4px 9px;font-size:11px;min-height:28px">🁫 دومينو</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="uno" style="padding:4px 9px;font-size:11px;min-height:28px">🎴 UNO</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="bakasa" style="padding:4px 9px;font-size:11px;min-height:28px">🕵️ البكاسة</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="chess" style="padding:4px 9px;font-size:11px;min-height:28px">♟️ شطرنج</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="ttt" style="padding:4px 9px;font-size:11px;min-height:28px">❌⭕ إكس أو</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="c4" style="padding:4px 9px;font-size:11px;min-height:28px">🔴🟡 كونكت فور</button>
+              <button type="button" class="pub-f-pill" data-pubfilter="draw" style="padding:4px 9px;font-size:11px;min-height:28px">🎨 ارسم وخمّن</button>
+            </div>
+            <div class="pub-sort-wrap" style="width:100%;justify-content:space-between">
+              <label for="pubRoomsSortSel" style="font-size:11.5px">ترتيب حسب:</label>
+              <select id="pubRoomsSortSel" style="flex:1;min-width:0;padding:5px 8px;font-size:11.5px">
+                <option value="recommended">المتاحة للانضمام والأحدث</option>
+                <option value="slots">الأماكن المتاحة أولًا</option>
+                <option value="status">حالة الغرفة (انتظار أولًا)</option>
+                <option value="players">عدد اللاعبين الحالي</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="pubRoomsContainer">
+            <div class="pub-empty-box" id="pubRoomsInitialState" style="padding:18px 12px">
+              <div style="font-size:24px;margin-bottom:4px">📡</div>
+              <b style="font-size:13px">جاري اكتشاف الغرف العامة المتصلة…</b>
+              <div class="mut tiny" style="margin-top:4px;font-size:11px">يتم جلب الغرف العامة النشطة عبر الاتصال الفوري تلقائيًا</div>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <!-- ================= B. CENTER — MAIN GAMING WORKSPACE ================= -->
+      <div class="hub-col-center" id="hubCenterMain">
+
+        <!-- Hero Row: Featured Game Spotlight + 3 Stacked Quick Actions -->
+        <div class="hub-hero-row">
+          <section class="hub-spotlight-card" id="hubSpotlightCard">
+            <div class="hub-spotlight-art"></div>
+            <svg class="hub-spotlight-svg" viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="115" cy="115" r="78" fill="url(#sharbSunGrad)" opacity="0.85"/>
+              <path d="M0 190 L55 135 L98 162 L155 110 L215 158 L260 128 L260 220 L0 220 Z" fill="#180608" opacity="0.85"/>
+              <g transform="translate(65, 58)" stroke="rgba(255,235,210,0.9)" stroke-width="3" fill="rgba(24,6,8,0.88)">
+                <rect x="8" y="18" width="56" height="86" rx="10" transform="rotate(-12 36 61)"/>
+                <line x1="16" y1="58" x2="64" y2="48" stroke-width="2.5"/>
+                <circle cx="32" cy="38" r="4" fill="#ffcf70" stroke="none"/>
+                <circle cx="44" cy="74" r="4" fill="#ffcf70" stroke="none"/>
+                <circle cx="30" cy="84" r="4" fill="#ffcf70" stroke="none"/>
+                <rect x="64" y="24" width="56" height="86" rx="10" transform="rotate(10 92 67)"/>
+                <circle cx="92" cy="67" r="14" stroke="#ff5c4d" stroke-width="3"/>
+              </g>
+              <defs>
+                <radialGradient id="sharbSunGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(115 115) rotate(90) scale(78)">
+                  <stop stop-color="#FFD166"/>
+                  <stop offset="0.55" stop-color="#F77F00" stop-opacity="0.75"/>
+                  <stop offset="1" stop-color="#E6392E" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+            </svg>
+
+            <div class="hub-spotlight-content">
+              <div class="hub-feat-badges">
+                <span class="hub-feat-pill" id="hubSpotBadge">✦ Featured • الحدث الأبرز</span>
+                <span class="hub-feat-ico-pill" id="hubSpotSubBadge">🌐 أونلاين مباشر + ذكاء اصطناعي</span>
+                <span class="hide">🔑 كود الصداقة: <b id="homeHeroUid">------</b></span>
+              </div>
+              <h2 class="hub-spotlight-title" id="hubSpotTitle">SHARB GAMES ARENA</h2>
+              <p class="hub-spotlight-desc" id="hubSpotDesc">
+                منصتك الاحترافية للألعاب الجماعية أونلاين — أنشئ غرفة عامة ليشاركك اللاعبون فورًا، أو العب مع أصدقائك في غرف خاصة ومزامنة لحظية فائقة السرعة.
+              </p>
+            </div>
+
+            <div class="hub-spotlight-foot">
+              <div class="hub-reviews-pill" id="hubSpotLivePill">
+                <span>🔥</span>
+                <span id="hubSpotLiveStats">7 ألعاب جماعية متكاملة</span>
+              </div>
+              <div class="hub-spot-actions">
+                <button type="button" class="btn ok" id="hubSpotPlayBtn" style="background:linear-gradient(135deg,#ffffff,#ffe4e1);color:#1a0608;font-weight:900;box-shadow:0 8px 22px rgba(0,0,0,.35)">▶ العب الآن</button>
+                <button type="button" class="btn g" id="hubSpotCreateBtn" style="background:rgba(0,0,0,.45);border-color:rgba(255,255,255,.24);color:#fff">➕ إنشاء غرفة</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3 Stacked Quick Action Cards (Right of Hero in Reference Image) -->
+          <div class="hub-quick-stack">
+            <button type="button" class="hub-qcard" id="hubQCardCreate">
+              <div class="hub-qcard-left">
+                <span class="hub-qcard-thumb">➕</span>
+                <span class="hub-qcard-txt">
+                  <b>إنشاء غرفة لعب جديدة</b>
+                  <small>غرفة عامة بالرئيسية أو خاصة بكود</small>
+                </span>
+              </div>
+              <span class="hub-qcard-chev">‹</span>
+            </button>
+
+            <button type="button" class="hub-qcard" id="hubQCardJoinCode">
+              <div class="hub-qcard-left">
+                <span class="hub-qcard-thumb">🔑</span>
+                <span class="hub-qcard-txt">
+                  <b>الانضمام السريع بكود</b>
+                  <small>ادخل غرفة صديقك مباشرة بالكود</small>
+                </span>
+              </div>
+              <span class="hub-qcard-chev">‹</span>
+            </button>
+
+            <button type="button" class="hub-qcard" id="hubQCardInvite">
+              <div class="hub-qcard-left">
+                <span class="hub-qcard-thumb">📨</span>
+                <span class="hub-qcard-txt">
+                  <b>دعوة صديق للعب</b>
+                  <small>اختر اللعبة وأرسل دعوة فورية</small>
+                </span>
+              </div>
+              <span class="hub-qcard-chev">‹</span>
+            </button>
           </div>
         </div>
-        <div class="bk-status-chips">
-          <span class="bk-chip ac">🔑 كود الصداقة: <b id="homeHeroUid" style="direction:ltr;letter-spacing:1px">------</b></span>
-          
-        </div>
+
+        <!-- Recently Played Bar (Populated dynamically from real localStorage history) -->
+        <div class="hide" id="hubRecentWrap"></div>
+
+        <!-- Games Showcase Section ("Latest Activities" Card Style from Reference Image) -->
+        <section class="panel glass" style="padding:18px 20px">
+          <div class="hub-sec-header">
+            <div>
+              <h2>🎮 مكتبة ألعاب SHARB GAMES</h2>
+              <div class="mut tiny" style="margin-top:2px">اختر لعبتك المفضلة لبدء اللعب الفوري أو إنشاء غرفة أونلاين</div>
+            </div>
+            <div class="pub-filter-pills" id="hubGameCategoryPills" style="flex:0 1 auto">
+              <button type="button" class="pub-f-pill on" data-gcat="all">الكل (7)</button>
+              <button type="button" class="pub-f-pill" data-gcat="table">طاولة وورق</button>
+              <button type="button" class="pub-f-pill" data-gcat="strategy">استراتيجية</button>
+              <button type="button" class="pub-f-pill" data-gcat="party">خداع ورسم جماعي</button>
+            </div>
+          </div>
+
+          <div class="hub-games-grid" id="hubGamesGrid">
+            <div class="mode hub-game-card" id="goDomino" data-gcat-item="table" data-gtitle="دومينو domino" style="--gcard-bg:linear-gradient(160deg,rgba(230,57,46,.28),rgba(20,8,10,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="domino">٢–٤ لاعبين</span>
+              </div>
+              <div class="hub-gc-art">🁫</div>
+              <div class="hub-gc-body">
+                <div class="mt">دومينو • Domino</div>
+                <span class="md">دومينو كلاسيكي أونلاين أو ضد البوتات — عادي (سحب)، تسكير، وأمريكي (٥) فردي أو فرق ٢×٢.</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>طاولة كلاسيكية</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goUno" data-gcat-item="table" data-gtitle="اونو uno" style="--gcard-bg:linear-gradient(160deg,rgba(245,158,11,.26),rgba(22,9,10,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="uno">٢–١٠ لاعبين</span>
+              </div>
+              <div class="hub-gc-art">🎴</div>
+              <div class="hub-gc-body">
+                <div class="mt">أونو • UNO</div>
+                <span class="md">أونو كلاسيكي كامل بكروت الأكشن، Wild، +4، وإعلان UNO الحماسي مع الأصدقاء أو البوتات.</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>كروت حماسية</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goBakasa" data-gcat-item="party" data-gtitle="بكاسة البكاسة bakasa" style="--gcard-bg:linear-gradient(160deg,rgba(168,85,247,.26),rgba(20,8,14,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="bakasa">٣–١٢ لاعب</span>
+              </div>
+              <div class="hub-gc-art">🕵️</div>
+              <div class="hub-gc-body">
+                <div class="mt">البكاسة • BAKASA</div>
+                <span class="md">لعبة الخداع المصرية الشهيرة: اكتشف البكس بين أصحابك من خلال الأسئلة والشك والتصويت السري!</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>خداع وتصويت</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goChess" data-gcat-item="strategy" data-gtitle="شطرنج chess" style="--gcard-bg:linear-gradient(160deg,rgba(56,189,248,.24),rgba(14,10,16,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="chess">١ ضد ١ (FIDE)</span>
+              </div>
+              <div class="hub-gc-art">♟️</div>
+              <div class="hub-gc-body">
+                <div class="mt">شطرنج • CHESS</div>
+                <span class="md">شطرنج احترافي بقوانين FIDE الكاملة: التبييت، الترقية، واللعب ضد الذكاء الاصطناعي أو أونلاين.</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>استراتيجية</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goTTT" data-gcat-item="strategy" data-gtitle="إكس أو اكس او tic tac toe xo" style="--gcard-bg:linear-gradient(160deg,rgba(244,63,94,.26),rgba(22,8,11,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="ttt">٢ لاعبين</span>
+              </div>
+              <div class="hub-gc-art">❌⭕</div>
+              <div class="hub-gc-body">
+                <div class="mt">إكس أو • XO</div>
+                <span class="md">مباريات (3×3) السريعة ضد ذكاء اصطناعي بثلاثة مستويات أو أونلاين مباشر مع الأصدقاء.</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>مواجهة سريعة</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goC4" data-gcat-item="strategy" data-gtitle="كونكت فور connect four 4" style="--gcard-bg:linear-gradient(160deg,rgba(234,179,8,.25),rgba(22,11,8,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="c4">٢ لاعبين</span>
+              </div>
+              <div class="hub-gc-art">🔴🟡</div>
+              <div class="hub-gc-body">
+                <div class="mt">كونكت فور • Connect 4</div>
+                <span class="md">أسقط الأقراص في الشبكة (7×6) ووصّل ٤ أقراص متتالية أفقيًا أو رأسيًا أو قطريًا لتحقيق الفوز.</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>تكتيك وذكاء</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+
+            <div class="mode hub-game-card" id="goDraw" data-gcat-item="party" data-gtitle="ارسم وخمن draw and guess" style="--gcard-bg:linear-gradient(160deg,rgba(236,72,153,.26),rgba(22,8,14,.94))">
+              <div class="hub-gc-top">
+                <span class="hub-gc-play">▶</span>
+                <span class="hub-gc-badge" data-game-room-count="draw">٢–١٠ لاعبين</span>
+              </div>
+              <div class="hub-gc-art">🎨✏️</div>
+              <div class="hub-gc-body">
+                <div class="mt">ارسم وخمّن • Draw</div>
+                <span class="md">ارسم الكلمة السرية مباشرة على اللوحة التفاعلية ودع أصدقاءك يتنافسون على تخمينها في الشات!</span>
+              </div>
+              <div class="hub-gc-foot">
+                <span>رسم وتخمين</span>
+                <span style="color:var(--ac2)">العب الآن ←</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
       </div>
-      <p style="margin:12px 0 18px">واجهة ألعاب احترافية أونلاين — اختر لعبة لإنشاء غرفة أو ادعُ صديقك مباشرة من قائمة الأصدقاء بالأسفل</p>
-      <div class="modes" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
-        <div class="mode" id="goDomino" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">🁫 <span>Domino</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">دومينو كلاسيكي أونلاين مع غرف خاصة، عادي / تسكير / أمريكي ٥</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goUno" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">🎴 <span>UNO</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">أونو كلاسيكي كامل، كروت الفعل، Wild، Wild Draw Four، إعلان UNO</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goBakasa" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">🕵️ <span>بكاسة BAKASA</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">لعبة خداع مصرية: اكتشف البكس بين أصحابك من الأسئلة والتصويت</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goChess" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">♟️ <span>شطرنج CHESS</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">شطرنج احترافي كامل بقوانين FIDE الرسمية: العب ضد الكمبيوتر، مع صديق على نفس الجهاز، أو أونلاين بكود</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goTTT" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">❌⭕ <span>إكس أو TIC-TAC-TOE</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">إكس أو (3×3) السريعة والحماسية: العب مع صديق على نفس الجهاز، ضد ذكاء اصطناعي بثلاثة مستويات، أو أونلاين بكود</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goC4" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">🔴🟡 <span>كونكت فور CONNECT FOUR</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">كونكت فور (7×6) الاستراتيجية: أسقط الأقراص ووصّل ٤ في صف أو عمود أو قطر ضد الكمبيوتر أو أونلاين مع أصدقائك</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-        <div class="mode" id="goDraw" style="padding:18px;min-height:160px">
-          <div class="mt" style="font-size:18px;gap:10px">🎨✏️ <span>ارسم وخمّن DRAW &amp; GUESS</span></div>
-          <span class="md" style="font-size:13px;margin-top:6px;line-height:1.8">ارسم الكلمة السرية على اللوحة التفاعلية المباشرة وخلي أصحابك يخمنوها في الشات بأسرع وقت لحصد النقاط!</span>
-          <div style="margin-top:14px"><span class="tag host" style="padding:4px 12px;font-size:11px">العب الآن →</span></div>
-        </div>
-      </div>
-    </section>
 
-    <div class="grid">
-      <section class="panel glass">
-        <h2>👥 الأصدقاء والدعوات المباشرة</h2>
-        <div class="mycode">
-          <span>كود الصداقة الخاص بك: <b id="homeMyCode">------</b></span>
-          <span style="display:flex;gap:6px;margin-right:auto">
-            <button class="mini" id="homeCopyMe">📋 نسخ الكود</button>
-            
-          </span>
-        </div>
-        <div class="row">
-          <input id="homeFn" placeholder="اكتب كود الصداقة الخاص بصديقك لإرسال طلب صداقة…">
-          <button class="btn ok" id="homeFa">＋ إضافة صديق</button>
-        </div>
-        <div class="fr-hub-stats" id="homeFrStats"></div>
-        <div class="mut tiny" style="margin-bottom:8px">انسخ كود الصداقة الخاص بك وأرسله لصديقك، وعندما يقبل طلب الصداقة يمكنك دعوته للعب بضغطة واحدة!</div>
-        <div id="homeFl" class="plist"></div>
-      </section>
+      <!-- ================= C. RIGHT SIDEBAR — ROOMS & STATISTICS HUB ================= -->
+      <aside class="hub-col-right" id="hubRightRoomsSidebar" aria-label="شريط الغرف والإحصائيات">
 
-      <section class="panel glass">
-        <h2>⚡ انضمام سريع والدعوات الواردة</h2>
-        <label class="lbl">اختر اللعبة ثم اكتب كود الغرفة للدخول مباشرة:</label>
-        <div class="quick-g-pills" id="homeQuickGamePills">
-          <div class="quick-g-pill on" data-qgame="domino">🁫 دومينو</div>
-          <div class="quick-g-pill" data-qgame="uno">🎴 UNO</div>
-          <div class="quick-g-pill" data-qgame="bakasa">🕵️ البكاسة</div>
-          <div class="quick-g-pill" data-qgame="chess">♟️ شطرنج</div>
-          <div class="quick-g-pill" data-qgame="ttt">❌⭕ إكس أو</div>
-          <div class="quick-g-pill" data-qgame="c4">🔴🟡 كونكت فور</div>
-          <div class="quick-g-pill" data-qgame="draw">🎨 ارسم وخمّن</div>
-        </div>
-        <div class="row">
-          <input id="homeQuickCode" placeholder="اكتب كود الغرفة هنا" maxlength="6" inputmode="latin" style="text-transform:uppercase;direction:ltr;text-align:center;letter-spacing:3px;font-weight:800">
-          <button class="btn" id="homeQuickJoinBtn">🚀 دخول الغرفة</button>
-        </div>
+        <!-- 1. Current Room & Quick Private Code Join Card -->
+        <section class="hub-side-card">
+          <div class="hub-side-head">
+            <h2>🚪 مركز الغرف السريع</h2>
+            <button type="button" class="hub-drawer-close" data-close-drawer="rooms" title="إغلاق">✕</button>
+          </div>
 
-        <h2 style="margin-top:18px;font-size:15px">📨 الدعوات الواردة من الأصدقاء</h2>
-        <div id="homeInvitesList"></div>
-      </section>
+          <!-- Dynamic Current Active Room Banner (when player is inside/hosting a room) -->
+          <div id="hubActiveRoomSlot"></div>
+
+          <!-- Quick Private Room Code Join -->
+          <div style="padding:11px 12px;border-radius:16px;background:rgba(0,0,0,.22);border:1px solid var(--bd)">
+            <label class="lbl" style="font-size:11.5px;margin-bottom:6px">🔑 دخول غرفة خاصة بكود:</label>
+            <div class="quick-g-pills" id="homeQuickGamePills" style="grid-template-columns:repeat(auto-fit,minmax(82px,1fr));gap:5px;margin-bottom:8px">
+              <div class="quick-g-pill on" data-qgame="domino" style="font-size:11px;padding:6px 4px">🁫 دومينو</div>
+              <div class="quick-g-pill" data-qgame="uno" style="font-size:11px;padding:6px 4px">🎴 UNO</div>
+              <div class="quick-g-pill" data-qgame="bakasa" style="font-size:11px;padding:6px 4px">🕵️ البكاسة</div>
+              <div class="quick-g-pill" data-qgame="chess" style="font-size:11px;padding:6px 4px">♟️ شطرنج</div>
+              <div class="quick-g-pill" data-qgame="ttt" style="font-size:11px;padding:6px 4px">❌⭕ إكس أو</div>
+              <div class="quick-g-pill" data-qgame="c4" style="font-size:11px;padding:6px 4px">🔴🟡 كونكت ٤</div>
+              <div class="quick-g-pill" data-qgame="draw" style="font-size:11px;padding:6px 4px">🎨 ارسم</div>
+            </div>
+            <div class="row" style="gap:6px">
+              <input id="homeQuickCode" placeholder="كود الغرفة" maxlength="6" inputmode="latin" style="text-transform:uppercase;direction:ltr;text-align:center;letter-spacing:2.5px;font-weight:900;font-size:13px;padding:8px">
+              <button class="btn ok" id="homeQuickJoinBtn" style="padding:8px 11px;font-size:12px;white-space:nowrap">🚀 دخول الغرفة</button>
+            </div>
+          </div>
+
+          <!-- Incoming Friend Invitations -->
+          <div>
+            <div class="fr-section-label">
+              <span>📨 الدعوات الخاصة الواردة</span>
+              <span class="bk-chip ac" id="hubInvitesCountPill" style="font-size:10.5px;padding:2px 7px">0</span>
+            </div>
+            <div id="homeInvitesList"></div>
+          </div>
+
+          <!-- Compact Active Public Rooms Radar -->
+          <div>
+            <div class="fr-section-label">
+              <span>📡 رادار الغرف العامة النشطة</span>
+              <button type="button" class="mini" id="hubSideCreateRoomBtn">＋ غرفة جديدة</button>
+            </div>
+            <div id="hubSidebarPublicRadar"></div>
+          </div>
+        </section>
+
+        <!-- 2. Your Statistics Card (Inspired by Reference Bottom-Right Circular Ring & 3 Medallions) -->
+        <section class="hub-side-card hub-stats-card" id="hubStatsCard">
+          <div class="hub-side-head">
+            <h2>📊 إحصائياتك ومستواك</h2>
+            <button type="button" class="mini" id="hubOpenProfileStatsBtn" title="تعديل البروفايل">تعديل ←</button>
+          </div>
+
+          <div class="hub-ring-wrap">
+            <svg class="hub-ring-svg" viewBox="0 0 140 140">
+              <circle class="hub-ring-bg" cx="70" cy="70" r="56"></circle>
+              <circle class="hub-ring-fg" id="hubStatsRingArc" cx="70" cy="70" r="56" stroke-dasharray="351.86" stroke-dashoffset="280"></circle>
+            </svg>
+            <div class="hub-ring-center">
+              <small>نسبة الفوز</small>
+              <b id="hubStatsWinRate">0%</b>
+              <span id="hubStatsLevelBadge">المستوى 1</span>
+            </div>
+          </div>
+
+          <div class="hub-medallions">
+            <div class="hub-medallion">
+              <span class="hub-med-ico">🏆</span>
+              <b id="hubStatWins">0</b>
+              <small>مرات الفوز</small>
+            </div>
+            <div class="hub-medallion">
+              <span class="hub-med-ico">🎮</span>
+              <b id="hubStatGames">0</b>
+              <small>المباريات</small>
+            </div>
+            <div class="hub-medallion">
+              <span class="hub-med-ico">⭐</span>
+              <b id="hubStatPoints">0</b>
+              <small>النقاط</small>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+
     </div>
+
+    <!-- Mobile Sticky Bottom Navigation Bar -->
+    <nav class="hub-mobile-nav" id="hubMobileNav" aria-label="التنقل السريع للموبايل">
+      <button type="button" class="hub-mnav-btn on" data-mnav="home">
+        <span>🏠</span>
+        <span>الرئيسية</span>
+      </button>
+      <button type="button" class="hub-mnav-btn" data-mnav="pubrooms">
+        <span>🌐</span>
+        <span>الغرف العامة</span>
+      </button>
+      <button type="button" class="hub-mnav-btn" data-mnav="rooms">
+        <span>🚪</span>
+        <span>الغرف والكود</span>
+      </button>
+      <button type="button" class="hub-mnav-btn" data-mnav="friends">
+        <span>👥</span>
+        <span>الأصدقاء</span>
+      </button>
+    </nav>
   </main>
 
   <main id="dominoPage" class="hide">
@@ -2364,6 +4173,28 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
         <span class="track"></span>
         <span>👁 أحجار الجميع مكشوفة</span>
       </label>
+      <div class="vis-selector-box" id="lobbyVisSelectorBox">
+        <label class="lbl" style="margin:0">نوع الغرفة عند الإنشاء (عامة أو خاصة):</label>
+        <div class="vis-selector-grid">
+          <button type="button" class="vis-opt-btn on" data-vis-scope="lobby" data-vis-val="public">
+            <span class="vis-ico">🌐</span>
+            <span class="vis-txt">
+              <b>غرفة عامة (Public)</b>
+              <small>تظهر في قسم «الغرف العامة» بالرئيسية ويمكن لأي لاعب الانضمام إليها مباشرة</small>
+            </span>
+          </button>
+          <button type="button" class="vis-opt-btn" data-vis-scope="lobby" data-vis-val="private">
+            <span class="vis-ico">🔒</span>
+            <span class="vis-txt">
+              <b>غرفة خاصة (Private)</b>
+              <small>لا تظهر في القائمة العامة — الدخول فقط بكود الغرفة أو دعوة الأصدقاء</small>
+            </span>
+          </button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <input id="lobbyRoomNameInp" maxlength="28" placeholder="اسم الغرفة (اختياري — مثال: تحدي المحترفين)" style="font-size:13px">
+        </div>
+      </div>
       <div class="cta">
         <button class="btn ok big" id="host">🚪 إنشاء غرفة</button>
         <button class="btn g big" id="solo">🤖 ضد البوتات</button>
@@ -2391,6 +4222,10 @@ body[data-theme="light"] .dg-msg.close-guess{color:#b45309;background:rgba(245,1
               <button class="mini" id="copyCode">📋 نسخ</button>
               <button class="mini" id="shareCode">📤 مشاركة</button>
             </div>
+          </div>
+          <div class="vis-live-bar hide" id="rmVisLiveBar">
+            <span id="rmVisLiveText">🌐 الغرفة الآن: <b>عامة</b></span>
+            <button type="button" class="mini" id="rmVisToggleBtn">🔒 تحويل لخاصة</button>
           </div>
           <div class="netstatus" id="netstatus">…</div>
           <div id="pls" class="plist"></div>
@@ -2826,6 +4661,7 @@ async function copyText(t){
 function renderProfileBtn(){
   const L=lvl(PF.st);
   $('#pb').innerHTML=`<span class="av" style="--c:${esc(PF.col)}">${esc(PF.av)}</span><span><b>${esc(PF.name)}</b><small>مستوى ${L.l} • ${PF.st.w} فوز</small></span>`;
+  if(typeof syncHubWidgets === 'function') syncHubWidgets();
 }
 function openProfile(p,mine){
   const st=Object.assign({g:0,w:0,r:0,p:0},p.st||{}),L=lvl(st);
@@ -2896,7 +4732,7 @@ function syncThemeAttrs(sharbVal, themeVal){
   }
 }
 {
-  const initSharb = sharbSaved || 'blue';
+  const initSharb = store.get('sharb_hub_v2', null) || 'crimson';
   const initTheme = themeSaved || (initSharb === 'light' ? 'light' : 'dark');
   syncThemeAttrs(initSharb, initTheme);
 }
@@ -2935,6 +4771,7 @@ function openThemes(){
       syncThemeAttrs(v, th);
       store.set('theme', th);
       store.set('sharb', v);
+      store.set('sharb_hub_v2', v);
       closeOverlay();
       toast('تم تطبيق الثيم','ok');
       beep(420,.08,'sine',.08);
@@ -3225,18 +5062,65 @@ function handleAddFriendInput(rawVal){
   return false;
 }
 
+function getFriendPresenceState(f){
+  if(!f || !f.uid) return { online: false, state: 'offline', label: '⚪ غير متصل', pubRoomKey: '' };
+  const clean = String(f.uid).toLowerCase();
+  const on = isOnline(clean);
+  if(!on) return { online: false, state: 'offline', label: '⚪ غير متصل • ' + String(f.uid).toUpperCase(), pubRoomKey: '' };
+  const p = NET.presence[clean] || {};
+  const age = Date.now() - (p.ts || p.seen || 0);
+  // Check if friend has an active joinable public room in PUB_DIR or presence
+  let pubRoomKey = '';
+  let gameLabel = '';
+  if(p.pubRoom && p.pubRoom.roomKey && p.pubRoom.allowJoin){
+    pubRoomKey = p.pubRoom.roomKey;
+    const gm = (typeof SHARB_GAME_META !== 'undefined' && SHARB_GAME_META[p.pubRoom.game]) ? SHARB_GAME_META[p.pubRoom.game].name : '';
+    gameLabel = gm;
+  } else if(typeof PUB_DIR !== 'undefined' && PUB_DIR.rooms){
+    PUB_DIR.rooms.forEach(rm => {
+      if(!rm.closed && rm.visibility === 'public' && rm.allowJoin && String(rm.hostPid || '').toLowerCase().startsWith(clean)){
+        pubRoomKey = rm.roomKey;
+        const gm = (typeof SHARB_GAME_META !== 'undefined' && SHARB_GAME_META[rm.game]) ? SHARB_GAME_META[rm.game].name : '';
+        gameLabel = gm;
+      }
+    });
+  }
+  if(p.activity === 'ingame' || pubRoomKey){
+    return {
+      online: true,
+      state: 'ingame',
+      label: gameLabel ? `🎮 في غرفة ${gameLabel}` : '🎮 داخل لعبة الآن',
+      pubRoomKey
+    };
+  }
+  if(p.activity === 'away' || age > 28000){
+    return { online: true, state: 'away', label: '🌙 بالخارج (Away)', pubRoomKey: '' };
+  }
+  return { online: true, state: 'online', label: '🟢 متصل الآن', pubRoomKey: '' };
+}
+
 function friendItemHTML(f,i,prefix=''){
-  const on=isOnline(f.uid);
-  return `<div class="friend">
+  const st = getFriendPresenceState(f);
+  const on = st.online;
+  const initials = String(f.name || 'ص').trim().slice(0, 2);
+  const avDisplay = f.av || initials;
+  const statusPillHTML = st.state === 'ingame'
+    ? `<span class="hub-status-pill">In Game</span>`
+    : (st.state === 'away' ? `<span class="hub-status-pill away">Away</span>` : '');
+  return `<div class="friend" data-friend-online="${on ? '1' : '0'}">
     <span class="pc" data-${prefix}vf="${i}">
-      <span class="av sm" style="--c:${esc(f.col||COLS[0])}">${esc(f.av||'🙂')}${on?'<i class="dot"></i>':''}</span>
-      <span>
-        <b>${esc(f.name)}</b>
-        <small>${on?'🟢 متصل الآن':'كود: '+esc(String(f.uid).toUpperCase())}</small>
+      <span class="av sm" style="--c:${esc(f.col||COLS[0])}">${esc(avDisplay)}${on?'<i class="dot"></i>':''}</span>
+      <span style="min-width:0">
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          <b>${esc(f.name)}</b>
+          ${statusPillHTML}
+        </div>
+        <small>${esc(st.label)}</small>
       </span>
     </span>
     <span class="fr-card-actions">
-      <button class="mini ok" data-${prefix}inv="${i}">🎮 دعوة للعب</button>
+      ${st.pubRoomKey ? `<button class="mini ok" data-joinfriendroom="${esc(st.pubRoomKey)}" title="انضمام لغرفة صديقك العامة">🚀 انضمام</button>` : ''}
+      <button class="mini ${st.pubRoomKey ? '' : 'ok'}" data-${prefix}inv="${i}" title="إرسال دعوة للعب">🎮 دعوة</button>
       <button class="mini del" data-${prefix}del="${i}" title="حذف">✕</button>
     </span>
   </div>`;
@@ -3294,8 +5178,27 @@ function buildFriendsPanelListHTML(prefix=''){
     html+=out.map(r=>sentReqItemHTML(r,prefix)).join('');
   }
   if(list.length){
-    if(inc.length||out.length)html+=`<div class="lbl" style="margin:8px 0 4px">👥 أصدقاؤك (${list.length}):</div>`;
-    html+=list.map((f,i)=>friendItemHTML(f,i,prefix)).join('');
+    const indexed = list.map((f, idx) => ({ f, idx, on: isOnline(f.uid) }));
+    const onlineFriends = indexed.filter(x => x.on);
+    const offlineFriends = indexed.filter(x => !x.on);
+
+    html += `<div class="fr-section-label" style="margin-top:4px">
+      <span>🟢 متصلون الآن (${onlineFriends.length})</span>
+    </div>`;
+    if(onlineFriends.length){
+      html += onlineFriends.map(x => friendItemHTML(x.f, x.idx, prefix)).join('');
+    } else {
+      html += `<div class="mut tiny" style="padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.025);text-align:center">لا يوجد أصدقاء متصلون في هذه اللحظة</div>`;
+    }
+
+    if(offlineFriends.length){
+      html += `<details class="fr-offline-details" ${onlineFriends.length === 0 ? 'open' : ''}>
+        <summary><span>⚪ غير متصلين (${offlineFriends.length})</span></summary>
+        <div class="plist" style="margin-top:8px">
+          ${offlineFriends.map(x => friendItemHTML(x.f, x.idx, prefix)).join('')}
+        </div>
+      </details>`;
+    }
   }
   return html;
 }
@@ -3342,7 +5245,11 @@ function renderFriends(){
       ${inc.length?`<span class="bk-chip warn">👋 طلبات واردة: <b>${inc.length}</b></span>`:''}
       ${out.length?`<span class="bk-chip">⏳ بانتظار القبول: <b>${out.length}</b></span>`:''}`;
   }
+  if($('#hubFriendsOnlineCountBadge')){
+    $('#hubFriendsOnlineCountBadge').textContent = `${onlineCount} متصل • ${list.length} الكل`;
+  }
   renderHomeInvites();
+  if(typeof syncHubWidgets === 'function') syncHubWidgets();
 }
 
 function handleFriendListClick(e,prefix=''){
@@ -3514,21 +5421,36 @@ function ensureMQTT(){
   })();
   return NET.loading;
 }
+function dispatchNetTopic(topic,d){
+  if(!topic)return;
+  const exact=NET.topics.get(topic);
+  if(exact){try{exact(d,topic)}catch(e){}}
+  NET.topics.forEach((fn,pat)=>{
+    if(pat!==topic && pat.endsWith('/#')){
+      const prefix=pat.slice(0,-1);
+      if(topic.startsWith(prefix)){
+        try{fn(d,topic)}catch(e){}
+      }
+    }
+  });
+}
 function wireClient(){
   const c=NET.client;
   c.on('message',(topic,payload)=>{
-    const fn=NET.topics.get(topic);
-    if(!fn)return;
     let d=null;
     const s=payload&&payload.toString?payload.toString():'';
     if(s){try{d=JSON.parse(s)}catch(e){return}}
-    try{fn(d,topic)}catch(e){}
+    dispatchNetTopic(topic,d);
   });
   c.on('connect',()=>{
     NET.ready=true;
     NET.topics.forEach((fn,t)=>{try{c.subscribe(t,{qos:0})}catch(e){}});
+    if(typeof pubDirOnNetReconnect==='function')pubDirOnNetReconnect(true);
   });
-  c.on('close',()=>{NET.ready=false});
+  c.on('close',()=>{
+    NET.ready=false;
+    if(typeof pubDirOnNetReconnect==='function')pubDirOnNetReconnect(false);
+  });
 }
 function sub(topic,fn){
   NET.topics.set(topic,fn);
@@ -3573,14 +5495,14 @@ async function createRoom(){
   $('#rm').classList.remove('hide');$('#joinEmpty').classList.add('hide');
   $('#rc').textContent=code;$('#go').classList.remove('hide');
   renderRoomPlayers();
-  setNetStatus('بنوصّل الغرفة بالسيرفر…');
-  const ok=await ensureMQTT();
-  if(!ok){
-    setNetStatus('مفيش اتصال بالإنترنت — تقدر تلعب ضد البوتات','warn');
-    toast('الأونلاين مش متاح دلوقتي، تقدر تبدأ ضد البوتات','warn',4200);
-    return;
-  }
   openHostRoom();
+  ensureMQTT().then(ok=>{
+    if(host&&code){
+      hostBeat();
+      broadcastLobby();
+      if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
+    }
+  }).catch(()=>{});
 }
 function openHostRoom(){
   const c=code;
@@ -3591,6 +5513,8 @@ function openHostRoom(){
   sub(roomTopic(c,'hb'),d=>hostRoute('hb',d));
   hostBeat();
   broadcastLobby();
+  if(typeof updateDominoUnoVisUI==='function')updateDominoUnoVisUI();
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
   clearInterval(NET.hostTimer);
   NET.hostTimer=setInterval(()=>{
     if(!host||code!==c)return;
@@ -3607,6 +5531,7 @@ function openHostRoom(){
 function hostBeat(){
   if(!host||!code)return;
   pub(roomTopic(code,'beat'),{t:'beat',h:ME,code,ts:Date.now(),closed:false},{retain:true});
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(false);
 }
 function hostRoute(kind,d){
   if(!host||!d||typeof d!=='object')return;
@@ -3632,25 +5557,33 @@ function hostIncoming(d){
   me.col=String(me.col||COLS[0]).slice(0,9);
   me.uid=String(me.uid||me.pid).slice(0,12);
   const pid=me.pid;
-  const known=NET.guests.has(pid);
-  NET.guests.set(pid,{last:Date.now(),me});
+  if(d.via==='public' && typeof getRoomVisibility==='function' && getRoomVisibility(GAME_TYPE)==='private'){
+    pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'private',msg:'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة'});
+    return;
+  }
+  const existingIdx=lobbyPl.findIndex(p=>p.pid===pid||(p.uid&&me.uid&&p.uid===me.uid&&p.pid!==ME));
   if(G){
     const seat=G.seats.find(s=>s.pid===pid||(s.uid&&s.uid===me.uid&&s.bot));
     if(seat){
+      NET.guests.set(pid,{last:Date.now(),me});
       seat.pid=pid;seat.bot=false;seat.name=me.name;seat.av=me.av;seat.col=me.col;
       broadcastLobby();broadcastState();render();
-      if(!known){toast(me.name+' رجع للعبة ✅','ok');beep(520,.08,'sine',.08)}
+      if(typeof pubDirClearReservation==='function')pubDirClearReservation(pid);
+      toast(me.name+' رجع للعبة ✅','ok');beep(520,.08,'sine',.08);
     }else{
-      pub(roomTopic(code,'err'),{t:'err',pid,msg:'اللعبة بدأت خلاص — استنى الجولة الجاية'});
+      pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'playing',msg:'اللعبة بدأت خلاص — استنى الجولة الجاية'});
     }
     return;
   }
-  if(lobbyPl.length>=lobbyMeta.n&&!lobbyPl.some(p=>p.pid===pid)){
-    pub(roomTopic(code,'err'),{t:'err',pid,msg:'الغرفة مليانة ('+lobbyMeta.n+' لاعبين)'});
+  if(existingIdx<0 && lobbyPl.length>=lobbyMeta.n){
+    pub(roomTopic(code,'err'),{t:'err',pid,rejected:true,reason:'full',msg:'الغرفة مليانة ('+lobbyMeta.n+' لاعبين)'});
+    if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
     return;
   }
-  const i=lobbyPl.findIndex(p=>p.pid===pid);
-  if(i>=0)lobbyPl[i]=me;else lobbyPl.push(me);
+  const known=NET.guests.has(pid)||existingIdx>=0;
+  NET.guests.set(pid,{last:Date.now(),me});
+  if(typeof pubDirClearReservation==='function')pubDirClearReservation(pid);
+  if(existingIdx>=0)lobbyPl[existingIdx]=me;else lobbyPl.push(me);
   renderRoomPlayers();broadcastLobby();
   if(!known){
     toast(me.name+' دخل الغرفة 🎉','ok');
@@ -3677,11 +5610,13 @@ function hostGuestGone(pid){
 function broadcastLobby(){
   if(!host||!code)return;
   pub(roomTopic(code,'lobby'),{t:'lobby',lp:lobbyPl,meta:lobbyMeta,code,host:ME},{qos:1});
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
 }
 function broadcastState(){
   syncLog();
   if(!host||!G||!code)return;
   pub(roomTopic(code,'state'),{t:'state',g:G},{qos:1});
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
 }
 
 /* ---------- guest ---------- */
@@ -3701,9 +5636,10 @@ async function joinRoom(raw){
   $('#rc').textContent=code;$('#go').classList.add('hide');
   lobbyPl=[];renderRoomPlayers();
   setNetStatus('بندور على الغرفة '+c+'…');
-  const ok=await ensureMQTT();
-  if(!ok){setNetStatus('مفيش اتصال بالإنترنت — الأونلاين محتاج نت','warn');return}
   openGuestRoom();
+  ensureMQTT().then(ok=>{
+    if(ok&&NET.want&&code===c)guestHello();
+  }).catch(()=>{});
 }
 function openGuestRoom(){
   const c=code;
@@ -3725,14 +5661,16 @@ function openGuestRoom(){
   },5200);
 }
 function guestHello(){
-  if(!NET.client||!NET.want)return;
-  pub(roomTopic(code,'join'),{t:'join',me:me0()});
+  if(!NET.want)return;
+  const via=window._sharbJoinVia||'code';
+  pub(roomTopic(code,'join'),{t:'join',me:me0(),via});
   guestHb();
 }
 function guestHb(){
-  if(!NET.client||!NET.want)return;
-  pub(roomTopic(code,'hb'),{t:'hb',pid:ME,me:me0(),ts:Date.now()});
-  if(!lobbyPl.length)pub(roomTopic(code,'join'),{t:'join',me:me0()});
+  if(!NET.want)return;
+  const via=window._sharbJoinVia||'code';
+  pub(roomTopic(code,'hb'),{t:'hb',pid:ME,me:me0(),via,ts:Date.now()});
+  if(!lobbyPl.length)pub(roomTopic(code,'join'),{t:'join',me:me0(),via});
 }
 function roomNotFound(){
   if(NET.notFound)return;
@@ -3780,6 +5718,14 @@ function guestIncoming(kind,d){
   }else if(kind==='err'){
     toast(d.msg||'خطأ','warn');
     setNetStatus(d.msg||'مشكلة','warn');
+    if(d.rejected && !lobbyPl.some(p=>p.pid===ME)){
+      teardownNet(true);
+      renderRoom();
+      if(window._sharbJoinVia==='public'){
+        window._sharbJoinVia='code';
+        showScreen('home');
+      }
+    }
   }
 }
 function teardownNet(reload){
@@ -3787,14 +5733,17 @@ function teardownNet(reload){
   clearInterval(NET.hostTimer);clearInterval(NET.guestTimer);clearTimeout(NET.joinTimer);
   NET.hostTimer=null;NET.guestTimer=null;NET.joinTimer=null;
   NET.lastBeat=0;NET.notFound=false;
-  if(NET.client&&code){
+  if(code&&host&&typeof pubDirNotifyRoomClosed==='function'){
+    pubDirNotifyRoomClosed(GAME_TYPE,code);
+  }
+  if(code){
     const c=code;
     if(host)pub(roomTopic(c,'beat'),{t:'beat',closed:true,ts:Date.now()},{retain:true});
     else pub(roomTopic(c,'bye'),{t:'bye',pid:ME});
     ['join','act','bye','hb','lobby','state','beat','err'].forEach(k=>unsub(roomTopic(c,k)));
   }
   NET.guests.clear();
-  if(reload){host=false;code='';lobbyPl=[]}
+  if(reload){host=false;code='';lobbyPl=[];if(typeof updateDominoUnoVisUI==='function')updateDominoUnoVisUI();}
 }
 
 /* ================= friends: real presence + friend requests + real invites ================= */
@@ -3807,7 +5756,33 @@ function isOnline(u){
   if(!p||p.online===false)return false;
   return Date.now()-(p.ts||p.seen||0)<P_TTL;
 }
-function myPresence(){return {t:'presence',uid:myUid(),name:PF.name,av:PF.av,col:PF.col,online:true,ts:Date.now()}}
+function myPresence(){
+  const hostRm = (typeof pubDirGetActiveHostRoom === 'function') ? pubDirGetActiveHostRoom() : null;
+  const inAnyGame = !!(
+    (typeof G !== 'undefined' && G) ||
+    (window.BK && BK.code) ||
+    (window.CH && CH.mode === 'online' && CH.code) ||
+    (window.TTT && TTT.mode === 'online' && TTT.code) ||
+    (window.C4 && C4.mode === 'online' && C4.code) ||
+    (window.DG && DG.code) ||
+    (typeof code !== 'undefined' && code)
+  );
+  // Only share room join info if the room is explicitly PUBLIC (never expose private room codes!)
+  const pubRoomMeta = (hostRm && hostRm.visibility === 'public')
+    ? { roomKey: hostRm.roomKey, game: hostRm.game, code: hostRm.code, allowJoin: hostRm.allowJoin, status: hostRm.status, playersCount: hostRm.playersCount, maxPlayers: hostRm.maxPlayers }
+    : null;
+  return {
+    t: 'presence',
+    uid: myUid(),
+    name: PF.name,
+    av: PF.av,
+    col: PF.col,
+    online: true,
+    activity: document.hidden ? 'away' : (inAnyGame ? 'ingame' : 'online'),
+    pubRoom: pubRoomMeta,
+    ts: Date.now()
+  };
+}
 
 function startPresence(){
   const me=myUid();
@@ -4000,9 +5975,10 @@ function inboxIncoming(d){
   }
 }
 
-function acceptGameInvite(roomCode,gameKind){
+function acceptGameInvite(roomCode,gameKind,viaMode){
   const c=String(roomCode||'').trim().toUpperCase();
   if(!c)return;
+  window._sharbJoinVia = (viaMode === 'public') ? 'public' : 'code';
   closeOverlay();
   if(gameKind==='ttt'){
     if(G){teardownNet(true);G=null;}
@@ -4086,6 +6062,7 @@ function dispatchInviteToFriend(f,roomCode,gameKind){
 
 async function createRoomAndInviteFriend(f,gameKind){
   closeOverlay();
+  if(typeof setRoomVisibility==='function')setRoomVisibility(gameKind||'domino','private',true);
   if(gameKind==='ttt'){
     if(G){teardownNet(true);G=null;}
     if(window.BK&&BK.code)bkLeave(false);
@@ -5605,6 +7582,7 @@ function leaveGame(){
   toast('خرجت من اللعبة');
 }
 function hostBye(){
+  if(typeof pubDirCloseAllHostedRooms==='function')pubDirCloseAllHostedRooms();
   if(!code)return;
   if(host)pub(roomTopic(code,'beat'),{t:'beat',closed:true,ts:Date.now()},{retain:true});
   else pub(roomTopic(code,'bye'),{t:'bye',pid:ME});
@@ -5677,8 +7655,7 @@ try{
     bkBC.onmessage=ev=>{
       const m=ev&&ev.data;
       if(!m||!m.topic)return;
-      const fn=NET.topics.get(m.topic);
-      if(fn){try{fn(m.payload,m.topic)}catch(e){}}
+      dispatchNetTopic(m.topic,m.payload);
     };
   }
   window.addEventListener('storage',ev=>{
@@ -5687,8 +7664,7 @@ try{
       try{
         const m=JSON.parse(ev.newValue);
         if(m&&m.topic){
-          const fn=NET.topics.get(m.topic);
-          if(fn)fn(m.payload,m.topic);
+          dispatchNetTopic(m.topic,m.payload);
         }
       }catch(e){}
     }
@@ -6027,6 +8003,7 @@ function bkPub(){
   BK.ends=BK.H.ends||0;
   bkSaveSession();
   bkPubMsg(bkT('st'),{s:BK.S},{qos:1,retain:true});
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
   bkRender();
 }
 
@@ -6041,6 +8018,7 @@ function bkTick(){
     }
   });
   bkPubMsg(bkT('beat'),{h:ME,pk:BK.kp.pub,ts:now,closed:false},{retain:true});
+  if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(false);
   if(ch&&H.ph!=='lobby'&&H.ph!=='result')bkAfterGone();
   if(ch||!BK.S)bkPub();
 }
@@ -6095,6 +8073,19 @@ function bkAdvanceIfGone(){
 async function bkOnJoin(d){
   const H=BK.H;if(!H||!d||!d.pid||!d.pk||d.pid===ME||!d.pk.x||!d.pk.y)return;
   const err=m=>bkPubMsg(bkT('err'),{pid:d.pid,msg:m});
+  if(d.via==='public' && typeof getRoomVisibility==='function' && getRoomVisibility('bakasa')==='private'){
+    return err('هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة');
+  }
+  const incUid=String(d.uid||String(d.pid).split('.')[0]).slice(0,12);
+  if(!H.pl[d.pid] && H.ph==='lobby'){
+    const dupPid=H.ord.find(id=>id!==ME && H.pl[id] && H.pl[id].uid===incUid);
+    if(dupPid){
+      const oldSc=H.sc[dupPid]||0;
+      delete H.pl[dupPid];
+      H.ord=H.ord.filter(x=>x!==dupPid);
+      H.sc[d.pid]=oldSc;
+    }
+  }
   let p=H.pl[d.pid];
   let changed=false;
   try{
@@ -6108,9 +8099,13 @@ async function bkOnJoin(d){
       p.last=Date.now();
     }else{
       if(H.ph!=='lobby')return err('الجولة بدأت بالفعل — انتظر حتى تنتهي الجولة الحالية');
-      if(H.ord.length>=H.cfg.max)return err('الغرفة ممتلئة ('+H.cfg.max+' لاعبين)');
+      if(H.ord.length>=H.cfg.max){
+        if(typeof pubDirSyncHostRoom==='function')pubDirSyncHostRoom(true);
+        return err('الغرفة ممتلئة ('+H.cfg.max+' لاعبين)');
+      }
       p={pid:d.pid,last:Date.now(),pk:d.pk,key:await bkDerive(BK.kp.priv,d.pk),ready:true,gone:false};
       H.pl[d.pid]=p;H.ord.push(d.pid);H.sc[d.pid]=H.sc[d.pid]||0;
+      if(typeof pubDirClearReservation==='function')pubDirClearReservation(d.pid);
       changed=true;
       toast((d.name||'لاعب')+' دخل الغرفة 🎉','ok');
       beep(520,.08,'sine',.08);
@@ -6662,7 +8657,7 @@ async function bkOnBeat(d){
 
 function bkHello(){
   if(!BK.key)return;
-  bkPubMsg(bkT('j'),{pid:ME,uid:PF.uid,name:PF.name,av:PF.av,col:PF.col,st:PF.st,pk:BK.kp.pub,need:(!BK.my||(BK.S&&BK.S.round&&BK.my.r!==BK.S.round))?1:0});
+  bkPubMsg(bkT('j'),{pid:ME,uid:PF.uid,name:PF.name,av:PF.av,col:PF.col,st:PF.st,pk:BK.kp.pub,via:window._sharbJoinVia||'code',need:(!BK.my||(BK.S&&BK.S.round&&BK.my.r!==BK.S.round))?1:0});
 }
 
 function bkOnSt(d){
@@ -6709,8 +8704,10 @@ function bkSend(a){
 
 function bkLeave(render){
   if(BK.code){
-    if(BK.host)bkPubMsg(bkT('beat'),{closed:true,ts:Date.now()},{retain:true});
-    else bkPubMsg(bkT('bye'),{pid:ME});
+    if(BK.host){
+      if(typeof pubDirNotifyRoomClosed==='function')pubDirNotifyRoomClosed('bakasa',BK.code);
+      bkPubMsg(bkT('beat'),{closed:true,ts:Date.now()},{retain:true});
+    }else bkPubMsg(bkT('bye'),{pid:ME});
     ['j','up','bye','beat','st','err','to/'+ME].forEach(k=>bkUnsub(bkT(k)));
   }
   clearInterval(BK.iv);clearTimeout(BK.tt);clearTimeout(BK.nf);clearTimeout(BK.autoTalkTimer);clearTimeout(BK.guessTimer);
@@ -7014,6 +9011,8 @@ function bkVLobbyScreen(S){
       <span class="track"></span>
       <span>⚡ بدء الأسئلة تلقائيًا فور تأكيد جميع اللاعبين لمشاهدة كلماتهم</span>
     </label>
+
+    ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('bakasa', inRoom, BK.host) : ''}
 
     <div class="cta" style="margin-top:14px">
       ${!inRoom
@@ -8857,15 +10856,26 @@ async function chCreateOnlineRoom(){
     if(!CH.host || !pkt || !pkt.player) return;
     const guest = pkt.player;
     if(guest.pid === ME) return;
-    if(!CH.onlinePlayers.w && CH.onlinePlayers.b && CH.onlinePlayers.b.pid === ME){
+    if(pkt.via === 'public' && typeof getRoomVisibility === 'function' && getRoomVisibility('chess') === 'private'){
+      chPub(CH.code, 'reject', { targetPid: guest.pid, reason: 'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة' });
+      return;
+    }
+    const isExistingW = CH.onlinePlayers.w && (CH.onlinePlayers.w.pid === guest.pid || (CH.onlinePlayers.w.uid && guest.uid && CH.onlinePlayers.w.uid === guest.uid && CH.onlinePlayers.w.pid !== ME));
+    const isExistingB = CH.onlinePlayers.b && (CH.onlinePlayers.b.pid === guest.pid || (CH.onlinePlayers.b.uid && guest.uid && CH.onlinePlayers.b.uid === guest.uid && CH.onlinePlayers.b.pid !== ME));
+    if(isExistingW){
+      CH.onlinePlayers.w = guest;
+    } else if(isExistingB){
+      CH.onlinePlayers.b = guest;
+    } else if(!CH.onlinePlayers.w && CH.onlinePlayers.b && CH.onlinePlayers.b.pid === ME){
       CH.onlinePlayers.w = guest;
     } else if(!CH.onlinePlayers.b && CH.onlinePlayers.w && CH.onlinePlayers.w.pid === ME){
       CH.onlinePlayers.b = guest;
-    } else if(CH.onlinePlayers.w && CH.onlinePlayers.w.pid === guest.pid){
-      CH.onlinePlayers.w = guest;
-    } else if(CH.onlinePlayers.b && CH.onlinePlayers.b.pid === guest.pid){
-      CH.onlinePlayers.b = guest;
+    } else {
+      chPub(CH.code, 'reject', { targetPid: guest.pid, reason: 'الغرفة مكتملة العدد (٢ لاعبين فقط)' });
+      if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
+      return;
     }
+    if(typeof pubDirClearReservation === 'function') pubDirClearReservation(guest.pid);
     toast(`🎉 انضم ${guest.name} إلى غرفة الشطرنج!`, 'ok');
     chBroadcastRoomState();
     chRender();
@@ -8886,9 +10896,21 @@ async function chCreateOnlineRoom(){
       chRender();
     } else if(pkt.type === 'resign'){
       CH.resignedColor = pkt.color;
+      if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
+      chRender();
+    } else if(pkt.type === 'bye' && pkt.sender){
+      if(CH.onlinePlayers.w && CH.onlinePlayers.w.pid === pkt.sender && pkt.sender !== ME) CH.onlinePlayers.w = null;
+      if(CH.onlinePlayers.b && CH.onlinePlayers.b.pid === pkt.sender && pkt.sender !== ME) CH.onlinePlayers.b = null;
+      toast('غادر اللاعب الآخر غرفة الشطرنج', 'warn');
+      chBroadcastRoomState();
       chRender();
     }
   });
+
+  if(CH.hbTimer) clearInterval(CH.hbTimer);
+  CH.hbTimer = setInterval(() => {
+    if(CH.code && CH.host && typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(false);
+  }, 6000);
 
   chBroadcastRoomState();
   chRender();
@@ -8905,6 +10927,7 @@ function chBroadcastRoomState(){
     claimedDrawReason: CH.claimedDrawReason,
     resignedColor: CH.resignedColor
   });
+  if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
 }
 
 async function chJoinOnlineRoom(rawCode){
@@ -8968,13 +10991,29 @@ async function chJoinOnlineRoom(rawCode){
     }
   });
 
-  chPub(CH.code, 'join', {player: me0(), ts: Date.now()});
+  chSub(CH.code, 'reject', pkt => {
+    if(pkt && pkt.targetPid === ME){
+      toast(pkt.reason || 'تعذر الانضمام لغرفة الشطرنج', 'warn');
+      chLeaveRoom(true);
+    }
+  });
+
+  const joinVia = window._sharbJoinVia || 'code';
+  chPub(CH.code, 'join', {player: me0(), via: joinVia, ts: Date.now()});
   chRender();
   toast(`جاري الاتصال بغرفة الشطرنج ${CH.code}…`, 'ok');
 }
 
 function chLeaveRoom(rerender=true){
   if(CH.aiTimer){clearTimeout(CH.aiTimer);CH.aiTimer=null;}
+  if(CH.hbTimer){clearInterval(CH.hbTimer);CH.hbTimer=null;}
+  if(CH.code){
+    if(CH.host){
+      if(typeof pubDirNotifyRoomClosed === 'function') pubDirNotifyRoomClosed('chess', CH.code);
+    } else {
+      chPub(CH.code, 'action', {sender: ME, type: 'bye'});
+    }
+  }
   chClearSubs();
   CH.code = '';
   CH.host = false;
@@ -9274,6 +11313,7 @@ function chRender(){
                   <div class="quick-g-pill ${CH.playerColorPref==='random'?'on':''}" data-chcol="random">🎲 عشوائي</div>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('chess', false, false) : ''}
               <div class="row" style="margin-bottom:12px">
                 <button class="btn ok big" data-chact="createOnline" style="width:100%">➕ إنشاء غرفة شطرنج جديدة</button>
               </div>
@@ -9289,6 +11329,7 @@ function chRender(){
                   <button class="mini del" data-chact="leaveOnline">🚪 خروج</button>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('chess', true, CH.host) : ''}
               <div class="mut tiny" style="margin-bottom:8px">ادعُ صديقًا من قائمتك للانضمام مباشرة للغرفة:</div>
               <div class="plist" id="chFriendsInviteList" style="max-height:150px">
                 ${friends().length ? friends().map((f,i)=>`
@@ -10273,6 +12314,10 @@ async function tttCreateOnlineRoom(){
     if(!TTT.host || !pkt || !pkt.player) return;
     const g = pkt.player;
     if(g.pid === ME) return;
+    if(pkt.via === 'public' && typeof getRoomVisibility === 'function' && getRoomVisibility('ttt') === 'private'){
+      arcPub('ttt', TTT.code, 'reject', {targetPid: g.pid, reason: 'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة'});
+      return;
+    }
     TTT.lastSeen[g.pid] = Date.now();
 
     // Check if returning player or new guest
@@ -10281,8 +12326,10 @@ async function tttCreateOnlineRoom(){
     if(curGuest && curGuest.pid !== g.pid && curGuest.uid !== g.uid){
       // Room is already full with 2 players! Reject 3rd player
       arcPub('ttt', TTT.code, 'reject', {targetPid: g.pid, reason: 'الغرفة مكتملة العدد (٢ لاعبين فقط)'});
+      if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
       return;
     }
+    if(typeof pubDirClearReservation === 'function') pubDirClearReservation(g.pid);
     TTT.players[openRole] = g;
     TTT.roomStatus = TTT.engine.winner ? 'finished' : 'playing';
     TTT.roomMsg = `انضم ${g.name} — المباراة جارية الآن!`;
@@ -10365,6 +12412,7 @@ function tttBroadcastHostState(){
     game: TTT.engine.cloneState(),
     ts: Date.now()
   }, true);
+  if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
 }
 
 async function tttJoinOnlineRoom(rawCode){
@@ -10426,7 +12474,7 @@ async function tttJoinOnlineRoom(rawCode){
     arcPub('ttt', TTT.code, 'action', {type: 'hb', senderPid: ME, ts: Date.now()});
   }, 4500);
 
-  arcPub('ttt', TTT.code, 'join', {player: me0(), ts: Date.now()});
+  arcPub('ttt', TTT.code, 'join', {player: me0(), via: window._sharbJoinVia || 'code', ts: Date.now()});
   tttRender();
 }
 
@@ -10436,6 +12484,7 @@ function tttLeaveRoom(rerender=true){
   TTT.moveLock = false;
   if(TTT.code){
     if(TTT.host){
+      if(typeof pubDirNotifyRoomClosed === 'function') pubDirNotifyRoomClosed('ttt', TTT.code);
       arcPub('ttt', TTT.code, 'state', {code: TTT.code, closed: true, ts: Date.now()}, true);
     } else {
       arcPub('ttt', TTT.code, 'action', {type: 'bye', senderPid: ME, ts: Date.now()});
@@ -10623,8 +12672,9 @@ function tttRender(){
                   <div class="quick-g-pill ${TTT.playerRolePref==='O'?'on':''}" data-tttrole="O">⭕ رمز O (ثانيًا)</div>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('ttt', false, false) : ''}
               <div class="row" style="margin-bottom:10px">
-                <button class="btn ok big" data-tttact="createOnline" id="tttCreateRoomBtn" style="width:100%">➕ إنشاء غرفة إكس أو خاصة</button>
+                <button class="btn ok big" data-tttact="createOnline" id="tttCreateRoomBtn" style="width:100%">➕ إنشاء غرفة إكس أو الآن</button>
               </div>
               <div class="row">
                 <input id="tttJoinCodeInp" placeholder="اكتب كود الغرفة" maxlength="6" style="text-transform:uppercase;direction:ltr;text-align:center;letter-spacing:3px;font-weight:800">
@@ -10638,6 +12688,7 @@ function tttRender(){
                   <button class="mini del" data-tttact="leaveOnline">🚪 مغادرة الغرفة</button>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('ttt', true, TTT.host) : ''}
               <div class="mut tiny" style="margin-bottom:8px">${esc(TTT.roomMsg || 'شارك الكود مع صديقك أو ادعه مباشرة:')}</div>
               <div class="plist" style="max-height:140px">
                 ${friends().length ? friends().map((f,i)=>`
@@ -10899,12 +12950,18 @@ async function c4CreateOnlineRoom(){
     if(!C4.host || !pkt || !pkt.player) return;
     const g = pkt.player;
     if(g.pid === ME) return;
+    if(pkt.via === 'public' && typeof getRoomVisibility === 'function' && getRoomVisibility('c4') === 'private'){
+      arcPub('c4', C4.code, 'reject', {targetPid: g.pid, reason: 'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة'});
+      return;
+    }
     const openRole = C4.myRole === 1 ? 2 : 1;
     const curGuest = C4.players[openRole];
     if(curGuest && curGuest.pid !== g.pid && curGuest.uid !== g.uid){
       arcPub('c4', C4.code, 'reject', {targetPid: g.pid, reason: 'الغرفة مكتملة العدد (٢ لاعبين فقط)'});
+      if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
       return;
     }
+    if(typeof pubDirClearReservation === 'function') pubDirClearReservation(g.pid);
     C4.players[openRole] = g;
     C4.roomStatus = C4.engine.winner ? 'finished' : 'playing';
     C4.roomMsg = `انضم ${g.name} — المباراة جارية الآن!`;
@@ -10979,6 +13036,7 @@ function c4BroadcastHostState(){
     game: C4.engine.cloneState(),
     ts: Date.now()
   }, true);
+  if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
 }
 
 async function c4JoinOnlineRoom(rawCode){
@@ -11035,7 +13093,7 @@ async function c4JoinOnlineRoom(rawCode){
     c4Render();
   });
 
-  arcPub('c4', C4.code, 'join', {player: me0(), ts: Date.now()});
+  arcPub('c4', C4.code, 'join', {player: me0(), via: window._sharbJoinVia || 'code', ts: Date.now()});
   c4Render();
 }
 
@@ -11044,6 +13102,7 @@ function c4LeaveRoom(rerender=true){
   C4.moveLock = false;
   if(C4.code){
     if(C4.host){
+      if(typeof pubDirNotifyRoomClosed === 'function') pubDirNotifyRoomClosed('c4', C4.code);
       arcPub('c4', C4.code, 'state', {code: C4.code, closed: true, ts: Date.now()}, true);
     } else {
       arcPub('c4', C4.code, 'action', {type: 'bye', senderPid: ME, ts: Date.now()});
@@ -11245,8 +13304,9 @@ function c4Render(){
                   <div class="quick-g-pill ${C4.playerRolePref===2?'on':''}" data-c4role="2">🟡 الذهبي (ثانيًا)</div>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('c4', false, false) : ''}
               <div class="row" style="margin-bottom:10px">
-                <button class="btn ok big" data-c4act="createOnline" id="c4CreateRoomBtn" style="width:100%">➕ إنشاء غرفة كونكت فور خاصة</button>
+                <button class="btn ok big" data-c4act="createOnline" id="c4CreateRoomBtn" style="width:100%">➕ إنشاء غرفة كونكت فور الآن</button>
               </div>
               <div class="row">
                 <input id="c4JoinCodeInp" placeholder="اكتب كود الغرفة" maxlength="6" style="text-transform:uppercase;direction:ltr;text-align:center;letter-spacing:3px;font-weight:800">
@@ -11260,6 +13320,7 @@ function c4Render(){
                   <button class="mini del" data-c4act="leaveOnline">🚪 مغادرة الغرفة</button>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('c4', true, C4.host) : ''}
               <div class="mut tiny" style="margin-bottom:8px">${esc(C4.roomMsg || 'شارك الكود مع صديقك أو ادعه مباشرة:')}</div>
               <div class="plist" style="max-height:140px">
                 ${friends().length ? friends().map((f,i)=>`
@@ -11684,8 +13745,13 @@ function dgOpen(){
 window.dgOpen = dgOpen;
 
 function dgLeaveRoom(rerender=true){
-  if(DG.code && DG.S){
-    arcPub('draw', DG.code, 'bye', { pid: ME, uid: PF.uid, name: PF.name });
+  if(DG.code){
+    if(DG.host && typeof pubDirNotifyRoomClosed === 'function'){
+      pubDirNotifyRoomClosed('draw', DG.code);
+    }
+    if(DG.S){
+      arcPub('draw', DG.code, 'bye', { pid: ME, uid: PF.uid, name: PF.name, hostClosed: !!DG.host });
+    }
   }
   arcClearSubs(DG);
   if(DG.hbTimer){ clearInterval(DG.hbTimer); DG.hbTimer = null; }
@@ -11728,6 +13794,7 @@ function dgBroadcastState(){
   if(!DG.host || !DG.code || !DG.S) return;
   DG.S.ts = Date.now();
   arcPub('draw', DG.code, 'state', JSON.parse(JSON.stringify(DG.S)), true);
+  if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
 }
 
 function dgSendPrivateToDrawer(pkt){
@@ -11811,10 +13878,11 @@ async function dgJoinRoom(rawCode){
   DG.host = false;
   DG.S = null;
   dgSetupSubscriptions(c);
-  arcPub('draw', c, 'join', { player: me0(), ts: Date.now() });
+  const viaMode = window._sharbJoinVia || 'code';
+  arcPub('draw', c, 'join', { player: me0(), via: viaMode, ts: Date.now() });
   setTimeout(()=>{
     if(DG.code === c && !DG.host){
-      arcPub('draw', c, 'join', { player: me0(), ts: Date.now() });
+      arcPub('draw', c, 'join', { player: me0(), via: viaMode, ts: Date.now() });
     }
   }, 450);
   ensureMQTT().then(ok => {
@@ -11828,8 +13896,12 @@ async function dgJoinRoom(rawCode){
 }
 window.dgJoinRoom = dgJoinRoom;
 
-function dgHostUpsertGuestPlayer(rmCode, p){
+function dgHostUpsertGuestPlayer(rmCode, p, via){
   if(!DG.host || !DG.S || !p || !p.pid) return false;
+  if(via === 'public' && typeof getRoomVisibility === 'function' && getRoomVisibility('draw') === 'private'){
+    arcPub('draw', rmCode, 'priv', { toPid: p.pid, type: 'room_rejected', msg: 'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة' });
+    return false;
+  }
   const existing = DG.S.players.find(x => x.pid === p.pid || (x.uid && p.uid && x.uid === p.uid));
   let isNewOrRestored = false;
   if(existing){
@@ -11843,11 +13915,17 @@ function dgHostUpsertGuestPlayer(rmCode, p){
     existing.lastSeen = Date.now();
     if(wasGone || pidChanged) isNewOrRestored = true;
   } else {
+    if(DG.S.phase !== 'lobby'){
+      arcPub('draw', rmCode, 'priv', { toPid: p.pid, type: 'room_rejected', msg: 'المباراة جارية حاليًا — انتظر انتهاء الجولة للانضمام' });
+      return false;
+    }
     const activeCount = DG.S.players.filter(x => !x.gone).length;
     if(activeCount >= (DG.S.cfg.maxPlayers || 8)){
       arcPub('draw', rmCode, 'priv', { toPid: p.pid, type: 'room_full' });
+      if(typeof pubDirSyncHostRoom === 'function') pubDirSyncHostRoom(true);
       return false;
     }
+    if(typeof pubDirClearReservation === 'function') pubDirClearReservation(p.pid);
     DG.S.players.push({
       pid: p.pid,
       uid: p.uid,
@@ -11877,7 +13955,7 @@ function dgSetupSubscriptions(rmCode){
   arcSub(DG, 'draw', rmCode, 'join', d => {
     if(!DG.host || !DG.S || !d || !d.player) return;
     const p = d.player;
-    dgHostUpsertGuestPlayer(rmCode, p);
+    if(!dgHostUpsertGuestPlayer(rmCode, p, d.via)) return;
     dgBroadcastState();
     // Sync current canvas strokes to newly joined/rejoined player
     if(DG.S.phase === 'drawing' && (DG.strokes.length || DG.currentStroke)){
@@ -12006,8 +14084,8 @@ function dgSetupSubscriptions(rmCode){
   // 3. Targeted private messages (word choices & secret word for Drawer)
   arcSub(DG, 'draw', rmCode, 'priv', pkt => {
     if(!pkt || pkt.toPid !== ME) return;
-    if(pkt.type === 'room_full'){
-      toast('الغرفة ممتلئة بالحد الأقصى من اللاعبين!', 'warn');
+    if(pkt.type === 'room_full' || pkt.type === 'room_rejected'){
+      toast(pkt.msg || 'الغرفة ممتلئة بالحد الأقصى من اللاعبين!', 'warn');
       dgLeaveRoom(true);
       return;
     }
@@ -12974,6 +15052,7 @@ function dgRender(){
                   </select>
                 </div>
               </div>
+              ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('draw', false, false) : ''}
               <button class="btn ok big" id="dgBtnCreateRoom" style="margin-top:10px;width:100%">🎨 إنشاء غرفة ارسم وخمّن الآن</button>
             </div>
 
@@ -13293,6 +15372,7 @@ function dgRender(){
           <button type="button" class="btn ghost sm" id="dgBtnCopyCode">📋 نسخ الكود</button>
           <button type="button" class="btn ghost sm" id="dgBtnCopyLink">🔗 رابط الدعوة</button>
           <span class="tag" id="dgRoundTag">الجولة <b>${Math.min(S.round, S.cfg.rounds)}/${S.cfg.rounds}</b></span>
+          ${typeof buildGameVisControlHTML==='function' ? buildGameVisControlHTML('draw', true, DG.host) : ''}
         </div>
 
         <div id="dgTopWordBannerSlot" style="display:contents">${wordBannerHTML}</div>
@@ -14569,6 +16649,1799 @@ startPresence();
     bkRestoreSession();
   }
 })();
+
+/* ============================================================================
+   SHARB GAMES — PUBLIC & PRIVATE MULTIPLAYER ROOM DIRECTORY SYSTEM
+   Supports real-time MQTT over WebSocket + BroadcastChannel / localStorage
+   ============================================================================ */
+var PUB_DIR_BUS_TOPIC = T_ROOT + 'pubdir/bus';
+var PUB_DIR_ROOM_PREFIX = T_ROOT + 'pubdir/r/';
+var PUB_DIR_ROOM_WILDCARD = T_ROOT + 'pubdir/r/#';
+
+var SHARB_GAME_META = {
+  domino: { id: 'domino', name: 'دومينو', nameEn: 'Domino', icon: '🁫', minPlayers: 2, maxAllowed: 4 },
+  uno:    { id: 'uno',    name: 'UNO',    nameEn: 'UNO',    icon: '🎴', minPlayers: 2, maxAllowed: 10 },
+  bakasa: { id: 'bakasa', name: 'البكاسة', nameEn: 'Bakasa', icon: '🕵️', minPlayers: 3, maxAllowed: 12 },
+  chess:  { id: 'chess',  name: 'شطرنج',  nameEn: 'Chess',  icon: '♟️', minPlayers: 2, maxAllowed: 2 },
+  ttt:    { id: 'ttt',    name: 'إكس أو', nameEn: 'Tic-Tac-Toe', icon: '❌⭕', minPlayers: 2, maxAllowed: 2 },
+  c4:     { id: 'c4',     name: 'كونكت فور', nameEn: 'Connect Four', icon: '🔴🟡', minPlayers: 2, maxAllowed: 2 },
+  draw:   { id: 'draw',   name: 'ارسم وخمّن', nameEn: 'Draw & Guess', icon: '🎨', minPlayers: 2, maxAllowed: 10 }
+};
+
+var SHARB_ROOM_CFG = {
+  visibility: {
+    domino: 'public',
+    uno: 'public',
+    bakasa: 'public',
+    chess: 'public',
+    ttt: 'public',
+    c4: 'public',
+    draw: 'public'
+  },
+  roomNames: {
+    domino: '',
+    uno: '',
+    bakasa: '',
+    chess: '',
+    ttt: '',
+    c4: '',
+    draw: ''
+  },
+  createdAt: {}
+};
+
+var PUB_DIR = {
+  rooms: new Map(), // roomKey -> validated room object
+  MAX_ROOMS: 100,
+  HEARTBEAT_MS: 8000,
+  STALE_TTL_MS: 26000, // > 3 heartbeats so 1 temporary network blip never deletes an active room
+  RETAINED_MAX_AGE_MS: 45000,
+  filterGame: 'all',
+  sortBy: 'recommended',
+  loading: true,
+  netError: false,
+  joiningRoomKey: '',
+  lastQuerySentAt: 0,
+  lastHostReplyAt: 0,
+  lastPublishedKey: '',
+  hostReservations: new Map(), // pid -> expiresAt
+  pendingJoinAcks: new Map(),  // reqId -> callback
+  hbInterval: null,
+  sweepInterval: null,
+  initialized: false
+};
+window.PUB_DIR = PUB_DIR;
+window.SHARB_ROOM_CFG = SHARB_ROOM_CFG;
+
+function sanitizeRoomName(raw, fallbackHostName){
+  const cleaned = String(raw || '')
+    .replace(/[<>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 28);
+  if(cleaned) return cleaned;
+  const hName = String(fallbackHostName || (typeof PF !== 'undefined' && PF.name) || 'لاعب').trim().slice(0, 14);
+  return `غرفة ${hName}`;
+}
+
+function getRoomVisibility(gameKind){
+  const g = (gameKind && SHARB_GAME_META[gameKind]) ? gameKind : 'domino';
+  return SHARB_ROOM_CFG.visibility[g] === 'private' ? 'private' : 'public';
+}
+window.getRoomVisibility = getRoomVisibility;
+
+function getCustomRoomName(gameKind){
+  const g = (gameKind && SHARB_GAME_META[gameKind]) ? gameKind : 'domino';
+  return SHARB_ROOM_CFG.roomNames[g] || '';
+}
+
+function setRoomVisibility(gameKind, vis, silent){
+  const g = (gameKind && SHARB_GAME_META[gameKind]) ? gameKind : 'domino';
+  const nextVis = vis === 'private' ? 'private' : 'public';
+  const prevVis = SHARB_ROOM_CFG.visibility[g];
+  SHARB_ROOM_CFG.visibility[g] = nextVis;
+  if(g === 'domino' || g === 'uno'){
+    SHARB_ROOM_CFG.visibility.domino = nextVis;
+    SHARB_ROOM_CFG.visibility.uno = nextVis;
+  }
+  updateDominoUnoVisUI();
+  const hostInfo = pubDirGetActiveHostRoom();
+  if(hostInfo && (hostInfo.game === g || ((g === 'domino' || g === 'uno') && (hostInfo.game === 'domino' || hostInfo.game === 'uno')))){
+    if(nextVis === 'private'){
+      pubDirNotifyRoomClosed(hostInfo.game, hostInfo.code, 'visibility_private');
+      if(!silent) toast('🔒 تم تحويل الغرفة إلى خاصة — أُزيلت فورًا من قائمة الغرف العامة', 'ok');
+    } else {
+      pubDirSyncHostRoom(true);
+      if(!silent) toast('🌐 تم نشر الغرفة في قسم الغرف العامة بالصفحة الرئيسية!', 'ok');
+    }
+  } else if(!silent && prevVis !== nextVis){
+    toast(nextVis === 'public' ? '🌐 سيتم إنشاء الغرفة كغرفة عامة' : '🔒 سيتم إنشاء الغرفة كغرفة خاصة', 'ok', 2200);
+  }
+  // Refresh active game UI if needed
+  if(g === 'bakasa' && !$('#bakasa').classList.contains('hide')) bkRender();
+  if(g === 'chess' && !$('#chess').classList.contains('hide')) chRender();
+  if(g === 'ttt' && !$('#ttt').classList.contains('hide')) tttRender();
+  if(g === 'c4' && !$('#c4').classList.contains('hide')) c4Render();
+  if(g === 'draw' && !$('#draw').classList.contains('hide')) dgRender();
+}
+window.setRoomVisibility = setRoomVisibility;
+
+function buildGameVisControlHTML(gameKind, inRoom, isHost){
+  const vis = getRoomVisibility(gameKind);
+  const rName = getCustomRoomName(gameKind);
+  if(inRoom){
+    if(!isHost){
+      return `<div class="vis-live-bar">
+        <span>${vis === 'public' ? '🌐 غرفة عامة' : '🔒 غرفة خاصة'}</span>
+      </div>`;
+    }
+    return `<div class="vis-live-bar">
+      <span>${vis === 'public' ? '🌐 الظهور الحالي: <b>غرفة عامة (في الرئيسية)</b>' : '🔒 الظهور الحالي: <b>غرفة خاصة (بالكود فقط)</b>'}</span>
+      <button type="button" class="mini ${vis === 'public' ? '' : 'ok'}" data-vis-toggle-live="${esc(gameKind)}">
+        ${vis === 'public' ? '🔒 تحويل لخاصة' : '🌐 نشر في الغرف العامة'}
+      </button>
+    </div>`;
+  }
+  return `<div class="vis-selector-box">
+    <label class="lbl" style="margin:0">نوع الغرفة عند الإنشاء (عامة أو خاصة):</label>
+    <div class="vis-selector-grid">
+      <button type="button" class="vis-opt-btn ${vis === 'public' ? 'on' : ''}" data-vis-scope="${esc(gameKind)}" data-vis-val="public">
+        <span class="vis-ico">🌐</span>
+        <span class="vis-txt">
+          <b>غرفة عامة (Public)</b>
+          <small>تظهر في قسم «الغرف العامة» بالرئيسية ويمكن لأي لاعب الانضمام إليها مباشرة</small>
+        </span>
+      </button>
+      <button type="button" class="vis-opt-btn ${vis === 'private' ? 'on' : ''}" data-vis-scope="${esc(gameKind)}" data-vis-val="private">
+        <span class="vis-ico">🔒</span>
+        <span class="vis-txt">
+          <b>غرفة خاصة (Private)</b>
+          <small>لا تظهر في القائمة العامة — الدخول فقط بكود الغرفة أو دعوة الأصدقاء</small>
+        </span>
+      </button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <input data-vis-roomname="${esc(gameKind)}" value="${esc(rName)}" maxlength="28" placeholder="اسم الغرفة (اختياري — مثال: تحدي الأبطال)" style="font-size:13px">
+    </div>
+  </div>`;
+}
+window.buildGameVisControlHTML = buildGameVisControlHTML;
+
+function updateDominoUnoVisUI(){
+  const vis = getRoomVisibility(GAME_TYPE || 'domino');
+  $$('[data-vis-scope="lobby"]').forEach(btn => {
+    btn.classList.toggle('on', btn.getAttribute('data-vis-val') === vis);
+  });
+  const liveBar = $('#rmVisLiveBar');
+  const liveTxt = $('#rmVisLiveText');
+  const toggleBtn = $('#rmVisToggleBtn');
+  if(liveBar){
+    if(code && host){
+      liveBar.classList.remove('hide');
+      if(liveTxt){
+        liveTxt.innerHTML = vis === 'public'
+          ? '🌐 الغرفة الآن: <b>عامة (تظهر في الرئيسية)</b>'
+          : '🔒 الغرفة الآن: <b>خاصة (بالكود فقط)</b>';
+      }
+      if(toggleBtn){
+        toggleBtn.textContent = vis === 'public' ? '🔒 تحويل لخاصة' : '🌐 نشر في الغرف العامة';
+        toggleBtn.className = 'mini' + (vis === 'public' ? '' : ' ok');
+      }
+    } else {
+      liveBar.classList.add('hide');
+    }
+  }
+}
+window.updateDominoUnoVisUI = updateDominoUnoVisUI;
+
+function pubDirClearReservation(pid){
+  if(pid) PUB_DIR.hostReservations.delete(pid);
+}
+window.pubDirClearReservation = pubDirClearReservation;
+
+function pubDirPruneReservations(){
+  const now = Date.now();
+  PUB_DIR.hostReservations.forEach((exp, pid) => {
+    if(now > exp) PUB_DIR.hostReservations.delete(pid);
+  });
+}
+
+function pubDirGetActiveHostRoom(){
+  // 1. Domino / UNO
+  if(host && code){
+    const gType = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+    const vis = getRoomVisibility(gType);
+    const maxP = Math.max(2, Math.min(gType === 'uno' ? 10 : 4, Number(lobbyMeta.n) || 4));
+    const curP = G ? Math.max(1, G.seats.filter(s => !s.bot).length) : Math.max(1, lobbyPl.length);
+    const st = !G ? 'waiting' : (G.phase === 'over' ? 'finished' : 'playing');
+    const rKey = `${gType}_${code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    const modeLbl = gType === 'uno'
+      ? `أونو كلاسيكي • هدف ${lobbyMeta.target || 500}`
+      : `${lobbyMeta.mode === 'block' ? 'تسكير' : (lobbyMeta.mode === 'fives' ? 'أمريكي ٥' : 'عادي')}${lobbyMeta.tm && maxP === 4 ? ' • فرق ٢×٢' : ' • فردي'}`;
+    return {
+      roomKey: rKey,
+      game: gType,
+      code: code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames[gType], PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, maxP),
+      maxPlayers: maxP,
+      status: st,
+      allowJoin: st === 'waiting' && curP < maxP,
+      modeLabel: modeLbl,
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  // 2. Bakasa
+  if(window.BK && BK.host && BK.code && BK.H){
+    const H = BK.H;
+    const vis = getRoomVisibility('bakasa');
+    const maxP = Math.max(3, Math.min(12, Number(H.cfg && H.cfg.max) || 8));
+    const curP = Math.max(1, H.ord.filter(id => H.pl[id] && !H.pl[id].gone).length);
+    const st = H.ph === 'lobby' ? 'waiting' : (H.ph === 'result' ? 'finished' : 'playing');
+    const rKey = `bakasa_${BK.code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    const modeLbl = `الفئة: ${(H.cfg && H.cfg.cat) || 'عشوائي'} • ${(H.cfg && H.cfg.mode === 'alt') ? 'كلمة مختلفة' : 'بدون كلمة'}`;
+    return {
+      roomKey: rKey,
+      game: 'bakasa',
+      code: BK.code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames.bakasa, PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, maxP),
+      maxPlayers: maxP,
+      status: st,
+      allowJoin: st === 'waiting' && curP < maxP,
+      modeLabel: modeLbl,
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  // 3. Chess
+  if(window.CH && CH.mode === 'online' && CH.host && CH.code){
+    const vis = getRoomVisibility('chess');
+    const curP = Math.max(1, [CH.onlinePlayers.w, CH.onlinePlayers.b].filter(Boolean).length);
+    const over = typeof chGetMatchOutcome === 'function' ? chGetMatchOutcome().over : false;
+    const st = over ? 'finished' : (curP < 2 ? 'waiting' : 'playing');
+    const rKey = `chess_${CH.code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    return {
+      roomKey: rKey,
+      game: 'chess',
+      code: CH.code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames.chess, PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, 2),
+      maxPlayers: 2,
+      status: st,
+      allowJoin: st === 'waiting' && curP < 2,
+      modeLabel: 'شطرنج قياسي FIDE • ١ ضد ١',
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  // 4. Tic-Tac-Toe
+  if(window.TTT && TTT.mode === 'online' && TTT.host && TTT.code){
+    const vis = getRoomVisibility('ttt');
+    const curP = Math.max(1, [TTT.players.X, TTT.players.O].filter(Boolean).length);
+    const st = TTT.engine.winner ? 'finished' : (curP < 2 ? 'waiting' : 'playing');
+    const rKey = `ttt_${TTT.code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    return {
+      roomKey: rKey,
+      game: 'ttt',
+      code: TTT.code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames.ttt, PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, 2),
+      maxPlayers: 2,
+      status: st,
+      allowJoin: st === 'waiting' && curP < 2,
+      modeLabel: 'إكس أو (3×3) أونلاين',
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  // 5. Connect Four
+  if(window.C4 && C4.mode === 'online' && C4.host && C4.code){
+    const vis = getRoomVisibility('c4');
+    const curP = Math.max(1, [C4.players[1], C4.players[2]].filter(Boolean).length);
+    const st = C4.engine.winner ? 'finished' : (curP < 2 ? 'waiting' : 'playing');
+    const rKey = `c4_${C4.code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    return {
+      roomKey: rKey,
+      game: 'c4',
+      code: C4.code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames.c4, PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, 2),
+      maxPlayers: 2,
+      status: st,
+      allowJoin: st === 'waiting' && curP < 2,
+      modeLabel: 'كونكت فور (7×6) أونلاين',
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  // 6. Draw & Guess
+  if(window.DG && DG.host && DG.code && DG.S){
+    const vis = getRoomVisibility('draw');
+    const maxP = Math.max(2, Math.min(10, Number(DG.S.cfg && DG.S.cfg.maxPlayers) || 8));
+    const curP = Math.max(1, (DG.S.players || []).filter(p => !p.gone).length);
+    const st = DG.S.phase === 'lobby' ? 'waiting' : (DG.S.phase === 'game_over' ? 'finished' : 'playing');
+    const rKey = `draw_${DG.code}`;
+    if(!SHARB_ROOM_CFG.createdAt[rKey]) SHARB_ROOM_CFG.createdAt[rKey] = Date.now();
+    const langMap = { ar: 'عربي', en: 'English', mix: 'مختلط' };
+    const modeLbl = `${(DG.S.cfg && DG.S.cfg.rounds) || 3} جولات • ${langMap[(DG.S.cfg && DG.S.cfg.lang) || 'ar'] || 'عربي'}`;
+    return {
+      roomKey: rKey,
+      game: 'draw',
+      code: DG.code,
+      visibility: vis,
+      roomName: sanitizeRoomName(SHARB_ROOM_CFG.roomNames.draw, PF.name),
+      hostPid: ME,
+      hostName: String(PF.name || 'لاعب').slice(0, 14),
+      hostAv: String(PF.av || '🙂').slice(0, 4),
+      hostCol: String(PF.col || '#0a84ff').slice(0, 10),
+      playersCount: Math.min(curP, maxP),
+      maxPlayers: maxP,
+      status: st,
+      allowJoin: st === 'waiting' && curP < maxP,
+      modeLabel: modeLbl,
+      createdAt: SHARB_ROOM_CFG.createdAt[rKey]
+    };
+  }
+  return null;
+}
+window.pubDirGetActiveHostRoom = pubDirGetActiveHostRoom;
+
+function pubDirSyncHostRoom(forceImmediate){
+  const info = pubDirGetActiveHostRoom();
+  if(!info){
+    if(PUB_DIR.lastPublishedKey){
+      const [g, c] = PUB_DIR.lastPublishedKey.split('_');
+      PUB_DIR.lastPublishedKey = '';
+      if(g && c) pubDirNotifyRoomClosed(g, c, 'host_ended');
+    }
+    return;
+  }
+  // Strict Privacy Enforcement: NEVER publish private room codes or metadata to public topics
+  if(info.visibility !== 'public'){
+    if(PUB_DIR.lastPublishedKey === info.roomKey){
+      PUB_DIR.lastPublishedKey = '';
+      pubDirNotifyRoomClosed(info.game, info.code, 'switched_to_private');
+    }
+    PUB_DIR.rooms.delete(info.roomKey);
+    pubDirRender();
+    return;
+  }
+  const pkt = {
+    t: 'room_up',
+    roomKey: info.roomKey,
+    game: info.game,
+    code: info.code,
+    visibility: 'public',
+    roomName: info.roomName,
+    hostPid: info.hostPid,
+    hostName: info.hostName,
+    hostAv: info.hostAv,
+    hostCol: info.hostCol,
+    playersCount: info.playersCount,
+    maxPlayers: info.maxPlayers,
+    status: info.status,
+    allowJoin: info.allowJoin,
+    modeLabel: info.modeLabel,
+    createdAt: info.createdAt,
+    ts: Date.now(),
+    closed: false
+  };
+  PUB_DIR.lastPublishedKey = info.roomKey;
+  pubDirIngestPacket(pkt, PUB_DIR_BUS_TOPIC);
+  pub(PUB_DIR_ROOM_PREFIX + info.roomKey, pkt, { qos: 0, retain: true });
+  pub(PUB_DIR_BUS_TOPIC, pkt, { qos: 0, retain: false });
+}
+window.pubDirSyncHostRoom = pubDirSyncHostRoom;
+
+function pubDirNotifyRoomClosed(gameKind, roomCode, reason){
+  const g = String(gameKind || '').trim().toLowerCase();
+  const c = String(roomCode || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if(!g || !c) return;
+  const rKey = `${g}_${c}`;
+  const wasPublic = (PUB_DIR.lastPublishedKey === rKey) || PUB_DIR.rooms.has(rKey);
+  if(PUB_DIR.lastPublishedKey === rKey) PUB_DIR.lastPublishedKey = '';
+  PUB_DIR.rooms.delete(rKey);
+  PUB_DIR.hostReservations.clear();
+  try {
+    localStorage.removeItem('bk_ret_' + PUB_DIR_ROOM_PREFIX + rKey);
+  } catch(e){}
+  // Only publish closure tombstone if this room was ever public
+  if(wasPublic){
+    const downPkt = {
+      t: 'room_down',
+      roomKey: rKey,
+      game: g,
+      closed: true,
+      visibility: reason === 'visibility_private' ? 'private' : 'closed',
+      reason: reason || 'closed',
+      ts: Date.now()
+    };
+    pub(PUB_DIR_ROOM_PREFIX + rKey, downPkt, { qos: 0, retain: true });
+    pub(PUB_DIR_BUS_TOPIC, downPkt, { qos: 0, retain: false });
+  }
+  pubDirRender();
+}
+window.pubDirNotifyRoomClosed = pubDirNotifyRoomClosed;
+
+function pubDirCloseAllHostedRooms(){
+  const info = pubDirGetActiveHostRoom();
+  if(info && info.visibility === 'public'){
+    pubDirNotifyRoomClosed(info.game, info.code, 'beforeunload');
+  }
+}
+window.pubDirCloseAllHostedRooms = pubDirCloseAllHostedRooms;
+
+function pubDirValidatePacket(pkt){
+  if(!pkt || typeof pkt !== 'object') return null;
+  const game = String(pkt.game || '').trim().toLowerCase();
+  const meta = SHARB_GAME_META[game];
+  if(!meta) return null;
+  const codeStr = String(pkt.code || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if(codeStr.length < 4 || codeStr.length > 6) return null;
+  const expectedKey = `${game}_${codeStr}`;
+  if(pkt.roomKey && pkt.roomKey !== expectedKey) return null;
+  if(pkt.visibility && pkt.visibility !== 'public') return null;
+
+  const maxP = Number(pkt.maxPlayers);
+  if(!Number.isFinite(maxP) || maxP < meta.minPlayers || maxP > meta.maxAllowed) return null;
+  const curP = Number(pkt.playersCount);
+  if(!Number.isFinite(curP) || curP < 1 || curP > maxP) return null;
+
+  const st = ['waiting', 'playing', 'finished'].includes(pkt.status) ? pkt.status : 'waiting';
+  const hostName = String(pkt.hostName || 'لاعب').replace(/[<>]/g, '').trim().slice(0, 16) || 'لاعب';
+  const roomName = sanitizeRoomName(pkt.roomName, hostName);
+  const hostAv = String(pkt.hostAv || '🙂').slice(0, 4);
+  const hostCol = /^#[0-9a-fA-F]{3,8}$/.test(String(pkt.hostCol || '')) ? pkt.hostCol : '#0a84ff';
+  const modeLabel = String(pkt.modeLabel || meta.name).replace(/[<>]/g, '').trim().slice(0, 48);
+  const now = Date.now();
+  const pktTs = Number(pkt.ts) || now;
+  const createdAt = Number(pkt.createdAt) || pktTs;
+
+  return {
+    roomKey: expectedKey,
+    game,
+    code: codeStr,
+    visibility: 'public',
+    roomName,
+    hostPid: String(pkt.hostPid || '').slice(0, 36),
+    hostName,
+    hostAv,
+    hostCol,
+    playersCount: Math.round(curP),
+    maxPlayers: Math.round(maxP),
+    status: st,
+    allowJoin: st === 'waiting' && curP < maxP && pkt.allowJoin !== false,
+    modeLabel,
+    createdAt: Math.min(createdAt, now),
+    ts: pktTs,
+    lastSeen: now,
+    closed: false
+  };
+}
+
+function pubDirIngestPacket(pkt, topic){
+  if(!pkt || typeof pkt !== 'object') return;
+
+  // 1. Handle room_down / closure / switch to private
+  if(pkt.t === 'room_down' || pkt.closed === true || pkt.visibility === 'private'){
+    const rKey = String(pkt.roomKey || (pkt.game && pkt.code ? `${pkt.game}_${pkt.code}` : '')).trim();
+    if(rKey && PUB_DIR.rooms.has(rKey)){
+      PUB_DIR.rooms.delete(rKey);
+      try { localStorage.removeItem('bk_ret_' + PUB_DIR_ROOM_PREFIX + rKey); } catch(e){}
+      pubDirRender();
+    }
+    return;
+  }
+
+  // 2. Handle directory discovery query from a peer
+  if(pkt.t === 'dir_query'){
+    const now = Date.now();
+    if(now - PUB_DIR.lastHostReplyAt >= 1200){
+      const myHost = pubDirGetActiveHostRoom();
+      if(myHost && myHost.visibility === 'public'){
+        PUB_DIR.lastHostReplyAt = now;
+        pubDirSyncHostRoom(true);
+      }
+    }
+    return;
+  }
+
+  // 3. Handle pre-join slot check & atomic reservation request (processed by Host)
+  if(pkt.t === 'join_check'){
+    const myHost = pubDirGetActiveHostRoom();
+    if(!myHost || myHost.roomKey !== pkt.roomKey) return;
+    pubDirPruneReservations();
+    const reqPid = pkt.player && pkt.player.pid ? String(pkt.player.pid) : '';
+    let ok = true, reason = 'ok', msg = '';
+    if(myHost.visibility !== 'public'){
+      ok = false; reason = 'private'; msg = 'هذه الغرفة خاصة ولا يمكن الانضمام إليها من القائمة العامة';
+    } else if(myHost.status !== 'waiting'){
+      ok = false; reason = 'playing'; msg = 'بدأت المباراة بالفعل — انتظر انتهاء الجولة الحالية للانضمام';
+    } else {
+      let otherReserved = 0;
+      PUB_DIR.hostReservations.forEach((exp, rPid) => {
+        if(rPid !== reqPid) otherReserved++;
+      });
+      if(myHost.playersCount + otherReserved >= myHost.maxPlayers){
+        ok = false; reason = 'full'; msg = `الغرفة امتلأت للتو (${myHost.maxPlayers}/${myHost.maxPlayers} لاعبين)!`;
+      } else if(reqPid){
+        PUB_DIR.hostReservations.set(reqPid, Date.now() + 5500);
+      }
+    }
+    pub(PUB_DIR_BUS_TOPIC, {
+      t: 'join_check_ack',
+      reqId: pkt.reqId,
+      roomKey: myHost.roomKey,
+      targetPid: reqPid,
+      ok,
+      reason,
+      msg,
+      playersCount: myHost.playersCount,
+      maxPlayers: myHost.maxPlayers,
+      status: myHost.status,
+      visibility: myHost.visibility,
+      ts: Date.now()
+    }, { qos: 0, retain: false });
+    if(!ok) pubDirSyncHostRoom(true);
+    return;
+  }
+
+  // 4. Handle pre-join slot check response (processed by Joining Client)
+  if(pkt.t === 'join_check_ack'){
+    if(pkt.reqId && PUB_DIR.pendingJoinAcks.has(pkt.reqId)){
+      const cb = PUB_DIR.pendingJoinAcks.get(pkt.reqId);
+      PUB_DIR.pendingJoinAcks.delete(pkt.reqId);
+      cb(pkt);
+    }
+    return;
+  }
+
+  // 5. Handle room_up announcement
+  if(pkt.t === 'room_up'){
+    // Ignore ancient retained broker messages (> 45s old) from dead sessions
+    if(topic && topic.startsWith(PUB_DIR_ROOM_PREFIX) && pkt.ts && Math.abs(Date.now() - Number(pkt.ts)) > PUB_DIR.RETAINED_MAX_AGE_MS){
+      return;
+    }
+    const valid = pubDirValidatePacket(pkt);
+    if(!valid) return;
+
+    // Enforce bounded map size (prevent unbounded memory growth)
+    if(!PUB_DIR.rooms.has(valid.roomKey) && PUB_DIR.rooms.size >= PUB_DIR.MAX_ROOMS){
+      let oldestKey = null, oldestSeen = Infinity;
+      PUB_DIR.rooms.forEach((v, k) => {
+        if(v.lastSeen < oldestSeen){ oldestSeen = v.lastSeen; oldestKey = k; }
+      });
+      if(oldestKey) PUB_DIR.rooms.delete(oldestKey);
+    }
+
+    const existing = PUB_DIR.rooms.get(valid.roomKey);
+    if(existing && existing.createdAt < valid.createdAt){
+      valid.createdAt = existing.createdAt;
+    }
+    PUB_DIR.rooms.set(valid.roomKey, valid);
+    PUB_DIR.loading = false;
+    PUB_DIR.netError = false;
+    pubDirRender();
+  }
+}
+
+function pubDirSweepStale(){
+  const now = Date.now();
+  let changed = false;
+  const myHost = pubDirGetActiveHostRoom();
+  PUB_DIR.rooms.forEach((rm, key) => {
+    if(myHost && myHost.roomKey === key && myHost.visibility === 'public'){
+      rm.lastSeen = now;
+      return;
+    }
+    if(now - (rm.lastSeen || 0) > PUB_DIR.STALE_TTL_MS){
+      PUB_DIR.rooms.delete(key);
+      changed = true;
+    }
+  });
+  if(changed) pubDirRender();
+}
+
+function pubDirFormatAge(createdAt){
+  const diffSec = Math.max(0, Math.floor((Date.now() - (createdAt || Date.now())) / 1000));
+  if(diffSec < 15) return 'الآن';
+  if(diffSec < 60) return `منذ ${diffSec} ث`;
+  const mins = Math.floor(diffSec / 60);
+  if(mins === 1) return 'منذ دقيقة';
+  if(mins === 2) return 'منذ دقيقتين';
+  if(mins <= 10) return `منذ ${mins} دقائق`;
+  return `منذ ${mins} دقيقة`;
+}
+
+function pubDirGetFilteredSortedRooms(){
+  const list = [];
+  PUB_DIR.rooms.forEach(rm => {
+    if(rm.closed || rm.visibility !== 'public') return;
+    if(PUB_DIR.filterGame !== 'all' && rm.game !== PUB_DIR.filterGame) return;
+    list.push(rm);
+  });
+
+  const sortMode = PUB_DIR.sortBy || 'recommended';
+  list.sort((a, b) => {
+    const aJoinable = (a.status === 'waiting' && a.playersCount < a.maxPlayers) ? 1 : 0;
+    const bJoinable = (b.status === 'waiting' && b.playersCount < b.maxPlayers) ? 1 : 0;
+    if(sortMode === 'slots'){
+      const aSlots = Math.max(0, a.maxPlayers - a.playersCount);
+      const bSlots = Math.max(0, b.maxPlayers - b.playersCount);
+      if(aJoinable !== bJoinable) return bJoinable - aJoinable;
+      if(bSlots !== aSlots) return bSlots - aSlots;
+      return b.lastSeen - a.lastSeen;
+    }
+    if(sortMode === 'status'){
+      const rank = { waiting: 0, finished: 1, playing: 2 };
+      const rDiff = (rank[a.status] ?? 3) - (rank[b.status] ?? 3);
+      if(rDiff !== 0) return rDiff;
+      return b.lastSeen - a.lastSeen;
+    }
+    if(sortMode === 'players'){
+      if(b.playersCount !== a.playersCount) return b.playersCount - a.playersCount;
+      return b.lastSeen - a.lastSeen;
+    }
+    // Default: 'recommended' -> joinable waiting rooms first, then newest
+    if(aJoinable !== bJoinable) return bJoinable - aJoinable;
+    return b.createdAt - a.createdAt;
+  });
+  return list;
+}
+
+function pubDirRender(){
+  const container = document.getElementById('pubRoomsContainer');
+  const countBadge = document.getElementById('pubRoomsCountBadge');
+  const connPill = document.getElementById('pubRoomsConnPill');
+  const connText = document.getElementById('pubRoomsConnText');
+  if(!container) return;
+
+  const allPublic = [...PUB_DIR.rooms.values()].filter(r => !r.closed && r.visibility === 'public');
+  const joinableTotal = allPublic.filter(r => r.status === 'waiting' && r.playersCount < r.maxPlayers).length;
+
+  if(countBadge){
+    countBadge.textContent = allPublic.length === 0
+      ? '0 غرف نشطة'
+      : `${allPublic.length} غرف عامة (${joinableTotal} متاحة للدخول)`;
+    countBadge.className = 'bk-chip ' + (joinableTotal > 0 ? 'ok' : 'ac');
+  }
+
+  if(connPill && connText){
+    if(PUB_DIR.netError){
+      connPill.className = 'pub-conn-pill error';
+      connText.textContent = 'تعذر الاتصال بمزود الغرف — وضع محلي';
+    } else if(PUB_DIR.loading){
+      connPill.className = 'pub-conn-pill';
+      connText.textContent = 'جاري البحث عن الغرف العامة…';
+    } else {
+      connPill.className = 'pub-conn-pill online';
+      connText.textContent = (NET.client && NET.ready) ? 'متصل ومحدّث تلقائيًا' : 'متصل محليًا وبانتظار الشبكة';
+    }
+  }
+
+  // Update filter pill counts
+  $$('#pubRoomsFilterPills [data-pubfilter]').forEach(btn => {
+    const fg = btn.getAttribute('data-pubfilter');
+    btn.classList.toggle('on', fg === PUB_DIR.filterGame);
+  });
+
+  if(PUB_DIR.loading && allPublic.length === 0){
+    container.innerHTML = `<div class="pub-empty-box">
+      <div style="font-size:28px;margin-bottom:6px">📡</div>
+      <b>جاري البحث عن الغرف العامة المتاحة…</b>
+      <div class="mut tiny" style="margin-top:4px">يتم فحص الغرف النشطة عبر الاتصال الفوري الآن</div>
+    </div>`;
+    return;
+  }
+
+  if(PUB_DIR.netError && allPublic.length === 0){
+    container.innerHTML = `<div class="pub-empty-box" style="border-color:rgba(239,68,68,.4)">
+      <div style="font-size:28px;margin-bottom:6px">⚠️</div>
+      <b>تعذر الوصول إلى دليل الغرف العامة عبر الإنترنت حاليًا</b>
+      <div class="mut tiny" style="margin:6px 0 12px">تأكد من اتصالك بالإنترنت أو اضغط «تحديث الغرف» لإعادة المحاولة.</div>
+      <button type="button" class="btn ok" data-pubact="refresh">🔄 إعادة المحاولة الآن</button>
+    </div>`;
+    return;
+  }
+
+  const filtered = pubDirGetFilteredSortedRooms();
+  if(filtered.length === 0){
+    const filterName = PUB_DIR.filterGame !== 'all' && SHARB_GAME_META[PUB_DIR.filterGame]
+      ? ` في لعبة ${SHARB_GAME_META[PUB_DIR.filterGame].icon} ${SHARB_GAME_META[PUB_DIR.filterGame].name}`
+      : '';
+    container.innerHTML = `<div class="pub-empty-box">
+      <div style="font-size:32px;margin-bottom:6px">🌐</div>
+      <b>لا توجد غرف عامة متاحة${esc(filterName)} في هذه اللحظة</b>
+      <div class="mut tiny" style="margin:6px auto 14px;max-width:460px;line-height:1.6">
+        كن أول من يفتح غرفة عامة الآن لتظهر هنا لجميع اللاعبين وينضموا إليك بضغطة واحدة!
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button type="button" class="btn ok" data-pubact="quickCreate">➕ إنشاء غرفة عامة الآن</button>
+        ${PUB_DIR.filterGame !== 'all' ? `<button type="button" class="btn g" data-pubact="resetFilter">عرض كل الألعاب</button>` : `<button type="button" class="btn g" data-pubact="refresh">🔄 تحديث القائمة</button>`}
+      </div>
+    </div>`;
+    return;
+  }
+
+  const myHost = pubDirGetActiveHostRoom();
+  const cardsHTML = filtered.map(rm => {
+    const meta = SHARB_GAME_META[rm.game] || SHARB_GAME_META.domino;
+    const isFull = rm.playersCount >= rm.maxPlayers;
+    const isWaiting = rm.status === 'waiting' && !isFull;
+    const isPlaying = rm.status === 'playing';
+    const isFinished = rm.status === 'finished';
+    const isMyRoom = (myHost && myHost.roomKey === rm.roomKey) || (rm.hostPid && rm.hostPid === ME);
+    const isJoiningThis = PUB_DIR.joiningRoomKey === rm.roomKey;
+    const pct = Math.min(100, Math.round((rm.playersCount / Math.max(1, rm.maxPlayers)) * 100));
+
+    let statusClass = 'waiting';
+    let statusText = '🟢 في انتظار اللاعبين';
+    if(isPlaying){
+      statusClass = 'playing';
+      statusText = '🔵 في المباراة';
+    } else if(isFinished){
+      statusClass = 'finished';
+      statusText = '🏁 انتهت الجولة';
+    } else if(isFull){
+      statusClass = 'full';
+      statusText = '🟠 الغرفة ممتلئة';
+    }
+
+    let btnLabel = '🚀 انضمام للغرفة';
+    let btnDisabled = false;
+    let btnClass = 'btn ok pub-rc-JoinBtn';
+    if(isJoiningThis){
+      btnLabel = '⏳ جاري التحقق والانضمام…';
+      btnDisabled = true;
+      btnClass = 'btn g pub-rc-JoinBtn';
+    } else if(isMyRoom){
+      btnLabel = '👑 غرفتك الحالية (فتح الغرفة)';
+      btnClass = 'btn pub-rc-JoinBtn';
+    } else if(isPlaying){
+      btnLabel = '⏳ المباراة جارية الآن';
+      btnDisabled = true;
+      btnClass = 'btn g pub-rc-JoinBtn';
+    } else if(isFinished){
+      btnLabel = '🏁 انتهت الجولة (بانتظار المضيف)';
+      btnDisabled = true;
+      btnClass = 'btn g pub-rc-JoinBtn';
+    } else if(isFull){
+      btnLabel = '🔒 الغرفة مكتملة العدد';
+      btnDisabled = true;
+      btnClass = 'btn g pub-rc-JoinBtn';
+    }
+
+    return `<article class="pub-room-card ${isWaiting ? 'is-waiting' : (isFull ? 'is-full' : 'is-playing')}" data-roomkey="${esc(rm.roomKey)}">
+      <div>
+        <div class="pub-rc-top">
+          <span class="pub-rc-game">${meta.icon} <span>${esc(meta.name)}</span></span>
+          <span class="pub-rc-status ${statusClass}">${statusText}</span>
+        </div>
+
+        <div class="pub-rc-title-row" style="margin-top:9px">
+          <div class="pub-rc-name" title="${esc(rm.roomName)}">${esc(rm.roomName)}</div>
+          <span class="pub-rc-code" title="مُعرّف الغرفة">#${esc(rm.code)}</span>
+        </div>
+
+        <div class="pub-rc-host" style="margin-top:6px">
+          <span class="pub-rc-host-info">
+            <span class="av sm" style="--c:${esc(rm.hostCol)};width:22px;height:22px;font-size:12px">${esc(rm.hostAv)}</span>
+            <span>المضيف: <b>${esc(rm.hostName)}</b></span>
+          </span>
+          <span class="tiny mut">${pubDirFormatAge(rm.createdAt)}</span>
+        </div>
+
+        <div style="margin-top:7px">
+          <span class="tag" style="font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block">${esc(rm.modeLabel)}</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="pub-rc-cap">
+          <div class="pub-rc-cap-row">
+            <span class="mut tiny">👥 اللاعبون داخل الغرفة</span>
+            <span><b>${rm.playersCount}</b> / ${rm.maxPlayers}</span>
+          </div>
+          <div class="pub-rc-bar ${isFull ? 'full' : ''}">
+            <i style="width:${pct}%"></i>
+          </div>
+        </div>
+
+        <button type="button" class="${btnClass}" data-pubjoin="${esc(rm.roomKey)}" ${btnDisabled ? 'disabled' : ''} style="margin-top:10px">
+          ${btnLabel}
+        </button>
+      </div>
+    </article>`;
+  }).join('');
+
+  container.innerHTML = `<div class="pub-rooms-grid" id="pubRoomsGrid">${cardsHTML}</div>`;
+}
+window.pubDirRender = pubDirRender;
+
+async function pubDirRequestRefresh(manual){
+  const now = Date.now();
+  if(manual && now - PUB_DIR.lastQuerySentAt < 1200){
+    pubDirSweepStale();
+    pubDirRender();
+    return;
+  }
+  PUB_DIR.lastQuerySentAt = now;
+  pubDirSweepStale();
+
+  // Read any local retained public room states (for multi-tab / local sync)
+  try {
+    for(let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith('bk_ret_' + PUB_DIR_ROOM_PREFIX)){
+        const raw = localStorage.getItem(k);
+        if(raw){
+          const parsed = JSON.parse(raw);
+          if(parsed && parsed.payload && Date.now() - (parsed.ts || 0) <= PUB_DIR.STALE_TTL_MS){
+            pubDirIngestPacket(parsed.payload, k.replace('bk_ret_', ''));
+          }
+        }
+      }
+    }
+  } catch(e){}
+
+  const myHost = pubDirGetActiveHostRoom();
+  if(myHost && myHost.visibility === 'public'){
+    pubDirSyncHostRoom(true);
+  }
+
+  if(PUB_DIR.rooms.size === 0){
+    PUB_DIR.loading = true;
+    PUB_DIR.netError = false;
+    pubDirRender();
+  }
+
+  pub(PUB_DIR_BUS_TOPIC, {
+    t: 'dir_query',
+    senderPid: ME,
+    ts: Date.now()
+  }, { qos: 0, retain: false });
+
+  ensureMQTT().then(ok => {
+    if(ok){
+      PUB_DIR.netError = false;
+      pub(PUB_DIR_BUS_TOPIC, {
+        t: 'dir_query',
+        senderPid: ME,
+        ts: Date.now()
+      }, { qos: 0, retain: false });
+    } else if(PUB_DIR.rooms.size === 0 && typeof bkBC === 'undefined'){
+      PUB_DIR.netError = true;
+    }
+    pubDirRender();
+  }).catch(() => {});
+
+  setTimeout(() => {
+    PUB_DIR.loading = false;
+    pubDirSweepStale();
+    pubDirRender();
+  }, manual ? 650 : 1100);
+
+  if(manual){
+    toast('🔄 تم تحديث قائمة الغرف العامة', 'ok', 1800);
+    beep(520, .06, 'sine', .06);
+  }
+}
+window.pubDirRequestRefresh = pubDirRequestRefresh;
+
+async function joinPublicRoom(roomKey){
+  if(!roomKey) return false;
+  // 7. Prevent duplicate join requests caused by repeated clicks
+  if(PUB_DIR.joiningRoomKey) return false;
+
+  pubDirSweepStale();
+  const rm = PUB_DIR.rooms.get(roomKey);
+
+  // 1. Check that the room still exists
+  if(!rm || rm.closed){
+    PUB_DIR.rooms.delete(roomKey);
+    pubDirRender();
+    toast('هذه الغرفة لم تعد موجودة أو تم إغلاقها', 'warn');
+    return false;
+  }
+
+  // 2. Check that the room is public
+  if(rm.visibility !== 'public'){
+    PUB_DIR.rooms.delete(roomKey);
+    pubDirRender();
+    toast('هذه الغرفة خاصة ولا يمكن الانضمام إليها بدون كود الدعوة', 'warn');
+    return false;
+  }
+
+  // If the player is already the host of this room, just navigate back to their room screen
+  const myHost = pubDirGetActiveHostRoom();
+  if(myHost && myHost.roomKey === roomKey){
+    if(rm.game === 'bakasa') bkOpen();
+    else if(rm.game === 'chess') chOpen('online');
+    else if(rm.game === 'ttt') tttOpen('online');
+    else if(rm.game === 'c4') c4Open('online');
+    else if(rm.game === 'draw') dgOpen();
+    else goToLobby(rm.game);
+    return true;
+  }
+
+  // 4. Check whether joining is allowed under the existing game rules
+  if(rm.status === 'playing'){
+    toast('المباراة جارية حاليًا في هذه الغرفة — لا يمكن الانضمام أثناء اللعب', 'warn');
+    pubDirRender();
+    return false;
+  }
+  if(rm.status === 'finished'){
+    toast('انتهت الجولة في هذه الغرفة — انتظر بدء المضيف لجولة جديدة', 'warn');
+    pubDirRender();
+    return false;
+  }
+
+  // 3. Check that the room is not full
+  if(rm.playersCount >= rm.maxPlayers){
+    toast(`الغرفة مكتملة العدد (${rm.playersCount}/${rm.maxPlayers} لاعبين)`, 'warn');
+    pubDirRender();
+    return false;
+  }
+
+  // Lock UI to prevent repeated clicks
+  PUB_DIR.joiningRoomKey = roomKey;
+  pubDirRender();
+
+  try {
+    ensureMQTT().catch(() => {});
+    // Live pre-join verification & atomic slot reservation with the host
+    const reqId = 'jchk_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+    const ack = await new Promise(resolve => {
+      const timer = setTimeout(() => {
+        PUB_DIR.pendingJoinAcks.delete(reqId);
+        resolve(null);
+      }, 1800);
+      PUB_DIR.pendingJoinAcks.set(reqId, pkt => {
+        clearTimeout(timer);
+        resolve(pkt);
+      });
+      pub(PUB_DIR_BUS_TOPIC, {
+        t: 'join_check',
+        reqId,
+        roomKey: rm.roomKey,
+        code: rm.code,
+        game: rm.game,
+        player: me0(),
+        ts: Date.now()
+      }, { qos: 0, retain: false });
+    });
+
+    if(!ack){
+      // Host did not respond -> stale/disconnected host!
+      PUB_DIR.rooms.delete(roomKey);
+      PUB_DIR.joiningRoomKey = '';
+      pubDirRender();
+      toast('الغرفة لم تعد متاحة — يبدو أن المضيف أغلق الغرفة أو انقطع اتصاله', 'warn');
+      return false;
+    }
+
+    if(!ack.ok){
+      if(ack.reason === 'closed' || ack.reason === 'private'){
+        PUB_DIR.rooms.delete(roomKey);
+      } else {
+        const cur = PUB_DIR.rooms.get(roomKey);
+        if(cur){
+          if(typeof ack.playersCount === 'number') cur.playersCount = ack.playersCount;
+          if(ack.status) cur.status = ack.status;
+          if(ack.reason === 'full') cur.playersCount = cur.maxPlayers;
+        }
+      }
+      PUB_DIR.joiningRoomKey = '';
+      pubDirRender();
+      toast(ack.msg || 'تعذر الانضمام للغرفة', 'warn');
+      return false;
+    }
+
+    // 5. Join through the existing room and player initialization functions
+    PUB_DIR.joiningRoomKey = '';
+    pubDirRender();
+    acceptGameInvite(rm.code, rm.game, 'public');
+    setTimeout(() => { window._sharbJoinVia = 'code'; }, 1200);
+    return true;
+  } catch(e){
+    PUB_DIR.joiningRoomKey = '';
+    pubDirRender();
+    toast('حدث خطأ أثناء الاتصال بالغرفة، حاول مرة أخرى', 'warn');
+    return false;
+  }
+}
+window.joinPublicRoom = joinPublicRoom;
+
+function openQuickCreateRoomModal(){
+  let selGame = PUB_DIR.filterGame !== 'all' ? PUB_DIR.filterGame : 'domino';
+  let selVis = 'public';
+  const renderModal = () => {
+    const html = `<div class="card" style="max-width:480px;text-align:right">
+      <h2 style="margin:0 0 6px;text-align:center">➕ إنشاء غرفة لعب جديدة</h2>
+      <p class="mut tiny" style="text-align:center;margin:0 0 12px">اختر اللعبة وحدد ما إذا كانت الغرفة <b>عامة</b> (تظهر للجميع في الرئيسية) أو <b>خاصة</b> (بالكود فقط)</p>
+
+      <label class="lbl">١. اختر اللعبة:</label>
+      <div class="quick-g-pills" style="margin-bottom:12px">
+        ${Object.values(SHARB_GAME_META).map(g => `
+          <div class="quick-g-pill ${selGame === g.id ? 'on' : ''}" data-qcgame="${g.id}">${g.icon} ${esc(g.name)}</div>
+        `).join('')}
+      </div>
+
+      <label class="lbl">٢. اختر ظهور الغرفة:</label>
+      <div class="vis-selector-grid" style="margin-bottom:10px">
+        <button type="button" class="vis-opt-btn ${selVis === 'public' ? 'on' : ''}" data-qcvis="public">
+          <span class="vis-ico">🌐</span>
+          <span class="vis-txt">
+            <b>غرفة عامة (Public)</b>
+            <small>تظهر فورًا في قسم الغرف العامة بالرئيسية لأي لاعب</small>
+          </span>
+        </button>
+        <button type="button" class="vis-opt-btn ${selVis === 'private' ? 'on' : ''}" data-qcvis="private">
+          <span class="vis-ico">🔒</span>
+          <span class="vis-txt">
+            <b>غرفة خاصة (Private)</b>
+            <small>سرية — لا يدخلها إلا من يملك كود الغرفة أو دعوة</small>
+          </span>
+        </button>
+      </div>
+
+      <label class="lbl" for="qcRoomNameInp">٣. اسم الغرفة (اختياري):</label>
+      <input id="qcRoomNameInp" maxlength="28" value="${esc(SHARB_ROOM_CFG.roomNames[selGame] || '')}" placeholder="مثال: تحدي المحترفين — غرفة ${esc(PF.name)}" style="margin-bottom:14px">
+
+      <div class="row" style="justify-content:center;gap:10px">
+        <button type="button" class="btn ok big" id="qcConfirmCreateBtn" style="flex:1">🚀 إنشاء الغرفة الآن</button>
+        <button type="button" class="btn g" id="qcCancelBtn">إلغاء</button>
+      </div>
+    </div>`;
+    openOverlay(html, 'quick_create_room');
+    $$('[data-qcgame]').forEach(el => {
+      el.onclick = () => {
+        const inp = $('#qcRoomNameInp');
+        if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
+        selGame = el.getAttribute('data-qcgame') || 'domino';
+        renderModal();
+      };
+    });
+    $$('[data-qcvis]').forEach(el => {
+      el.onclick = () => {
+        const inp = $('#qcRoomNameInp');
+        if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
+        selVis = el.getAttribute('data-qcvis') === 'private' ? 'private' : 'public';
+        renderModal();
+      };
+    });
+    const cancelBtn = $('#qcCancelBtn');
+    if(cancelBtn) cancelBtn.onclick = closeOverlay;
+    const confirmBtn = $('#qcConfirmCreateBtn');
+    if(confirmBtn){
+      confirmBtn.onclick = async () => {
+        const inp = $('#qcRoomNameInp');
+        if(inp) SHARB_ROOM_CFG.roomNames[selGame] = inp.value.trim();
+        setRoomVisibility(selGame, selVis, true);
+        closeOverlay();
+        // Clean up any other active room before creating the new one
+        if(G){ teardownNet(true); G = null; }
+        if(window.BK && BK.code) bkLeave(false);
+        if(window.chLeaveRoom) chLeaveRoom(false);
+        if(window.tttLeaveRoom) tttLeaveRoom(false);
+        if(window.c4LeaveRoom) c4LeaveRoom(false);
+        if(window.dgLeaveRoom) dgLeaveRoom(false);
+
+        if(selGame === 'bakasa'){
+          bkOpen();
+          await bkCreate();
+        } else if(selGame === 'chess'){
+          chOpen('online');
+          await chCreateOnlineRoom();
+        } else if(selGame === 'ttt'){
+          tttOpen('online');
+          await tttCreateOnlineRoom();
+        } else if(selGame === 'c4'){
+          c4Open('online');
+          await c4CreateOnlineRoom();
+        } else if(selGame === 'draw'){
+          dgOpen();
+          await dgCreateRoom();
+        } else {
+          goToLobby(selGame === 'uno' ? 'uno' : 'domino');
+          const lobbyInp = $('#lobbyRoomNameInp');
+          if(lobbyInp) lobbyInp.value = SHARB_ROOM_CFG.roomNames[selGame] || '';
+          await createRoom();
+        }
+      };
+    }
+  };
+  renderModal();
+}
+window.openQuickCreateRoomModal = openQuickCreateRoomModal;
+
+function pubDirOnNetReconnect(connected){
+  if(connected){
+    PUB_DIR.netError = false;
+    const myHost = pubDirGetActiveHostRoom();
+    if(myHost && myHost.visibility === 'public'){
+      pubDirSyncHostRoom(true);
+    }
+    pub(PUB_DIR_BUS_TOPIC, { t: 'dir_query', senderPid: ME, ts: Date.now() }, { qos: 0, retain: false });
+  }
+  pubDirRender();
+}
+window.pubDirOnNetReconnect = pubDirOnNetReconnect;
+
+function initPublicRoomsSystem(){
+  if(PUB_DIR.initialized) return;
+  PUB_DIR.initialized = true;
+
+  // Subscribe to directory bus and per-room retained wildcard
+  sub(PUB_DIR_BUS_TOPIC, (d, t) => pubDirIngestPacket(d, t));
+  sub(PUB_DIR_ROOM_WILDCARD, (d, t) => pubDirIngestPacket(d, t));
+
+  // Bind Homepage Public Rooms controls
+  const refreshBtn = document.getElementById('pubRoomsRefreshBtn');
+  if(refreshBtn) refreshBtn.onclick = () => pubDirRequestRefresh(true);
+
+  const quickCreateBtn = document.getElementById('pubRoomsQuickCreateBtn');
+  if(quickCreateBtn) quickCreateBtn.onclick = () => openQuickCreateRoomModal();
+
+  const sortSel = document.getElementById('pubRoomsSortSel');
+  if(sortSel){
+    sortSel.onchange = () => {
+      PUB_DIR.sortBy = sortSel.value || 'recommended';
+      pubDirRender();
+    };
+  }
+
+  const rmVisToggleBtn = document.getElementById('rmVisToggleBtn');
+  if(rmVisToggleBtn){
+    rmVisToggleBtn.onclick = () => {
+      const g = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+      const next = getRoomVisibility(g) === 'public' ? 'private' : 'public';
+      setRoomVisibility(g, next, false);
+    };
+  }
+
+  const lobbyNameInp = document.getElementById('lobbyRoomNameInp');
+  if(lobbyNameInp){
+    lobbyNameInp.addEventListener('input', () => {
+      const val = lobbyNameInp.value;
+      SHARB_ROOM_CFG.roomNames.domino = val;
+      SHARB_ROOM_CFG.roomNames.uno = val;
+      if(host && code) pubDirSyncHostRoom(true);
+    });
+  }
+
+  // Global delegated click & input listeners for visibility buttons, filters, and public room join buttons
+  document.addEventListener('click', e => {
+    const filterBtn = e.target.closest('[data-pubfilter]');
+    if(filterBtn){
+      PUB_DIR.filterGame = filterBtn.getAttribute('data-pubfilter') || 'all';
+      pubDirRender();
+      beep(440, .04, 'sine', .04);
+      return;
+    }
+
+    const pubJoinBtn = e.target.closest('[data-pubjoin]');
+    if(pubJoinBtn){
+      if(pubJoinBtn.disabled) return;
+      const rKey = pubJoinBtn.getAttribute('data-pubjoin');
+      if(rKey) joinPublicRoom(rKey);
+      return;
+    }
+
+    const pubActBtn = e.target.closest('[data-pubact]');
+    if(pubActBtn){
+      const act = pubActBtn.getAttribute('data-pubact');
+      if(act === 'refresh') pubDirRequestRefresh(true);
+      else if(act === 'quickCreate') openQuickCreateRoomModal();
+      else if(act === 'resetFilter'){
+        PUB_DIR.filterGame = 'all';
+        pubDirRender();
+      }
+      return;
+    }
+
+    const visOptBtn = e.target.closest('[data-vis-scope]');
+    if(visOptBtn){
+      const scope = visOptBtn.getAttribute('data-vis-scope');
+      const val = visOptBtn.getAttribute('data-vis-val') === 'private' ? 'private' : 'public';
+      if(scope === 'lobby'){
+        setRoomVisibility(GAME_TYPE || 'domino', val, false);
+      } else if(scope){
+        setRoomVisibility(scope, val, false);
+      }
+      beep(460, .05, 'sine', .05);
+      return;
+    }
+
+    const visLiveToggle = e.target.closest('[data-vis-toggle-live]');
+    if(visLiveToggle){
+      const g = visLiveToggle.getAttribute('data-vis-toggle-live');
+      if(g){
+        const next = getRoomVisibility(g) === 'public' ? 'private' : 'public';
+        setRoomVisibility(g, next, false);
+      }
+      return;
+    }
+  });
+
+  document.addEventListener('input', e => {
+    const nameInp = e.target.closest('[data-vis-roomname]');
+    if(nameInp){
+      const g = nameInp.getAttribute('data-vis-roomname');
+      if(g && SHARB_GAME_META[g]){
+        SHARB_ROOM_CFG.roomNames[g] = nameInp.value;
+      }
+    }
+  });
+
+  // Periodic heartbeat for active public room host + stale room sweeper
+  clearInterval(PUB_DIR.hbInterval);
+  PUB_DIR.hbInterval = setInterval(() => {
+    const myHost = pubDirGetActiveHostRoom();
+    if(myHost && myHost.visibility === 'public'){
+      pubDirSyncHostRoom(false);
+    }
+  }, PUB_DIR.HEARTBEAT_MS);
+
+  clearInterval(PUB_DIR.sweepInterval);
+  PUB_DIR.sweepInterval = setInterval(pubDirSweepStale, 3000);
+
+  window.addEventListener('beforeunload', () => {
+    try { pubDirCloseAllHostedRooms(); } catch(e){}
+  });
+
+  // Trigger initial discovery
+  pubDirRequestRefresh(false);
+}
+
+initPublicRoomsSystem();
+
+
+/* ============================================================================
+   SHARB GAMES — 3-COLUMN GAMING HUB INTERACTION & LIVE WIDGETS CONTROLLER
+   ============================================================================ */
+var SHARB_HUB = {
+  searchQuery: '',
+  gameCategory: 'all',
+  recentGames: store.get('sharb_recent_games', ['domino', 'uno', 'bakasa'])
+};
+window.SHARB_HUB = SHARB_HUB;
+
+function recordRecentGame(gameId){
+  if(!gameId || !SHARB_GAME_META[gameId]) return;
+  const list = Array.isArray(SHARB_HUB.recentGames) ? SHARB_HUB.recentGames.filter(x => x !== gameId) : [];
+  list.unshift(gameId);
+  SHARB_HUB.recentGames = list.slice(0, 4);
+  store.set('sharb_recent_games', SHARB_HUB.recentGames);
+  syncHubWidgets();
+}
+window.recordRecentGame = recordRecentGame;
+
+function getGreetingPrefix(){
+  const hr = new Date().getHours();
+  if(hr >= 5 && hr < 12) return 'صباح الخير،';
+  if(hr >= 12 && hr < 17) return 'طاب يومك،';
+  return 'مساء الخير،';
+}
+
+function getCurrentActiveRoomSummary(){
+  // Check host room first
+  const hostRm = (typeof pubDirGetActiveHostRoom === 'function') ? pubDirGetActiveHostRoom() : null;
+  if(hostRm){
+    const meta = SHARB_GAME_META[hostRm.game] || SHARB_GAME_META.domino;
+    return {
+      isHost: true,
+      game: hostRm.game,
+      gameName: meta.name,
+      icon: meta.icon,
+      code: hostRm.code,
+      visibility: hostRm.visibility,
+      playersCount: hostRm.playersCount,
+      maxPlayers: hostRm.maxPlayers
+    };
+  }
+  // Check if joined as guest in any game
+  if(typeof code !== 'undefined' && code){
+    const g = GAME_TYPE === 'uno' ? 'uno' : 'domino';
+    const meta = SHARB_GAME_META[g];
+    return { isHost: false, game: g, gameName: meta.name, icon: meta.icon, code, visibility: getRoomVisibility(g), playersCount: lobbyPl.length || 1, maxPlayers: lobbyMeta.n || 4 };
+  }
+  if(window.BK && BK.code){
+    return { isHost: !!BK.host, game: 'bakasa', gameName: 'البكاسة', icon: '🕵️', code: BK.code, visibility: getRoomVisibility('bakasa'), playersCount: (BK.S && BK.S.pl) ? BK.S.pl.filter(p=>!p.gone).length : 1, maxPlayers: (BK.S && BK.S.cfg && BK.S.cfg.max) || 8 };
+  }
+  if(window.CH && CH.mode === 'online' && CH.code){
+    return { isHost: !!CH.host, game: 'chess', gameName: 'شطرنج', icon: '♟️', code: CH.code, visibility: getRoomVisibility('chess'), playersCount: [CH.onlinePlayers.w, CH.onlinePlayers.b].filter(Boolean).length || 1, maxPlayers: 2 };
+  }
+  if(window.TTT && TTT.mode === 'online' && TTT.code){
+    return { isHost: !!TTT.host, game: 'ttt', gameName: 'إكس أو', icon: '❌⭕', code: TTT.code, visibility: getRoomVisibility('ttt'), playersCount: [TTT.players.X, TTT.players.O].filter(Boolean).length || 1, maxPlayers: 2 };
+  }
+  if(window.C4 && C4.mode === 'online' && C4.code){
+    return { isHost: !!C4.host, game: 'c4', gameName: 'كونكت فور', icon: '🔴🟡', code: C4.code, visibility: getRoomVisibility('c4'), playersCount: [C4.players[1], C4.players[2]].filter(Boolean).length || 1, maxPlayers: 2 };
+  }
+  if(window.DG && DG.code){
+    return { isHost: !!DG.host, game: 'draw', gameName: 'ارسم وخمّن', icon: '🎨', code: DG.code, visibility: getRoomVisibility('draw'), playersCount: (DG.S && DG.S.players) ? DG.S.players.filter(p=>!p.gone).length : 1, maxPlayers: (DG.S && DG.S.cfg && DG.S.cfg.maxPlayers) || 8 };
+  }
+  return null;
+}
+
+function syncHubWidgets(){
+  if(!SHARB_HUB || !SHARB_GAME_META) return;
+  // 1. Greeting & My Identity Dock
+  const greetPrefix = document.getElementById('hubGreetPrefix');
+  const greetName = document.getElementById('hubGreetName');
+  if(greetPrefix) greetPrefix.textContent = getGreetingPrefix();
+  if(greetName) greetName.textContent = PF.name || 'لاعب';
+
+  const dockAv = document.getElementById('hubMyDockAv');
+  const dockName = document.getElementById('hubMyDockName');
+  if(dockAv){
+    dockAv.textContent = PF.av || '😎';
+    dockAv.style.setProperty('--c', PF.col || '#e6392e');
+  }
+  if(dockName) dockName.textContent = PF.name || 'لاعب';
+
+  // 2. Notification Dot (Incoming Invites or Friend Requests)
+  const invList = (typeof savedInvites === 'function') ? savedInvites().filter(x => Date.now() - (x.ts || 0) < 3600000) : [];
+  const fReqs = (typeof incomingRequests === 'function') ? incomingRequests() : [];
+  const notifDot = document.getElementById('hubNotifDot');
+  if(notifDot) notifDot.classList.toggle('hide', (invList.length + fReqs.length) === 0);
+  const invCountPill = document.getElementById('hubInvitesCountPill');
+  if(invCountPill) invCountPill.textContent = String(invList.length);
+
+  // 3. Player Statistics Circular Ring & 3 Medallions
+  const st = Object.assign({ g: 0, w: 0, r: 0, p: 0 }, PF.st || {});
+  const L = lvl(st);
+  const winRate = st.g > 0 ? Math.min(100, Math.round((st.w / st.g) * 100)) : 0;
+  const ringProgress = st.g > 0 ? Math.max(8, winRate) : Math.max(12, L.pc || 15);
+  const circumference = 351.86;
+  const offset = circumference - (circumference * ringProgress) / 100;
+
+  const arcEl = document.getElementById('hubStatsRingArc');
+  if(arcEl) arcEl.setAttribute('stroke-dashoffset', String(offset.toFixed(1)));
+  const winRateEl = document.getElementById('hubStatsWinRate');
+  if(winRateEl) winRateEl.textContent = `${winRate}%`;
+  const lvlEl = document.getElementById('hubStatsLevelBadge');
+  if(lvlEl) lvlEl.textContent = `المستوى ${L.l}`;
+  const wEl = document.getElementById('hubStatWins');
+  if(wEl) wEl.textContent = String(st.w);
+  const gEl = document.getElementById('hubStatGames');
+  if(gEl) gEl.textContent = String(st.g);
+  const pEl = document.getElementById('hubStatPoints');
+  if(pEl) pEl.textContent = String(st.p);
+
+  // 4. Right Sidebar: Current Active Room Slot
+  const activeSlot = document.getElementById('hubActiveRoomSlot');
+  if(activeSlot){
+    const curRm = getCurrentActiveRoomSummary();
+    if(curRm){
+      activeSlot.innerHTML = `<div class="hub-active-room-box">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+          <span style="font-weight:900;font-size:13px">${curRm.icon} غرفتك الحالية (${esc(curRm.gameName)})</span>
+          <span class="bk-chip ok" style="font-size:10.5px;padding:2px 8px">#${esc(curRm.code)}</span>
+        </div>
+        <div class="mut tiny" style="display:flex;align-items:center;justify-content:space-between">
+          <span>${curRm.visibility === 'public' ? '🌐 غرفة عامة' : '🔒 غرفة خاصة'}</span>
+          <span>👥 ${curRm.playersCount}/${curRm.maxPlayers} لاعبين</span>
+        </div>
+        <div class="row" style="gap:6px;margin-top:2px">
+          <button type="button" class="btn ok" data-hub-return-room="${esc(curRm.game)}" style="flex:1;padding:7px 10px;font-size:12px">🚀 العودة للغرفة</button>
+          <button type="button" class="mini" data-hub-copy-active="${esc(curRm.code)}">📋 نسخ</button>
+        </div>
+      </div>`;
+    } else {
+      activeSlot.innerHTML = `<div class="mut tiny" style="padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px dashed var(--bd);display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span>لست منضمًا لأي غرفة حاليًا</span>
+        <button type="button" class="mini ok" data-pubact="quickCreate">＋ إنشاء غرفة</button>
+      </div>`;
+    }
+  }
+
+  // 5. Right Sidebar: Compact Public Rooms Radar + Game Card Room Counters
+  const radarEl = document.getElementById('hubSidebarPublicRadar');
+  const allPublic = (typeof PUB_DIR !== 'undefined' && PUB_DIR.rooms)
+    ? [...PUB_DIR.rooms.values()].filter(r => !r.closed && r.visibility === 'public')
+    : [];
+
+  // Update per-game active room badges on game cards
+  const defaultCapLabels = {
+    domino: '٢–٤ لاعبين',
+    uno: '٢–١٠ لاعبين',
+    bakasa: '٣–١٢ لاعب',
+    chess: '١ ضد ١ (FIDE)',
+    ttt: '٢ لاعبين',
+    c4: '٢ لاعبين',
+    draw: '٢–١٠ لاعبين'
+  };
+  Object.keys(defaultCapLabels).forEach(gk => {
+    const badgeEl = document.querySelector(`[data-game-room-count="${gk}"]`);
+    if(!badgeEl) return;
+    const countForGame = allPublic.filter(r => r.game === gk).length;
+    if(countForGame > 0){
+      badgeEl.textContent = `🟢 ${countForGame} غرف عامة`;
+      badgeEl.style.borderColor = 'rgba(34,197,94,.5)';
+      badgeEl.style.color = '#4ade80';
+    } else {
+      badgeEl.textContent = defaultCapLabels[gk];
+      badgeEl.style.borderColor = '';
+      badgeEl.style.color = '';
+    }
+  });
+
+  const spotStats = document.getElementById('hubSpotLiveStats');
+  if(spotStats){
+    const joinableCount = allPublic.filter(r => r.status === 'waiting' && r.playersCount < r.maxPlayers).length;
+    spotStats.textContent = joinableCount > 0
+      ? `🟢 ${joinableCount} غرف عامة متاحة للانضمام الفوري`
+      : '7 ألعاب جماعية متكاملة • أونلاين وذكاء اصطناعي';
+  }
+
+  // 6. Recently Played Games Bar (#hubRecentWrap)
+  const recWrap = document.getElementById('hubRecentWrap');
+  if(recWrap){
+    const recList = (Array.isArray(SHARB_HUB.recentGames) ? SHARB_HUB.recentGames : []).filter(g => SHARB_GAME_META[g]);
+    if(recList.length > 0){
+      recWrap.className = 'panel glass';
+      recWrap.style.padding = '12px 16px';
+      recWrap.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span style="font-size:12.5px;font-weight:900;color:var(--mut)">⏱️ الألعاب المُشغّلة مؤخرًا:</span>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          ${recList.map(gid => {
+            const gm = SHARB_GAME_META[gid];
+            return `<button type="button" class="pub-f-pill" data-hub-launch-game="${esc(gid)}">${gm.icon} <span>${esc(gm.name)}</span> <span style="color:var(--ac2);font-size:11px">▶</span></button>`;
+          }).join('')}
+        </div>
+      </div>`;
+    } else {
+      recWrap.className = 'hide';
+    }
+  }
+
+  if(radarEl){
+    if(allPublic.length === 0){
+      radarEl.innerHTML = `<div class="mut tiny" style="padding:12px;border-radius:12px;background:rgba(255,255,255,.025);text-align:center">
+        لا توجد غرف عامة نشطة الآن — اضغط «＋ غرفة جديدة» لبدء غرفة عامة!
+      </div>`;
+    } else {
+      const topRooms = allPublic.slice(0, 4);
+      radarEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:7px">
+        ${topRooms.map(rm => {
+          const meta = SHARB_GAME_META[rm.game] || SHARB_GAME_META.domino;
+          const canJoin = rm.status === 'waiting' && rm.playersCount < rm.maxPlayers;
+          return `<div class="hub-radar-item">
+            <div style="min-width:0">
+              <div style="font-weight:900;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${meta.icon} ${esc(rm.roomName)}</div>
+              <div class="mut tiny">${esc(meta.name)} • 👥 ${rm.playersCount}/${rm.maxPlayers}</div>
+            </div>
+            <button type="button" class="mini ${canJoin ? 'ok' : ''}" data-pubjoin="${esc(rm.roomKey)}" ${canJoin ? '' : 'disabled'}>
+              ${canJoin ? 'انضمام' : 'ممتلئة'}
+            </button>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+  }
+}
+window.syncHubWidgets = syncHubWidgets;
+
+// Wrap pubDirRender so syncing the public rooms browser also updates the Right Sidebar Radar and Game Card counters
+const _origPubDirRender = window.pubDirRender;
+window.pubDirRender = function(){
+  if(typeof _origPubDirRender === 'function') _origPubDirRender();
+  syncHubWidgets();
+};
+
+function applyHubSearchAndCategoryFilter(){
+  const q = String(SHARB_HUB.searchQuery || '').trim().toLowerCase();
+  const cat = SHARB_HUB.gameCategory || 'all';
+  $$('#hubGamesGrid .hub-game-card').forEach(card => {
+    const itemCat = card.getAttribute('data-gcat-item') || 'all';
+    const titleText = (card.getAttribute('data-gtitle') || '') + ' ' + (card.textContent || '');
+    const catMatch = (cat === 'all' || itemCat === cat);
+    const searchMatch = (!q || titleText.toLowerCase().includes(q));
+    card.classList.toggle('hide', !(catMatch && searchMatch));
+  });
+
+  // Also filter public room cards if search query is active
+  $$('#pubRoomsGrid .pub-room-card').forEach(rc => {
+    if(!q){
+      rc.classList.remove('hide');
+      return;
+    }
+    const txt = (rc.textContent || '').toLowerCase();
+    rc.classList.toggle('hide', !txt.includes(q));
+  });
+}
+
+function toggleHubDrawer(which, forceOpen){
+  const leftEl = document.getElementById('hubLeftFriendsSidebar');
+  const rightEl = document.getElementById('hubRightRoomsSidebar');
+  const backdrop = document.getElementById('hubDrawerBackdrop');
+  if(!leftEl || !rightEl || !backdrop) return;
+
+  if(which === 'friends'){
+    const open = forceOpen !== undefined ? forceOpen : !leftEl.classList.contains('drawer-open');
+    leftEl.classList.toggle('drawer-open', open);
+    rightEl.classList.remove('drawer-open');
+    backdrop.classList.toggle('open', open);
+  } else if(which === 'rooms'){
+    const open = forceOpen !== undefined ? forceOpen : !rightEl.classList.contains('drawer-open');
+    rightEl.classList.toggle('drawer-open', open);
+    leftEl.classList.remove('drawer-open');
+    backdrop.classList.toggle('open', open);
+  } else {
+    leftEl.classList.remove('drawer-open');
+    rightEl.classList.remove('drawer-open');
+    backdrop.classList.remove('open');
+  }
+}
+window.toggleHubDrawer = toggleHubDrawer;
+
+function initSharbHubRedesign(){
+  syncHubWidgets();
+
+  // Search bar filtering
+  const searchInp = document.getElementById('hubSearchInput');
+  const clearBtn = document.getElementById('hubSearchClearBtn');
+  if(searchInp){
+    searchInp.addEventListener('input', () => {
+      SHARB_HUB.searchQuery = searchInp.value;
+      if(clearBtn) clearBtn.classList.toggle('hide', !searchInp.value);
+      applyHubSearchAndCategoryFilter();
+    });
+  }
+  if(clearBtn && searchInp){
+    clearBtn.onclick = () => {
+      searchInp.value = '';
+      SHARB_HUB.searchQuery = '';
+      clearBtn.classList.add('hide');
+      applyHubSearchAndCategoryFilter();
+    };
+  }
+
+  // Hero Spotlight & Stacked Quick Actions
+  function openPlayGameSelectorModal(){
+    const allPublic = (typeof PUB_DIR !== 'undefined' && PUB_DIR.rooms)
+      ? [...PUB_DIR.rooms.values()].filter(r => !r.closed && r.visibility === 'public')
+      : [];
+    const gamesList = [
+      { id: 'domino', sel: '#goDomino', iconHTML: '🁫', nameAr: 'دومينو', nameEn: 'Domino', sub: 'عادي (سحب) • تسكير • أمريكي ٥ (٢–٤ لاعبين)', grad: 'linear-gradient(135deg,#e6392e,#991b1b)' },
+      { id: 'uno', sel: '#goUno', iconHTML: '🎴', nameAr: 'أونو', nameEn: 'UNO', sub: 'أونو كلاسيكي كامل بكروت الأكشن وWild (٢–١٠ لاعبين)', grad: 'linear-gradient(135deg,#f59e0b,#b45309)' },
+      { id: 'bakasa', sel: '#goBakasa', iconHTML: '🕵️', nameAr: 'البكاسة', nameEn: 'BAKASA', sub: 'لعبة الخداع والأسئلة والتصويت السري (٣–١٢ لاعب)', grad: 'linear-gradient(135deg,#8b5cf6,#5b21b6)' },
+      { id: 'chess', sel: '#goChess', iconHTML: '♟️', nameAr: 'شطرنج', nameEn: 'CHESS', sub: 'شطرنج احترافي بقوانين FIDE الرسمية (١ ضد ١)', grad: 'linear-gradient(135deg,#0ea5e9,#0369a1)' },
+      { id: 'ttt', sel: '#goTTT', iconHTML: '<span style="font-size:15px;font-weight:900;letter-spacing:-1px">✕◯</span>', nameAr: 'إكس أو', nameEn: 'Tic-Tac-Toe', sub: 'مواجهة سريعة (3×3) أونلاين أو ضد الكمبيوتر', grad: 'linear-gradient(135deg,#f43f5e,#9f1239)' },
+      { id: 'c4', sel: '#goC4', iconHTML: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="4.5" fill="#ef4444"/><circle cx="17" cy="7" r="4.5" fill="#fde047"/><circle cx="7" cy="17" r="4.5" fill="#fde047"/><circle cx="17" cy="17" r="4.5" fill="#ef4444"/></svg>', nameAr: 'كونكت فور', nameEn: 'Connect 4', sub: 'وصّل ٤ أقراص متتالية في الشبكة (7×6)', grad: 'linear-gradient(135deg,#eab308,#a16207)' },
+      { id: 'draw', sel: '#goDraw', iconHTML: '🎨', nameAr: 'ارسم وخمّن', nameEn: 'Draw & Guess', sub: 'ارسم الكلمة السرية وخمّنها في الشات المباشر (٢–١٠ لاعبين)', grad: 'linear-gradient(135deg,#ec4899,#9d174d)' }
+    ];
+    const html = `<div class="card" style="max-width:540px;width:94vw;text-align:right;padding:18px 20px">
+      <h2 style="margin:0 0 3px;text-align:center;font-size:19px">🎮 اختر اللعبة التي تريد لعبها</h2>
+      <p class="mut tiny" style="margin:0 0 12px;text-align:center">اضغط على أي لعبة للدخول إليها فورًا (اللعب أونلاين أو ضد الذكاء الاصطناعي)</p>
+      <div class="play-picker-list">
+        ${gamesList.map(g => {
+          const pubCnt = allPublic.filter(r => r.game === g.id).length;
+          return `<button type="button" class="play-picker-row" data-pick-playgame="${g.id}">
+            <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
+              <span class="play-picker-ico" style="background:${g.grad}">${g.iconHTML}</span>
+              <div class="play-picker-txt">
+                <div class="play-picker-title">
+                  <b>${esc(g.nameAr)}</b>
+                  <span class="en-tag">• ${esc(g.nameEn)}</span>
+                </div>
+                <div class="play-picker-sub">${esc(g.sub)}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+              ${pubCnt > 0 ? `<span class="bk-chip ok" style="font-size:10.5px;padding:2px 8px">🟢 ${pubCnt} غرف</span>` : ''}
+              <span class="btn ok" style="padding:6px 13px;font-size:12px;min-height:34px;border-radius:11px">العب ▶</span>
+            </div>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button type="button" class="btn g" id="playPickerCloseBtn" style="min-width:120px">إغلاق</button>
+      </div>
+    </div>`;
+    openOverlay(html, 'play_game_picker');
+    const closeBtn = $('#playPickerCloseBtn');
+    if(closeBtn) closeBtn.onclick = closeOverlay;
+    $$('[data-pick-playgame]').forEach(btn => {
+      btn.onclick = () => {
+        const gid = btn.getAttribute('data-pick-playgame');
+        closeOverlay();
+        const found = gamesList.find(x => x.id === gid);
+        const target = found ? $(found.sel) : $('#goDomino');
+        if(target) target.click();
+      };
+    });
+  }
+  window.openPlayGameSelectorModal = openPlayGameSelectorModal;
+
+  const spotPlayBtn = document.getElementById('hubSpotPlayBtn');
+  if(spotPlayBtn){
+    spotPlayBtn.onclick = () => openPlayGameSelectorModal();
+  }
+  const spotCreateBtn = document.getElementById('hubSpotCreateBtn');
+  if(spotCreateBtn) spotCreateBtn.onclick = () => openQuickCreateRoomModal();
+
+  const qCreate = document.getElementById('hubQCardCreate');
+  if(qCreate) qCreate.onclick = () => openQuickCreateRoomModal();
+
+  const qJoinCode = document.getElementById('hubQCardJoinCode');
+  if(qJoinCode){
+    qJoinCode.onclick = () => {
+      if(window.innerWidth <= 1179) toggleHubDrawer('rooms', true);
+      const inp = document.getElementById('homeQuickCode');
+      if(inp){ inp.focus(); inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    };
+  }
+
+  const qInvite = document.getElementById('hubQCardInvite');
+  if(qInvite){
+    qInvite.onclick = () => {
+      const fl = friends();
+      if(fl.length > 0){
+        openInviteGameModal(fl[0]);
+      } else {
+        if(window.innerWidth <= 1179) toggleHubDrawer('friends', true);
+        const fnInp = document.getElementById('homeFn');
+        if(fnInp){ fnInp.focus(); toast('أضف صديقك بكود الصداقة أولًا لدعوته للعب بضغطة زر!', 'ok'); }
+      }
+    };
+  }
+
+  const sideCreateBtn = document.getElementById('hubSideCreateRoomBtn');
+  if(sideCreateBtn) sideCreateBtn.onclick = () => openQuickCreateRoomModal();
+
+  const openProfStats = document.getElementById('hubOpenProfileStatsBtn');
+  if(openProfStats) openProfStats.onclick = () => openProfile(me0(), true);
+
+  // Topbar drawer buttons & Notification button
+  const btnFriendsDrawer = document.getElementById('hubToggleFriendsBtn');
+  if(btnFriendsDrawer) btnFriendsDrawer.onclick = () => toggleHubDrawer('friends');
+
+  const btnRoomsDrawer = document.getElementById('hubToggleRoomsBtn');
+  if(btnRoomsDrawer) btnRoomsDrawer.onclick = () => toggleHubDrawer('rooms');
+
+  const btnNotif = document.getElementById('hubNotifBtn');
+  if(btnNotif){
+    btnNotif.onclick = () => {
+      const fReqs = incomingRequests();
+      if(fReqs.length > 0){
+        if(window.innerWidth <= 1179) toggleHubDrawer('friends', true);
+        toast(`لديك ${fReqs.length} طلب صداقة وارد في قائمة الأصدقاء`, 'ok');
+      } else {
+        if(window.innerWidth <= 1179) toggleHubDrawer('rooms', true);
+        const invBox = document.getElementById('homeInvitesList');
+        if(invBox) invBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+  }
+
+  const backdrop = document.getElementById('hubDrawerBackdrop');
+  if(backdrop) backdrop.onclick = () => toggleHubDrawer('none');
+
+  // Track game launches for Recent Games & close any open mobile drawers
+  const gameClickMap = [
+    ['#goDomino', 'domino'],
+    ['#goUno', 'uno'],
+    ['#goBakasa', 'bakasa'],
+    ['#goChess', 'chess'],
+    ['#goTTT', 'ttt'],
+    ['#goC4', 'c4'],
+    ['#goDraw', 'draw']
+  ];
+  gameClickMap.forEach(([sel, gid]) => {
+    const el = $(sel);
+    if(el){
+      el.addEventListener('click', () => {
+        toggleHubDrawer('none');
+        recordRecentGame(gid);
+      });
+    }
+  });
+
+  // Delegated click handlers for Hub category pills, mobile nav, drawer close, and join friend room
+  document.addEventListener('click', e => {
+    const catBtn = e.target.closest('[data-gcat]');
+    if(catBtn){
+      SHARB_HUB.gameCategory = catBtn.getAttribute('data-gcat') || 'all';
+      $$('#hubGameCategoryPills [data-gcat]').forEach(b => b.classList.toggle('on', b === catBtn));
+      applyHubSearchAndCategoryFilter();
+      beep(440, .04, 'sine', .04);
+      return;
+    }
+
+    const closeDrw = e.target.closest('[data-close-drawer]');
+    if(closeDrw){
+      toggleHubDrawer('none');
+      return;
+    }
+
+    const mnavBtn = e.target.closest('[data-mnav]');
+    if(mnavBtn){
+      const target = mnavBtn.getAttribute('data-mnav');
+      $$('#hubMobileNav [data-mnav]').forEach(b => b.classList.toggle('on', b === mnavBtn));
+      if(target === 'home'){
+        toggleHubDrawer('none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if(target === 'pubrooms'){
+        if(window.innerWidth <= 1179) toggleHubDrawer('friends', true);
+        const sec = document.getElementById('homePublicRoomsSec');
+        if(sec) setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+      } else if(target === 'rooms'){
+        toggleHubDrawer('rooms', true);
+      } else if(target === 'friends'){
+        toggleHubDrawer('friends', true);
+      }
+      return;
+    }
+
+    const joinFriendRm = e.target.closest('[data-joinfriendroom]');
+    if(joinFriendRm){
+      const rKey = joinFriendRm.getAttribute('data-joinfriendroom');
+      toggleHubDrawer('none');
+      if(rKey && typeof joinPublicRoom === 'function') joinPublicRoom(rKey);
+      return;
+    }
+
+    const retRm = e.target.closest('[data-hub-return-room]');
+    if(retRm){
+      const g = retRm.getAttribute('data-hub-return-room');
+      toggleHubDrawer('none');
+      if(g === 'bakasa') bkOpen();
+      else if(g === 'chess') chOpen('online');
+      else if(g === 'ttt') tttOpen('online');
+      else if(g === 'c4') c4Open('online');
+      else if(g === 'draw') dgOpen();
+      else goToLobby(g);
+      return;
+    }
+
+    const cpActive = e.target.closest('[data-hub-copy-active]');
+    if(cpActive){
+      copyText(cpActive.getAttribute('data-hub-copy-active'));
+      return;
+    }
+
+    const launchBtn = e.target.closest('[data-hub-launch-game]');
+    if(launchBtn){
+      const gid = launchBtn.getAttribute('data-hub-launch-game');
+      const btnMap = { domino: '#goDomino', uno: '#goUno', bakasa: '#goBakasa', chess: '#goChess', ttt: '#goTTT', c4: '#goC4', draw: '#goDraw' };
+      const target = $(btnMap[gid] || '#goDomino');
+      if(target) target.click();
+      return;
+    }
+  });
+}
+
+initSharbHubRedesign();
+
 </script>
 </body>
 </html>
