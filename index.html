@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-page="home">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="theme-color" content="#060b16">
+  <meta name="description" content="منصة SHARB GAMES للألعاب الجماعية أونلاين: دومينو، أونو، البكاسة، شطرنج، إكس أو، كونكت 4، وارسم وخمن مع غرف عامة وخاصة وأصدقاء.">
+  <title>SHARB GAMES — منصة الألعاب الجماعية أونلاين</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/rooms.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/games.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="wrap">
+  <!-- ================= TOP PLATFORM HEADER & MULTI-PAGE NAVIGATION ================= -->
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <a href="index.html" class="brand" id="brandHomeClick" title="SHARB GAMES — الصفحة الرئيسية">
+        <span class="logo" id="brandLogo">
+          <img class="sharb-logo-img" id="brandLogoImg" data-sharb-logo="1" src="assets/images/logo.png" alt="SHARB GAMES Logo">
+          <span class="logo-badge hide" id="brandGameBadge"></span>
+        </span>
+        <div class="brand-text">
+          <h1 id="brandTitle">SHARB GAMES</h1>
+          <div class="mut" id="brandSub">منصة الألعاب الجماعية التنافسية</div>
+        </div>
+      </a>
+
+      <!-- Real Multi-Page HTML Navigation Links -->
+      <nav class="platform-nav" aria-label="التنقل الرئيسي">
+        <a href="index.html" class="nav-link active" data-nav-page="home">
+          <span>🏠</span> <span>الرئيسية</span>
+        </a>
+        <a href="pages/rooms.html" class="nav-link" data-nav-page="rooms">
+          <span>🚪</span> <span>الغرف</span>
+        </a>
+        <a href="pages/friends.html" class="nav-link" data-nav-page="friends">
+          <span>👥</span> <span>الأصدقاء</span>
+        </a>
+        <a href="pages/profile.html" class="nav-link" data-nav-page="profile">
+          <span>👤</span> <span>حسابي</span>
+        </a>
+        <div class="sharb-nav-divider" aria-hidden="true"></div>
+        <a href="pages/domino.html" class="nav-link" data-nav-page="domino" title="دومينو">🁫 <span>دومينو</span></a>
+        <a href="pages/uno.html" class="nav-link" data-nav-page="uno" title="UNO">🎴 <span>UNO</span></a>
+        <a href="pages/bakasa.html" class="nav-link" data-nav-page="bakasa" title="البكاسة">🕵️ <span>البكاسة</span></a>
+        <a href="pages/chess.html" class="nav-link" data-nav-page="chess" title="شطرنج">♟️ <span>شطرنج</span></a>
+        <a href="pages/tic-tac-toe.html" class="nav-link" data-nav-page="tic-tac-toe" title="إكس أو">❌ <span>إكس أو</span></a>
+        <a href="pages/connect-four.html" class="nav-link" data-nav-page="connect-four" title="كونكت 4">🔴 <span>كونكت 4</span></a>
+        <a href="pages/draw-guess.html" class="nav-link" data-nav-page="draw-guess" title="ارسم وخمن">🎨 <span>ارسم وخمن</span></a>
+      </nav>
+
+      <!-- Right Actions: Greeting, Notifications, Theme, Sound, Profile -->
+      <div class="top-actions">
+        <div class="hub-greeting" id="hubGreetingBox">
+          <span class="greet-muted" id="hubGreetPrefix">مرحباً،</span>
+          <b id="hubGreetName">لاعب</b>
+        </div>
+        <a href="index.html" class="iconbtn hide" id="backHome" title="الرجوع للرئيسية">🏠 <span>الرئيسية</span></a>
+        <button class="iconbtn hub-notif-btn" id="hubNotifBtn" type="button" title="الدعوات والإشعارات">
+          🔔 <span class="hub-notif-dot hide" id="hubNotifDot"></span>
+        </button>
+        <button class="iconbtn" id="themesBtn" type="button" title="تغيير المظهر">🎨 <span>المظهر</span></button>
+        <button class="iconbtn" id="snd" type="button" title="تشغيل/كتم الصوت">🔊</button>
+        <button class="profile" id="pb" type="button" title="تعديل البروفايل السريع"></button>
+      </div>
+    </div>
+  </header>
+
+    <!-- Active Room Reconnect Banner -->
+    <div id="globalActiveRoomSlot" class="hide" style="margin-bottom:14px"></div>
+
+    <!-- ================= THREE-COLUMN GAMING DASHBOARD ================= -->
+    <main id="home" class="dashboard-3col">
+
+      <!-- ================= A. LEFT SIDEBAR — FRIENDS & NAVIGATION ================= -->
+      <aside class="dashboard-col-left" id="hubLeftFriendsSidebar" aria-label="شريط الأصدقاء والتنقل">
+        <section class="hub-side-card">
+          <div class="hub-side-head">
+            <div class="hub-side-title">
+              <span>👥</span>
+              <span>الأصدقاء والملف الشخصي</span>
+            </div>
+            <span class="bk-chip ok" id="hubFriendsOnlineCountBadge">0 متصل</span>
+          </div>
+
+          <!-- User Avatar & Profile Summary -->
+          <div class="hub-user-dock">
+            <div class="hub-user-dock-top">
+              <span class="av sm" id="hubMyDockAv" style="--c:#0ea5e9">😎</span>
+              <div style="min-width:0;flex:1">
+                <div class="hub-user-dock-name" id="hubMyDockName">لاعب</div>
+                <div class="mut tiny">كود الصداقة: <b id="homeMyCode" style="direction:ltr;color:var(--ac2);letter-spacing:.8px">------</b></div>
+              </div>
+              <button class="mini" id="homeCopyMe" type="button" title="نسخ كود الصداقة">📋 نسخ</button>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:8px">
+              <a href="pages/profile.html" class="mini" style="flex:1;text-align:center;text-decoration:none">⚙️ إعدادات الحساب</a>
+              <a href="pages/friends.html" class="mini" style="flex:1;text-align:center;text-decoration:none">👥 إدارة الأصدقاء</a>
+            </div>
+          </div>
+
+          <!-- Quick Add Friend Input -->
+          <div class="row" style="gap:6px;margin:10px 0">
+            <input id="homeFn" placeholder="🔑 أضف صديقاً بالكود أو الاسم…" style="font-size:12px;padding:8px 10px">
+            <button class="btn ok sm" id="homeFa" type="button" style="white-space:nowrap">＋ إضافة</button>
+          </div>
+
+          <!-- Friends List with Online/Offline Indicators & Quick Actions -->
+          <div id="homeFl" class="plist" style="max-height:310px;overflow-y:auto"></div>
+
+          <!-- Incoming Friend Game Invitations -->
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <span class="mut tiny" style="font-weight:800">📩 دعوات اللعب الواردة</span>
+              <a href="pages/friends.html" class="mut tiny" style="color:var(--ac);text-decoration:none;font-weight:800">عرض الكل ←</a>
+            </div>
+            <div id="homeInvitesList"></div>
+          </div>
+
+          <!-- Sidebar Quick Platform Navigation -->
+          <div class="hub-side-nav-list" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)">
+            <div class="mut tiny" style="font-weight:800;margin-bottom:4px">🧭 روابط سريعة</div>
+            <a href="index.html" class="hub-side-nav-item active"><span>🏠</span><span>لوحة التحكم الرئيسية</span></a>
+            <a href="pages/rooms.html" class="hub-side-nav-item"><span>🚪</span><span>تصفح الغرف العامة والخاصة</span></a>
+            <a href="pages/friends.html" class="hub-side-nav-item"><span>👥</span><span>قائمة الأصدقاء والدعوات</span></a>
+            <a href="pages/profile.html" class="hub-side-nav-item"><span>👤</span><span>الملف الشخصي والإحصائيات</span></a>
+          </div>
+        </section>
+      </aside>
+
+      <!-- ================= B. CENTER — MAIN GAMING DASHBOARD ================= -->
+      <div class="dashboard-col-center" id="hubCenterMain">
+
+        <!-- Welcome & Featured Game Hero Section -->
+        <section class="hub-hero-row">
+          <div class="hub-spotlight-card" id="hubSpotlightCard">
+            <div class="hub-spotlight-content">
+              <div class="hub-spotlight-badges">
+                <span class="hub-feat-pill" id="hubSpotBadge">✦ منصة الألعاب الجماعية</span>
+                <span class="hub-feat-ico-pill" id="hubSpotSubBadge">🌐 أونلاين مباشر + ذكاء اصطناعي</span>
+              </div>
+              <h2 class="hub-spotlight-title" id="hubSpotTitle">مرحباً بك في ساحة SHARB GAMES</h2>
+              <p class="hub-spotlight-desc" id="hubSpotDesc">
+                اختر لعبتك المفضلة، أنشئ غرفة عامة أو خاصة بكود فوري، أو انضم إلى الغرف النشطة وتنافس مع أصدقائك في 7 ألعاب جماعية متكاملة.
+              </p>
+              <div class="hub-spotlight-actions">
+                <a href="pages/domino.html" class="btn ok big" id="hubSpotPlayBtn">🎮 العب الدومينو الآن</a>
+                <a href="pages/uno.html" class="btn primary big">🎴 العب UNO (حتى 10 لاعبين)</a>
+                <a href="pages/rooms.html" class="btn g big">🚪 استعرض جميع الغرف</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Play Actions Column -->
+          <div class="hub-quick-stack">
+            <button type="button" class="hub-qcard" data-open-create-room="domino" id="hubQCardCreate">
+              <span class="hub-qcard-ico">➕</span>
+              <div class="hub-qcard-body">
+                <b>إنشاء غرفة سريعة</b>
+                <small>افتح غرفة عامة أو خاصة في ثوانٍ</small>
+              </div>
+            </button>
+            <a href="pages/rooms.html" class="hub-qcard" id="hubQCardJoinCode" style="text-decoration:none">
+              <span class="hub-qcard-ico">🔑</span>
+              <div class="hub-qcard-body">
+                <b>دخول غرفة بكود</b>
+                <small>انضم فوراً باستخدام كود من 6 أحرف</small>
+              </div>
+            </a>
+            <a href="pages/friends.html" class="hub-qcard" id="hubQCardInvite" style="text-decoration:none">
+              <span class="hub-qcard-ico">📨</span>
+              <div class="hub-qcard-body">
+                <b>دعوة الأصدقاء</b>
+                <small>أرسل دعوة مباشرة لأصدقائك المتصلين</small>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Search & Category Filter Bar -->
+        <section class="hub-filter-bar glass">
+          <div class="hub-search-box" id="hubSearchWrap">
+            <span class="hub-search-ico">🔍</span>
+            <input id="hubSearchInput" type="search" placeholder="ابحث عن لعبة أو غرفة عامة أو اسم مضيف…" autocomplete="off">
+            <button type="button" class="hub-search-clear hide" id="hubSearchClearBtn" title="مسح البحث">✕</button>
+          </div>
+          <div class="pub-filter-pills" id="hubGameCategoryPills" role="tablist" aria-label="تصنيف الألعاب">
+            <button type="button" class="pub-fpill on" data-gcat="all">الكل (7)</button>
+            <button type="button" class="pub-fpill" data-gcat="table">ألعاب الطاولة والورق</button>
+            <button type="button" class="pub-fpill" data-gcat="strategy">ذكاء واستراتيجية</button>
+            <button type="button" class="pub-fpill" data-gcat="party">ألعاب جماعية وحفلات</button>
+          </div>
+        </section>
+
+        <!-- Recently Played Games (Populated dynamically from real localStorage history) -->
+        <section class="hide" id="hubRecentWrap" aria-label="الألعاب التي لعبتها مؤخراً"></section>
+
+        <!-- Featured Games Grid (All 7 Games with SVG Thumbnails & Real Page Links) -->
+        <section class="panel glass" style="padding:18px 20px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+            <div>
+              <h2 style="margin:0;font-size:18px;font-weight:900">🎮 الألعاب المتاحة على المنصة</h2>
+              <div class="mut tiny">اضغط على أي لعبة للانتقال إلى صفحتها المستقلة أو أنشئ غرفة مباشرة</div>
+            </div>
+            <a href="pages/rooms.html" class="btn g sm">🚪 تصفح الغرف النشطة ←</a>
+          </div>
+
+          <div class="hub-games-grid" id="hubGamesGrid">
+            <!-- 1. Domino -->
+            <article class="hub-game-card" data-gcat-item="table" data-gtitle="دومينو domino">
+              <a href="pages/domino.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/domino-thumb.svg" alt="دومينو SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ - ٤ لاعبين • فردي وفرق</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/domino.html">🁫 الدومينو الكلاسيكي</a></h3>
+                  <span class="bk-chip ok">طاولة</span>
+                </div>
+                <p class="hub-gcard-desc">أوضاع السحب والتسكير والأمريكي (مضاعفات 5) مع دعم نظام الفرق 2 ضد 2 أو اللعب الفردي.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/domino.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="domino" title="إنشاء غرفة دومينو">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2. UNO -->
+            <article class="hub-game-card" data-gcat-item="table" data-gtitle="اونو أونو uno">
+              <a href="pages/uno.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/uno-thumb.svg" alt="UNO SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ - ١٠ لاعبين • فردي وفرق</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/uno.html">🎴 أونو (UNO Arena)</a></h3>
+                  <span class="bk-chip ac">ورق</span>
+                </div>
+                <p class="hub-gcard-desc">108 كرت قياسي، كروت الأكشن والـ Wild +4، إعلان UNO وعقوبة النسيان مع سعة تصل إلى 10 لاعبين.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/uno.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="uno" title="إنشاء غرفة أونو">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 3. Bakasa -->
+            <article class="hub-game-card" data-gcat-item="party" data-gtitle="بكاسة البكاسة bakasa">
+              <a href="pages/bakasa.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/bakasa-thumb.svg" alt="البكاسة SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٣ - ١٠ لاعبين • خداع وتصويت</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/bakasa.html">🕵️ لعبة البكاسة</a></h3>
+                  <span class="bk-chip warn">جماعية</span>
+                </div>
+                <p class="hub-gcard-desc">أكثر من 940 كلمة سرية في 12 تصنيفاً مع تشفير الكلمات السرية وتصويت مباشر لكشف البكاس.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/bakasa.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="bakasa" title="إنشاء غرفة البكاسة">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 4. Chess -->
+            <article class="hub-game-card" data-gcat-item="strategy" data-gtitle="شطرنج chess">
+              <a href="pages/chess.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/chess-thumb.svg" alt="شطرنج SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ لاعبين • قوانين FIDE الكاملة</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/chess.html">♟️ الشطرنج الاحترافي</a></h3>
+                  <span class="bk-chip ac">استراتيجية</span>
+                </div>
+                <p class="hub-gcard-desc">قوانين الاتحاد الدولي كاملة: التبييت، الأخذ بالتجاوز، ترقية البيدق، الساعات التنافسية، والذكاء الاصطناعي.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/chess.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="chess" title="إنشاء غرفة شطرنج">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 5. Tic-Tac-Toe -->
+            <article class="hub-game-card" data-gcat-item="strategy" data-gtitle="إكس أو اكس او tic tac toe xo">
+              <a href="pages/tic-tac-toe.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/tic-tac-toe-thumb.svg" alt="إكس أو SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ لاعبين • 3×3 / 4×4 / 5×5</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/tic-tac-toe.html">❌⭕ إكس أو (Tic-Tac-Toe)</a></h3>
+                  <span class="bk-chip ok">سريعة</span>
+                </div>
+                <p class="hub-gcard-desc">مواجهات سريعة على شبكات 3×3 أو 4×4 أو 5×5 أونلاين مع الأصدقاء أو ضد خوارزمية Minimax.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/tic-tac-toe.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="tic-tac-toe" title="إنشاء غرفة إكس أو">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 6. Connect Four -->
+            <article class="hub-game-card" data-gcat-item="strategy" data-gtitle="كونكت فور connect four 4">
+              <a href="pages/connect-four.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/connect-four-thumb.svg" alt="كونكت 4 SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ لاعبين • 4 على استقامة</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/connect-four.html">🔴🟡 كونكت 4 (Connect Four)</a></h3>
+                  <span class="bk-chip ac">استراتيجية</span>
+                </div>
+                <p class="hub-gcard-desc">أسقط الأقراص في الشبكة 7×6 ورتّب 4 أقراص متتالية أفقياً أو رأسياً أو قطرياً قبل خصمك.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/connect-four.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="connect-four" title="إنشاء غرفة كونكت 4">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 7. Draw & Guess -->
+            <article class="hub-game-card" data-gcat-item="party" data-gtitle="ارسم وخمن draw and guess">
+              <a href="pages/draw-guess.html" class="hub-gcard-thumb-link">
+                <img src="assets/images/draw-guess-thumb.svg" alt="ارسم وخمن SHARB GAMES" class="hub-gcard-thumb" loading="lazy">
+                <span class="hub-gcard-badge">٢ - ١٢ لاعباً • رسم مباشر</span>
+              </a>
+              <div class="hub-gcard-body">
+                <div class="hub-gcard-head">
+                  <h3><a href="pages/draw-guess.html">🎨 ارسم وخمّن (Draw &amp; Guess)</a></h3>
+                  <span class="bk-chip warn">إبداعية</span>
+                </div>
+                <p class="hub-gcard-desc">سبورة رسم متزامنة لحظياً مع تلميحات ذكية للحروف ونقاط أسرع تخمين بالعربية والإنجليزية.</p>
+                <div class="hub-gcard-actions">
+                  <a href="pages/draw-guess.html" class="btn ok sm" style="flex:1">▶ العب الآن</a>
+                  <button type="button" class="btn g sm" data-open-create-room="draw-guess" title="إنشاء غرفة ارسم وخمن">＋ غرفة</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- ================= C. RIGHT SIDEBAR — PUBLIC ROOMS (5+ VISIBLE SIMULTANEOUSLY) ================= -->
+      <aside class="dashboard-col-right" id="hubRightRoomsSidebar" aria-label="شريط الغرف العامة">
+        <section class="hub-side-card pub-rooms-sec" id="homePublicRoomsSec">
+          <div class="hub-side-head">
+            <div class="hub-side-title">
+              <span>🌐</span>
+              <span>الغرف العامة النشطة</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="bk-chip ok" id="pubRoomsCountBadge">0 غرف نشطة</span>
+              <span class="pub-conn-pill online" id="pubRoomsConnPill">
+                <span class="pub-conn-dot" id="pubRoomsConnDot"></span>
+                <span id="pubRoomsConnText">متصل</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Top Actions & Filters -->
+          <div style="display:flex;gap:6px;margin:8px 0">
+            <button type="button" class="btn ok sm" id="pubRoomsQuickCreateBtn" style="flex:1">＋ إنشاء غرفة</button>
+            <button type="button" class="btn g sm" id="pubRoomsRefreshBtn" title="تحديث الغرف">🔄</button>
+            <select id="pubRoomsSortSel" class="csel-native" data-no-csel="1" style="width:auto;padding:5px 8px;font-size:11.5px;border-radius:9px">
+              <option value="open_first">المتاحة أولاً</option>
+              <option value="players_desc">الأكثر لاعبين</option>
+              <option value="newest">الأحدث</option>
+            </select>
+          </div>
+
+          <div class="pub-filter-pills" id="pubRoomsFilterPills" role="tablist" aria-label="تصفية الغرف حسب اللعبة" style="margin-bottom:8px">
+            <button type="button" class="pub-fpill on" data-pubfilter="all">الكل</button>
+            <button type="button" class="pub-fpill" data-pubfilter="domino">🁫 دومينو</button>
+            <button type="button" class="pub-fpill" data-pubfilter="uno">🎴 UNO</button>
+            <button type="button" class="pub-fpill" data-pubfilter="bakasa">🕵️ البكاسة</button>
+            <button type="button" class="pub-fpill" data-pubfilter="chess">♟️ شطرنج</button>
+            <button type="button" class="pub-fpill" data-pubfilter="draw-guess">🎨 ارسم</button>
+          </div>
+
+          <!-- Public Rooms Cards Container (Displays at least 5-6 cards simultaneously on desktop) -->
+          <div id="pubRoomsContainer" class="pub-rooms-sidebar-list"></div>
+
+          <!-- View All Rooms Link -->
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+            <span class="mut tiny">تريد تصفية متقدمة أو غرف خاصة؟</span>
+            <a href="pages/rooms.html" class="btn g sm" style="text-decoration:none">عرض كل الغرف ←</a>
+          </div>
+        </section>
+
+        <!-- Quick Private Code Join Widget -->
+        <section class="hub-side-card" style="margin-top:12px">
+          <div class="hub-side-head" style="margin-bottom:8px">
+            <div class="hub-side-title">
+              <span>🔑</span>
+              <span>دخول سريع بكود الغرفة</span>
+            </div>
+          </div>
+          <div class="quick-g-pills" id="homeQuickGamePills" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px">
+            <button type="button" class="quick-g-pill on" data-qgame="domino">🁫 دومينو</button>
+            <button type="button" class="quick-g-pill" data-qgame="uno">🎴 UNO</button>
+            <button type="button" class="quick-g-pill" data-qgame="bakasa">🕵️ البكاسة</button>
+            <button type="button" class="quick-g-pill" data-qgame="chess">♟️ شطرنج</button>
+            <button type="button" class="quick-g-pill" data-qgame="tic-tac-toe">❌ إكس أو</button>
+            <button type="button" class="quick-g-pill" data-qgame="connect-four">🔴 كونكت 4</button>
+            <button type="button" class="quick-g-pill" data-qgame="draw-guess" style="grid-column:span 2">🎨 ارسم وخمن</button>
+          </div>
+          <div class="row" style="gap:6px">
+            <input id="homeQuickCode" placeholder="كود الغرفة (مثال: AB12CD)" maxlength="6" inputmode="latin" style="text-transform:uppercase;direction:ltr;text-align:center;font-weight:800;letter-spacing:1.5px;font-size:12.5px">
+            <button class="btn ok sm" id="homeQuickJoinBtn" type="button" style="white-space:nowrap">🚀 دخول</button>
+          </div>
+        </section>
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- ================= PLATFORM FOOTER ================= -->
+  <footer class="sharb-footer glass" id="sharbFooter">
+    <div class="sharb-footer-top">
+      <div class="sharb-footer-brand">
+        <span class="sharb-footer-logo">
+          <img data-sharb-logo="1" src="assets/images/logo.png" alt="SHARB GAMES Logo">
+        </span>
+        <div>
+          <div class="sharb-footer-title">SHARB GAMES</div>
+          <div class="sharb-footer-sub">Your Ultimate Online Gaming Platform</div>
+        </div>
+      </div>
+      <div class="sharb-footer-links">
+        <a href="index.html" class="btn g sm">🏠 الرئيسية</a>
+        <a href="pages/rooms.html" class="btn g sm">🚪 الغرف العامة</a>
+        <a href="pages/friends.html" class="btn g sm">👥 الأصدقاء</a>
+        <a href="pages/profile.html" class="btn g sm">👤 البروفايل</a>
+        <button class="btn g sm" id="aboutCopyrightBtn" type="button">ℹ️ عن المنصة وحقوق الملكية</button>
+      </div>
+    </div>
+    <div class="sharb-footer-legal">
+      <div class="sharb-footer-copy-en">© 2026 SHARB GAMES. All Rights Reserved.</div>
+      <div class="sharb-footer-copy-en" style="font-weight:700;color:var(--ac2)">SHARB GAMES is an independent multi-page gaming platform owned and operated by SHARB.</div>
+      <div>
+        جميع حقوق الهوية البصرية، واسم <b>SHARB GAMES</b>، والشعار الرسمي، والتصميمات الأصلية، والبرمجة والمحتوى الخاص بالمنصة مملوكة لصالح <b>SHARB</b>.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MOBILE BOTTOM NAVIGATION BAR ================= -->
+  <nav class="hub-mobile-nav" id="hubMobileNav" aria-label="التنقل السريع للموبايل">
+    <a href="index.html" class="hub-mnav-btn active" data-nav-page="home">
+      <span class="mnav-ico">🏠</span>
+      <span>الرئيسية</span>
+    </a>
+    <a href="pages/rooms.html" class="hub-mnav-btn" data-nav-page="rooms">
+      <span class="mnav-ico">🚪</span>
+      <span>الغرف</span>
+    </a>
+    <a href="pages/friends.html" class="hub-mnav-btn" data-nav-page="friends">
+      <span class="mnav-ico">👥</span>
+      <span>الأصدقاء</span>
+    </a>
+    <a href="pages/profile.html" class="hub-mnav-btn" data-nav-page="profile">
+      <span class="mnav-ico">👤</span>
+      <span>حسابي</span>
+    </a>
+  </nav>
+
+  <!-- ================= TOASTS & MODAL OVERLAYS ================= -->
+  <div id="toasts" aria-live="polite"></div>
+  <div id="ovl"></div>
+
+  <!-- ================= SHARB GAMES — IN-ROOM CHAT SYSTEM ================= -->
+  <button id="sharbChatFab" class="sharb-chat-fab hide" type="button" aria-label="فتح شات الغرفة">
+    <span class="sharb-chat-fab-ico">💬</span>
+    <span id="sharbChatFabLabel">شات الغرفة</span>
+    <span id="sharbChatBadge" class="sharb-chat-badge hide">0</span>
+  </button>
+
+  <div id="sharbChatBackdrop" class="sharb-chat-backdrop"></div>
+
+  <aside id="sharbRoomChatPanel" class="sharb-room-chat hide collapsed" aria-label="شات الغرفة">
+    <div class="sharb-chat-head">
+      <div class="sharb-chat-head-main">
+        <div class="sharb-chat-title-row">
+          <span class="sharb-chat-title">💬 شات الغرفة</span>
+          <span id="sharbChatRoomBadge" class="sharb-chat-room-pill">—</span>
+        </div>
+        <div class="sharb-chat-meta-row">
+          <span id="sharbChatConnStatus" class="sharb-chat-conn">
+            <span class="sharb-chat-conn-dot"></span>
+            <span id="sharbChatConnText">متصل بشات الغرفة</span>
+          </span>
+          <span id="sharbChatMembersCount">👥 ١ لاعب</span>
+        </div>
+      </div>
+      <div class="sharb-chat-head-actions">
+        <button id="sharbChatCloseBtn" class="sharb-chat-icon-btn" type="button" title="إغلاق الشات" aria-label="إغلاق الشات">✕</button>
+      </div>
+    </div>
+
+    <div id="sharbChatLog" class="sharb-chat-log" role="log" aria-live="polite">
+      <div id="sharbChatEmpty" class="sharb-chat-empty">
+        <span class="sharb-chat-empty-ico">💬</span>
+        لا توجد رسائل بعد في هذه الغرفة.<br>ابدأ المحادثة مع اللاعبين الآن! 👋
+      </div>
+    </div>
+
+    <div id="sharbChatErr" class="sharb-chat-err hide" role="alert">
+      <span id="sharbChatErrText"></span>
+      <button id="sharbChatErrClose" type="button" style="background:none;border:none;color:inherit;cursor:pointer;font-weight:900">✕</button>
+    </div>
+
+    <div id="sharbChatEmojiBar" class="sharb-chat-emojis" aria-label="إيموجي سريع">
+      <button type="button" class="sharb-emoji-btn" data-em="👍">👍</button>
+      <button type="button" class="sharb-emoji-btn" data-em="🔥">🔥</button>
+      <button type="button" class="sharb-emoji-btn" data-em="😂">😂</button>
+      <button type="button" class="sharb-emoji-btn" data-em="👏">👏</button>
+      <button type="button" class="sharb-emoji-btn" data-em="🎯">🎯</button>
+      <button type="button" class="sharb-emoji-btn" data-em="❤️">❤️</button>
+      <button type="button" class="sharb-emoji-btn" data-em="🤔">🤔</button>
+      <button type="button" class="sharb-emoji-btn" data-em="😎">😎</button>
+      <button type="button" class="sharb-emoji-btn" data-em="🎉">🎉</button>
+      <button type="button" class="sharb-emoji-btn" data-em="🤝">🤝</button>
+    </div>
+
+    <form id="sharbChatForm" class="sharb-chat-composer" onsubmit="return false;">
+      <div class="sharb-chat-input-row">
+        <textarea id="sharbChatInput" class="sharb-chat-input" rows="1" maxlength="500" dir="auto" placeholder="اكتب رسالتك هنا... (عربي / English / 😊)"></textarea>
+        <button id="sharbChatSendBtn" class="sharb-chat-send-btn" type="submit">إرسال ➤</button>
+      </div>
+      <div class="sharb-chat-foot-meta">
+        <span>اضغط Enter للإرسال • محمي ومفصول لكل غرفة</span>
+        <span id="sharbChatCharCount" class="sharb-chat-char-count">0 / 500</span>
+      </div>
+    </form>
+  </aside>
+
+  <!-- Report Message / Player Modal -->
+  <div id="sharbChatReportModal" class="sharb-report-modal-wrap hide" role="dialog" aria-modal="true" aria-labelledby="sharbReportTitle">
+    <div class="sharb-report-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div id="sharbReportTitle" style="font-size:16px;font-weight:900;color:var(--tx)">🚩 الإبلاغ عن رسالة / لاعب</div>
+        <button id="sharbReportCloseBtn" class="sharb-chat-icon-btn" type="button">✕</button>
+      </div>
+      <div id="sharbReportTargetInfo" style="font-size:13px;font-weight:700;color:var(--acc)"></div>
+      <div id="sharbReportQuote" class="sharb-report-quote"></div>
+      <label style="font-size:12.5px;font-weight:800;color:var(--mut)">سبب البلاغ:</label>
+      <select id="sharbReportReason" class="inp csel-native" data-no-csel="1" style="width:100%;padding:9px 12px;border-radius:11px">
+        <option value="abuse">إساءة أو ألفاظ غير لائقة</option>
+        <option value="spam">سبام أو إزعاج متكرر</option>
+        <option value="cheating">غش أو سلوك غير رياضي</option>
+        <option value="impersonation">انتحال شخصية أو اسم غير لائق</option>
+        <option value="other">سبب آخر</option>
+      </select>
+      <input id="sharbReportNote" class="inp" type="text" maxlength="200" placeholder="ملاحظات إضافية (اختياري)..." style="width:100%;padding:9px 12px;border-radius:11px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;user-select:none">
+        <input id="sharbReportMuteChk" type="checkbox" checked style="width:16px;height:16px;accent-color:var(--acc)">
+        <span>كتم وإخفاء رسائل هذا اللاعب عندي في هذه الغرفة</span>
+      </label>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:4px">
+        <button id="sharbReportCancelBtn" class="btn g sm" type="button">إلغاء</button>
+        <button id="sharbReportSubmitBtn" class="btn warn sm" type="button">إرسال البلاغ 🚩</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/friends.js"></script>
+  <script src="js/rooms.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
