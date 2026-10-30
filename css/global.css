@@ -1,0 +1,250 @@
+/* ==========================================================================
+   SHARB GAMES — DESIGN SYSTEM TOKENS & GLOBAL BASE (global.css)
+   Visual Identity: Deep Navy & Near-Black | Dark Blue Surfaces |
+   Electric Blue Primary Accent | Subtle Purple Secondary Accent
+   ========================================================================== */
+@import url('../assets/fonts/fonts.css');
+
+:root,
+:root[data-sharb="blue"],
+:root:not([data-sharb]) {
+  /* Core Semantic Palette */
+  --bg-primary: #060b16;
+  --bg-secondary: #0a1224;
+  --surface-1: #0f1b33;
+  --surface-2: #142342;
+  --surface-3: #1b2e54;
+  --surface-elevated: rgba(15, 27, 51, 0.92);
+
+  /* Accents */
+  --accent-primary: #0ea5e9;
+  --accent-primary-hover: #38bdf8;
+  --accent-primary-strong: #2563eb;
+  --accent-secondary: #8b5cf6;
+  --accent-secondary-soft: rgba(139, 92, 246, 0.16);
+
+  /* Status Colors */
+  --status-online: #22c55e;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(56, 189, 248, 0.28);
+  --border-purple: rgba(139, 92, 246, 0.28);
+
+  /* Controlled Shadows */
+  --shadow-xs: 0 2px 6px rgba(2, 6, 23, 0.28);
+  --shadow-sm: 0 6px 16px rgba(2, 6, 23, 0.34);
+  --shadow-md: 0 12px 28px rgba(2, 6, 23, 0.42);
+  --shadow-lg: 0 20px 44px rgba(2, 6, 23, 0.52);
+
+  /* Border Radius Scale */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Legacy Compatibility Aliases for Game Engines */
+  --bg1: var(--bg-primary);
+  --bg2: var(--bg-secondary);
+  --glass: rgba(15, 27, 51, 0.86);
+  --glass2: rgba(23, 39, 71, 0.94);
+  --bd: var(--border-subtle);
+  --bd2: rgba(148, 163, 184, 0.24);
+  --tx: var(--text-primary);
+  --mut: var(--text-secondary);
+  --ac: var(--accent-primary);
+  --ac2: var(--accent-primary-hover);
+  --acc: var(--accent-primary);
+  --acc2: var(--accent-primary-hover);
+  --gr: var(--status-online);
+  --ok: var(--status-online);
+  --gold: var(--status-warning);
+  --warn: var(--status-warning);
+  --red: var(--status-danger);
+  --bad: var(--status-danger);
+  --err: var(--status-danger);
+  --felt: #115e59;
+  --felt2: #063936;
+  --wood1: #3b2516;
+  --wood2: #1f1209;
+  --r: var(--radius-lg);
+  --sh: var(--shadow-md);
+  color-scheme: dark;
+}
+
+/* Additional Supported Platform Themes */
+:root[data-sharb="midnight"] {
+  --bg-primary: #05070d;
+  --bg-secondary: #0b0f1c;
+  --surface-1: #111827;
+  --surface-2: #1e293b;
+  --surface-3: #334155;
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #818cf8;
+  --accent-secondary: #a855f7;
+  --glass: rgba(17, 24, 39, 0.88);
+  --glass2: rgba(30, 41, 59, 0.95);
+}
+
+:root[data-sharb="purple"] {
+  --bg-primary: #080614;
+  --bg-secondary: #110c26;
+  --surface-1: #181236;
+  --surface-2: #231b4d;
+  --surface-3: #312569;
+  --accent-primary: #8b5cf6;
+  --accent-primary-hover: #a78bfa;
+  --accent-secondary: #38bdf8;
+  --glass: rgba(24, 18, 54, 0.88);
+  --glass2: rgba(35, 27, 77, 0.95);
+}
+
+:root[data-sharb="emerald"] {
+  --bg-primary: #051014;
+  --bg-secondary: #081c24;
+  --surface-1: #0d2833;
+  --surface-2: #133947;
+  --surface-3: #1b4d5e;
+  --accent-primary: #10b981;
+  --accent-primary-hover: #34d399;
+  --accent-secondary: #0ea5e9;
+  --glass: rgba(13, 40, 51, 0.88);
+  --glass2: rgba(19, 57, 71, 0.95);
+}
+
+:root[data-sharb="crimson"] {
+  --bg-primary: #0c0710;
+  --bg-secondary: #160c1c;
+  --surface-1: #21122b;
+  --surface-2: #2e193b;
+  --surface-3: #3d224f;
+  --accent-primary: #f43f5e;
+  --accent-primary-hover: #fb7185;
+  --accent-secondary: #8b5cf6;
+  --glass: rgba(33, 18, 43, 0.88);
+  --glass2: rgba(46, 25, 59, 0.95);
+}
+
+:root[data-sharb="light"],
+:root[data-theme="light"] {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --surface-1: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #e2e8f0;
+  --surface-elevated: rgba(255, 255, 255, 0.95);
+  --accent-primary: #0284c7;
+  --accent-primary-hover: #0369a1;
+  --accent-primary-strong: #1d4ed8;
+  --accent-secondary: #7c3aed;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-subtle: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(2, 132, 199, 0.3);
+  --glass: rgba(255, 255, 255, 0.92);
+  --glass2: rgba(248, 250, 252, 0.98);
+  --bd: rgba(15, 23, 42, 0.12);
+  --bd2: rgba(15, 23, 42, 0.2);
+  --tx: #0f172a;
+  --mut: #475569;
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 10px 26px rgba(15, 23, 42, 0.12);
+  color-scheme: light;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  font-family: var(--font-sans, 'Cairo', system-ui, -apple-system, sans-serif);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(900px 500px at 12% -8%, rgba(14, 165, 233, 0.12), transparent 65%),
+    radial-gradient(800px 480px at 90% 108%, rgba(139, 92, 246, 0.10), transparent 65%),
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+.mut { color: var(--text-secondary); }
+.tiny { font-size: 12px; }
+.hide { display: none !important; }
+
+.glass {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Custom Sleek Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.22) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
