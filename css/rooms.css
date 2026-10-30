@@ -1,0 +1,378 @@
+/* ==========================================================================
+   SHARB GAMES — ROOMS DIRECTORY & PUBLIC/PRIVATE ROOM CARDS (rooms.css)
+   ========================================================================== */
+
+.pub-rooms-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.pub-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pub-f-pill {
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+}
+
+.pub-f-pill:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.pub-f-pill.on {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-strong));
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.pub-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* Dashboard Right Sidebar Override: Compact Single/Dual Stack so 5–6 Cards Fit Above Fold */
+.dashboard-col-right .pub-rooms-grid {
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.pub-room-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 11px 13px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  min-width: 0;
+}
+
+.pub-room-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.pub-rc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.pub-rc-game {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--accent-primary-hover);
+  border: 1px solid var(--border-strong);
+}
+
+.pub-rc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 10.5px;
+  font-weight: 800;
+}
+.pub-rc-status.waiting { background: rgba(34, 197, 94, 0.14); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
+.pub-rc-status.full { background: rgba(245, 158, 11, 0.14); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+.pub-rc-status.playing { background: rgba(14, 165, 233, 0.14); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.35); }
+.pub-rc-status.finished { background: rgba(139, 92, 246, 0.14); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.35); }
+
+.pub-rc-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.pub-rc-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pub-rc-code {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  direction: ltr;
+}
+
+.pub-rc-meta-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.pub-rc-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 5px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.pub-rc-cap-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 68px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.pub-rc-bar {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.18);
+  overflow: hidden;
+}
+.pub-rc-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #0ea5e9);
+}
+.pub-rc-bar.full > i {
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+
+.pub-rc-JoinBtn {
+  padding: 5px 12px !important;
+  font-size: 11.5px !important;
+  min-height: 28px !important;
+  border-radius: 9px !important;
+}
+
+/* Dedicated Rooms Page Layout */
+.rooms-page-grid {
+  display: grid;
+  grid-template-columns: 350px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.vis-selector-box {
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.vis-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.vis-opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: right;
+  width: 100%;
+}
+
+.vis-opt-btn.on {
+  border-color: var(--accent-primary);
+  background: rgba(14, 165, 233, 0.14);
+}
+
+.vis-opt-btn .vis-ico { font-size: 18px; flex-shrink: 0; }
+.vis-opt-btn .vis-txt { display: flex; flex-direction: column; gap: 2px; }
+.vis-opt-btn .vis-txt b { font-size: 12.5px; font-weight: 800; }
+.vis-opt-btn .vis-txt small { font-size: 11px; color: var(--text-secondary); }
+
+.vis-live-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid var(--border-strong);
+  margin: 8px 0;
+  font-size: 12px;
+}
+
+
+/* Filter Pills (.pub-fpill & .pub-f-pill) — Modern Gaming Filter Chips (Fixes Screenshots 2 & 3) */
+.pub-fpill,
+.pub-f-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(20, 35, 66, 0.88);
+  color: #cbd5e1;
+  transition: all 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.24);
+}
+
+.pub-fpill:hover,
+.pub-f-pill:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(27, 46, 84, 0.96);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pub-fpill.on,
+.pub-fpill.active,
+.pub-f-pill.on,
+.pub-f-pill.active {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary-strong) 100%);
+  color: #ffffff;
+  border-color: rgba(125, 211, 252, 0.48);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.34);
+}
+
+/* Quick Game Selector Pills in Private Code Join & Quick Create Modal */
+.quick-g-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 10px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.16s ease;
+  text-align: center;
+}
+
+.quick-g-pill:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-3);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.quick-g-pill.on,
+.quick-g-pill.active {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.24), rgba(37, 99, 235, 0.34));
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.22);
+}
+
+/* Connection Status Pill & Dot */
+.pub-conn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  color: #4ade80;
+}
+
+.pub-conn-pill.online .pub-conn-dot,
+.pub-conn-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  display: inline-block;
+}
+
+/* Rooms Page Toolbar & Status Tabs */
+.rooms-page-hero {
+  padding: 20px 24px;
+}
+
+.rooms-filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.pub-status-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rooms-page-cards-grid {
+  min-height: 180px;
+}
